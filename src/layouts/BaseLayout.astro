@@ -1,0 +1,32 @@
+---
+const { title = "F5.SI" } = Astro.props;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>F5.SI</h1>
+
+      <nav>
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/novel">Novel</a>
+        <a href="/characters">Characters</a>
+        <a href="/links">Links</a>
+        <a href="/about">About</a>
+      </nav>
+
+      <hr />
+    </header>
+
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
