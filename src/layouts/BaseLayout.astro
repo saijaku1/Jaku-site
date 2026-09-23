@@ -11,104 +11,126 @@ const { title = "F5.SI" } = Astro.props;
 
   <body>
     <header>
-      <h1>F5.SI</h1>
+      <h1>Jakuのサイト</h1>
 
       <nav>
-        <a href="/">Home</a>
-        <a href="/blog">Blog</a>
-        <a href="/novel">Novel</a>
-        <a href="/characters">Characters</a>
-        <a href="/links">Links</a>
-        <a href="/about">About</a>
+        <a href="/">ホーム</a>
+        <a href="/blog">ブログ</a>
+        <a href="/novel">小説</a>
+        <a href="/characters">キャラクター</a>
+        <a href="/links">リンク</a>
+        <a href="/about">Jakuについて</a>
       </nav>
+      <button id="theme-toggle">
+        🌙
+      </button>
 
       <hr />
-    </header> 
-    <style>
-      :root{
-        --bg:#ffffff;
-        --text:#111111;
-        --accent:#0071e3;
-      }
-      body{
-        margin:0;
-        font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-        background:var(--bg);
-        color:var(--text);
-      }
-      header{
-        max-width:1100px;
-        margin:0 auto;
-        padding:24px;
-        position: sticky;
-        top: 0;
-        backdrop-filter: blur(12px);
-        background: rgba(255,255,255,0.8);
-        border-bottom: 1px solid #e5e5e5;
-        z-index: 100;
-      }
-      nav{
-        display:flex;
-        gap:24px;
-        margin-top:12px;
-        display: flex;
-        gap: 24px;
-        align-items: center;
-      }
-      nav a{
-        text-decoration:none;
-        color:var(--text);
-        transition:opacity 0.2s;
-      }
-      nav a:hover{
-        opacity:0.6;
-      }
-      main{
-        max-width:1100px;
-        margin:0 auto;
-        padding:60px 24px;
-      }
-      h1{
-        margin:0;
-      }
-     .hero {
-  text-align: center;
-  padding: 120px 0;
+    </header>
+
+<style is:global>
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --accent: #0071e3;
+  --border: #e5e5e5;
 }
 
-.hero h2 {
-  font-size: 4rem;
-  margin-bottom: 16px;
+:root.dark {
+  --bg: #000000;
+  --text: #f5f5f7;
+  --accent: #2997ff;
+  --border: #333333;
 }
 
-.subtitle {
-  font-size: 1.4rem;
-  opacity: 0.7;
+body {
+  margin: 0;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
-.button {
-  display: inline-block;
-  margin-top: 24px;
-  padding: 12px 24px;
-  border-radius: 999px;
+header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
 
-  background: #0071e3;
-  color: white;
+  position: sticky;
+  top: 0;
 
+  backdrop-filter: blur(20px);
+
+  background: color-mix(
+    in srgb,
+    var(--bg) 80%,
+    transparent
+  );
+
+  border-bottom: 1px solid var(--border);
+
+  z-index: 100;
+}
+
+nav {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+nav a {
   text-decoration: none;
+  color: var(--text);
 }
 
-.button:hover {
-  opacity: 0.85;
-}
+#theme-toggle {
+  margin-top: 16px;
 
-    </style>
+  border: none;
+  background: transparent;
+
+  color: var(--text);
+
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+</style>
     <main>
       <slot />
     </main>
+
   </body>
+      <!-- ダークモードJS -->
+    <script is:inline>
+const button = document.getElementById("theme-toggle");
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+  document.documentElement.classList.add("dark");
+  button.textContent = "☀️";
+}
+
+button.addEventListener("click", () => {
+  document.documentElement.classList.toggle("dark");
+
+  if (document.documentElement.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+    button.textContent = "☀️";
+  } else {
+    localStorage.setItem("theme", "light");
+    button.textContent = "🌙";
+  }
+});
+</script>
 </html>
