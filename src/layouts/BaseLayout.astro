@@ -11,6 +11,7 @@ const { title = "F5.SI" } = Astro.props;
 
   <body>
     <header>
+       <div class="header-inner">
       <h1>Jakuのサイト</h1>
 
       <nav>
@@ -24,7 +25,7 @@ const { title = "F5.SI" } = Astro.props;
       <button id="theme-toggle">
         🌙
       </button>
-
+      </div>
       <hr />
     </header>
 
@@ -72,15 +73,20 @@ header {
 
   background: color-mix(
     in srgb,
-    var(--bg) 80%,
+    var(--bg) 85%,
     transparent
-  );
+    );
 
   border-bottom: 1px solid var(--border);
 
   z-index: 100;
 }
-
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
 nav {
   display: flex;
   gap: 24px;
@@ -103,6 +109,25 @@ nav a {
 
   font-size: 1.3rem;
   cursor: pointer;
+}
+h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero {
+  animation: fadeUp 0.8s ease;
 }
 </style>
     <main>
