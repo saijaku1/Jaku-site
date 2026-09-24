@@ -1,5 +1,5 @@
 ---
-const { title = "F5.SI" } = Astro.props;
+const { title = "Jakuのサイト" ,description="Jakuの個人サイト"} = Astro.props;
 ---
 
 <html lang="ja">
@@ -8,6 +8,7 @@ const { title = "F5.SI" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <link rel="icon" href="/Jaku.svg" />
+    <meta name="description" content={description} />
   </head>
 
   <body>

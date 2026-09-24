@@ -1,8 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+
+console.log(posts);
 ---
 
-<BaseLayout title="ブログ">
+<BaseLayout title="ブログ",description="気分で書くブログ">
 
     <section class="hero">
     <h2>ブログ</h2>
@@ -11,7 +16,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
      日常とかいろんなジャンルとかをブログにします！
     </p>
   </section>
-
+<p>記事数: {posts.length}</p>
   <section class="cards">
 
   </section>
