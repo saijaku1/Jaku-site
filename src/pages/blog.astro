@@ -3,6 +3,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Blog">
-  <h2>Blog</h2>
-  <p>ブログページです。</p>
+
+  <section class="hero">
+    <h2>Blog</h2>
+
+    <p class="subtitle">
+      開発記録や日記
+    </p>
+  </section>
+
+  <section class="cards">
+
+    <div class="card">
+      <h3>2026-09-26</h3>
+      <p>トップページとAboutページを改善しました。</p>
+    </div>
+
+    <div class="card">
+      <h3>2026-09-25</h3>
+      <p>ダークモードを実装しました。</p>
+    </div>
+
+  </section>
+
 </BaseLayout>

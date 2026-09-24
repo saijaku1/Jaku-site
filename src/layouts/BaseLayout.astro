@@ -199,11 +199,61 @@ h1 {
 .card h3 {
   margin-top: 0;
 }
+footer {
+  margin-top: 120px;
+  padding: 40px 24px;
+
+  text-align: center;
+
+  border-top: 1px solid var(--border);
+
+  color: var(--text);
+}
+
+footer {
+  margin-top: 120px;
+  padding: 40px 24px;
+  opacity: 0.8;
+  text-align: center;
+
+  border-top: 1px solid var(--border);
+
+  color: var(--text);
+}
+
+.footer-links {
+  margin-top: 12px;
+
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: var(--text);
+
+  opacity: 0.7;
+
+  transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+}
 </style>
     <main>
       <slot />
     </main>
+<footer>
+  <p>© 2026 Jaku / F5.SI</p>
 
+  <div class="footer-links">
+    <a href="/">ホーム</a>
+    <a href="/about">About</a>
+    <a href="/links">リンク</a>
+  </div>
+</footer>
   </body>
       <!-- ダークモードJS -->
     <script is:inline>

@@ -2,7 +2,44 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Blog">
-  <h2>Blog</h2>
-  <p>ブログページです。</p>
+<BaseLayout title="About">
+
+  <section class="hero">
+    <h2>About</h2>
+
+    <p class="subtitle">
+      Jakuについて
+    </p>
+
+    <p>
+      このサイトの管理人です。
+      Web制作や創作活動を楽しみながら学んでいます。
+    </p>
+  </section>
+
+  <section class="cards">
+
+    <div class="card">
+      <h3>サイトについて</h3>
+      <p>
+        F5.SIではブログ、小説、キャラクター紹介などを公開しています。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>好きなこと</h3>
+      <p>
+        Web制作、タイピング、ゲーム、アニメ、小説を読むこと
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>目標</h3>
+      <p>
+        とりあえずバイトとwe制作を両立する！
+      </p>
+    </div>
+
+  </section>
+
 </BaseLayout>
