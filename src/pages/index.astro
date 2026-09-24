@@ -3,24 +3,69 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="F5.SI">
+<section class="hero">
 
-  <section class="hero">
-    <h2>F5.SI</h2>
+  <div class="logo-circle">
+    F5
+  </div>
 
-    <p class="subtitle">
-      Code • Stories • Characters
-    </p>
+  <h2>F5.SI</h2>
 
-    <p>
-      技術と創作をまとめた個人サイト
-    </p>
+  <p class="subtitle">
+    Code • Stories • Characters
+  </p>
 
-    <a href="/blog" class="button">
-      ブログを見る
-    </a>
-    <a href="/novel" class="button">
-      小説を見る
-    </a>
-  </section>
+  <p>
+    技術と創作をまとめた個人サイト
+  </p>
 
+  <a href="/blog" class="button">
+    ブログを見る
+  </a>
+
+  <a href="/novel" class="button">
+    小説を見る
+  </a>
+
+</section>
+<section class="cards">
+
+  <a href="/blog" class="card">
+    <h3>ブログ</h3>
+    <p>日記や技術記事を掲載しています。</p>
+  </a>
+
+  <a href="/novel" class="card">
+    <h3>小説</h3>
+    <p>オリジナル作品を掲載しています。</p>
+  </a>
+
+  <a href="/characters" class="card">
+    <h3>キャラクター</h3>
+    <p>創作キャラクターを紹介しています。</p>
+  </a>
+
+</section>
+<section class="updates">
+  <h2>最新の更新</h2>
+
+  <div class="update-list">
+
+    <div class="update-item">
+      <span class="date">2026-09-26</span>
+      <p>Aboutページを追加しました。</p>
+    </div>
+
+    <div class="update-item">
+      <span class="date">2026-09-26</span>
+      <p>ダークモードを実装しました。</p>
+    </div>
+
+    <div class="update-item">
+      <span class="date">2026-09-25</span>
+      <p>F5.SIを公開しました。</p>
+    </div>
+
+  </div>
+</section>
 </BaseLayout>

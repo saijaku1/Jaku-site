@@ -143,6 +143,32 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 }
+.logo-circle {
+  width: 120px;
+  height: 120px;
+
+  margin: 0 auto 32px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    #6cb6ff
+  );
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2.5rem;
+  font-weight: 700;
+
+  box-shadow:
+    0 10px 30px rgba(0, 113, 227, 0.25);
+}
 .subtitle {
   font-size: 1.3rem;
   opacity: 0.7;
@@ -199,6 +225,56 @@ h1 {
 .card h3 {
   margin-top: 0;
 }
+
+.character-icon {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+
+  margin-bottom: 16px;
+}
+/* ===== 最新の更新 ===== */
+
+.updates {
+  margin-top: 100px;
+}
+
+.updates h2 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.update-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.update-item {
+  padding: 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: color-mix(
+    in srgb,
+    var(--bg) 90%,
+    transparent
+  );
+}
+
+.date {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
 footer {
   margin-top: 120px;
   padding: 40px 24px;
@@ -240,6 +316,26 @@ footer {
 
 .footer-links a:hover {
   opacity: 1;
+}
+@media (max-width: 768px) {
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .header-inner {
+    flex-direction: column;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero h2 {
+    font-size: 3rem;
+  }
+
 }
 </style>
     <main>
