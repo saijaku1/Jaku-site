@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import posts from "../../data/blog.json";
+
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: {
+      slug: post.slug,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<BaseLayout title={post.title}>
+
+  <article>
+    <h1>{post.title}</h1>
+
+    <p>{post.date}</p>
+
+    {post.content.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+
+    <p>
+      <a href="/blog">← ブログ一覧へ戻る</a>
+    </p>
+
+  </article>
+
+</BaseLayout>

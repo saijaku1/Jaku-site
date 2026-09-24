@@ -1,25 +1,18 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-
-const posts = await getCollection("blog");
-
-console.log(posts);
+import posts from "../data/blog.json";
 ---
 
-<BaseLayout title="ブログ",description="気分で書くブログ">
+<BaseLayout title="ブログ" description="気分で書くブログ">
 
-    <section class="hero">
+  <section class="hero">
     <h2>ブログ</h2>
 
     <p class="subtitle">
-     日常とかいろんなジャンルとかをブログにします！
+      日常とかいろんなジャンルとかをブログにします！
     </p>
   </section>
-<p>記事数: {posts.length}</p>
-  <section class="cards">
 
-  </section>
   <section class="hero">
     <h2>開発日記</h2>
 
@@ -29,22 +22,13 @@ console.log(posts);
   </section>
 
   <section class="cards">
-
-    <a href="/blog/first-post" class="card">
-      <h3>開発日記 #1</h3>
-      <p>Astroを使ったサイト制作を開始しました。</p>
-    </a>
-
-    <a href="/blog/second-post" class="card">
-      <h3>開発日記 #2</h3>
-      <p>デザインやレイアウトを改善しました。</p>
-    </a>
-
-    <a href="/blog/third-post" class="card">
-      <h3>開発日記 #3</h3>
-      <p>ここまでの制作状況と今後の目標について。</p>
-    </a>
-
+    {posts.map((post) => (
+      <a href={`/blog/${post.slug}`} class="card">
+        <h3>{post.title}</h3>
+        <p>{post.description}</p>
+        <small>{post.date}</small>
+      </a>
+    ))}
   </section>
 
 </BaseLayout>
