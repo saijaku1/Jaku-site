@@ -129,6 +129,31 @@ h1 {
 .hero {
   text-align: center;
   animation: fadeUp 0.8s ease;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      rgba(0,113,227,.25),
+      transparent
+    );
+
+  top: -150px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: -1;
 }
 
 .hero .button {
@@ -144,8 +169,8 @@ h1 {
   margin-right: auto;
 }
 .logo-circle {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
 
   margin: 0 auto 32px;
 
@@ -153,7 +178,7 @@ h1 {
 
   background: linear-gradient(
     135deg,
-    var(--accent),
+    #0071e3,
     #6cb6ff
   );
 
@@ -163,11 +188,12 @@ h1 {
   align-items: center;
   justify-content: center;
 
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 700;
 
   box-shadow:
-    0 10px 30px rgba(0, 113, 227, 0.25);
+    0 0 40px rgba(0,113,227,.3),
+    0 0 80px rgba(0,113,227,.15);
 }
 .subtitle {
   font-size: 1.3rem;
