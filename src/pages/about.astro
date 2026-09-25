@@ -3,7 +3,60 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="About">
+<style>
+  .timeline {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
 
+.timeline h2 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 50px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: -50px;
+  width: 2px;
+  background: rgba(255,255,255,.15);
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 4px;
+  top: 8px;
+
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+  background: #0071e3;
+}
+
+.timeline-content {
+  background: var(--bg);
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  padding: 20px;
+}
+
+.year {
+  color: #6cb6ff;
+  font-weight: 700;
+}
+</style>
   <section class="hero">
     <h2>About</h2>
 
@@ -12,34 +65,113 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </p>
 
     <p>
-      このサイトの管理人です。
-      Web制作や創作活動を楽しみながら学んでいます。
+      高校生のWeb制作者。
+      このサイトではブログや創作活動の記録を公開しています。
     </p>
   </section>
 
   <section class="cards">
 
     <div class="card">
+      <h3>自己紹介</h3>
+      <p>
+        名前はJakuです。<br />
+        Web制作やプログラミングを学びながら、
+        自分の作品や日々の記録を発信しています。<br />
+        最近はAstroを使ったサイト制作に挑戦しています。
+      </p>
+    </div>
+
+    <div class="card">
       <h3>サイトについて</h3>
       <p>
-        F5.SIではブログ、小説、キャラクター紹介などを公開しています。
+        このサイトはJakuの個人サイトです。<br />
+        ブログ、小説、オリジナルキャラクター紹介などを掲載しています。<br />
+        自分の成長記録として少しずつ更新していく予定です。
       </p>
     </div>
 
     <div class="card">
       <h3>好きなこと</h3>
       <p>
-        Web制作、タイピング、ゲーム、アニメ、小説を読むこと
+        ・Web制作<br />
+        ・タイピング<br />
+        ・ゲーム<br />
+        ・アニメ<br />
+        ・小説を読むこと
       </p>
     </div>
 
     <div class="card">
       <h3>目標</h3>
       <p>
-        とりあえずバイトとwe制作を両立する！
+        ・バイトとWeb制作を両立する<br />
+        ・サイトを継続して更新する<br />
+        ・新しい技術を学ぶ<br />
+        ・自分の作品を増やす
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>制作環境</h3>
+      <p>
+        このサイトはAstroを中心に制作しています。<br />
+        HTML・CSS・JavaScriptを学びながら運営しています。
       </p>
     </div>
 
   </section>
+<section class="timeline">
+  <h2>My Story</h2>
 
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+
+    <div class="timeline-content">
+      <span class="year">2019</span>
+      <h3>プログラミング開始</h3>
+      <p>
+        当初はScratchやqureoというビジュアルプログラミングから始めてましたが、まだプログラミングの楽しさを理解できていませんでした。
+      </p>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+
+    <div class="timeline-content">
+      <span class="year">2022</span>
+      <h3>本格的にプログラミングを学ぶ</h3>
+      <p>
+        ビジュアルプログラミングを卒業して、HTML・CSS・JavaScriptを学び始めました。<br />
+      </p>
+    </div>
+  </div>
+
+<div class="timeline-item">
+  <div class="timeline-dot"></div>
+
+  <div class="timeline-content">
+    <span class="year">2023</span>
+    <h3>初代公式サイトを公開</h3>
+    <p>
+      初めて自分の公式サイトを制作しました。<br />
+      まだGitHubなどのツールへの理解が浅く、
+      デザインや構成にも多くの課題がありました。
+    </p>
+  </div>
+</div>
+
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+
+    <div class="timeline-content">
+      <span class="year">2024</span>
+      <h3>Jakuのサイト公開</h3>
+      <p>
+        自分の個人サイトを公開。
+      </p>
+    </div>
+  </div>
+</section>
 </BaseLayout>

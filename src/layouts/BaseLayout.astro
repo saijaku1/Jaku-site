@@ -37,12 +37,18 @@ const { title = "Jakuのサイト" ,description="Jakuの個人サイト"} = Astr
   --accent: #0071e3;
   --border: #e5e5e5;
 }
-
+::selection {
+  background: var(--accent);
+  color: white;
+}
 :root.dark {
   --bg: #000000;
   --text: #f5f5f7;
   --accent: #2997ff;
   --border: #333333;
+}
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -66,17 +72,22 @@ header {
   position: sticky;
   top: 0;
 
-  backdrop-filter: blur(20px);
+  z-index: 100;
+
+  backdrop-filter: blur(30px);
 
   background: color-mix(
     in srgb,
-    var(--bg) 85%,
+    var(--bg) 70%,
     transparent
   );
 
-  border-bottom: 1px solid var(--border);
-
-  z-index: 100;
+  border-bottom: 1px solid
+    color-mix(
+      in srgb,
+      var(--border) 50%,
+      transparent
+    );
 }
 .header-inner {
   max-width: 1100px;
@@ -132,9 +143,9 @@ nav a {
   transform: scale(1.05);
 }
 main {
-  max-width: 1100px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 100px 24px;
 }
 h1 {
   margin: 0;
@@ -167,8 +178,11 @@ a:hover {
 .hero {
   text-align: center;
   animation: fadeUp 0.8s ease;
+
   position: relative;
   overflow: hidden;
+
+  padding: 100px 0 140px;
 }
 .hero::before {
   content: "";
@@ -198,8 +212,31 @@ a:hover {
   margin: 12px;
 }
 .hero h2 {
-  font-size: 5rem;
-  margin-bottom: 12px;
+  font-size: clamp(
+    2.5rem,
+    10vw,
+    4rem
+  );
+
+  font-weight: 700;
+
+  letter-spacing: -0.05em;
+
+  margin-bottom: 16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--text),
+      color-mix(
+        in srgb,
+        var(--text) 60%,
+        transparent
+      )
+    );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .hero p {
   max-width: 700px;
@@ -212,21 +249,26 @@ a:hover {
   animation: float 4s ease-in-out infinite;
   margin: 0 auto 32px;
   border-radius: 50%;
+  overflow: hidden; /* 追加 */
+
   background: linear-gradient(
     135deg,
     #0071e3,
     #6cb6ff
   );
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  font-weight: 700;
+
   box-shadow:
     0 0 40px rgba(0,113,227,.3),
     0 0 80px rgba(0,113,227,.15);
 }
+
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 @keyframes float {
   0% {
     transform: translateY(0);
@@ -241,8 +283,13 @@ a:hover {
   }
 }
 .subtitle {
-  font-size: 1.3rem;
-  opacity: 0.7;
+  font-size: 1.5rem;
+
+  max-width: 650px;
+
+  margin: 0 auto;
+
+  opacity: .75;
 }
 .button {
   display: inline-block;
@@ -275,35 +322,48 @@ a:hover {
 .card {
   padding: 24px;
 
-  border: 1px solid var(--border);
   border-radius: 20px;
 
   text-decoration: none;
   color: var(--text);
 
-  background: color-mix(
-    in srgb,
-    var(--bg) 90%,
-    transparent
-  );
-
-  backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--border) 60%,
+      transparent
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.03),
+      rgba(255,255,255,.01)
+    );
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 4px 24px rgba(0,0,0,.08);
+
   transition:
-    transform 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    transform .3s ease,
+    box-shadow .3s ease,
+    border-color .3s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-10px);
 
   border-color: var(--accent);
 
   box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.12);
+    0 20px 50px rgba(0,0,0,.2);
 }
+
 .card::before {
   content: "";
 
