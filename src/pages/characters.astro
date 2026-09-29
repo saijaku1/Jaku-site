@@ -3,24 +3,49 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Characters">
+<style>
+  .character-icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  overflow: hidden;
+}
 
+.character-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
   <section class="hero">
     <h2>Characters</h2>
 
     <p class="subtitle">
-      創作キャラクター紹介
+      キャラクター紹介
     </p>
   </section>
 
   <section class="cards">
 
-    <div class="card">
-        <div class="character-icon"></div>
-      <h3>キャラクターA</h3>
-      <p>
-        主人公。明るく前向きな性格。
-      </p>
-    </div>
+<div class="card">
+  <div class="character-icon">
+    <img src="Jaku.svg" alt="Jaku" />
+  </div>
+
+  <h3>Jaku</h3>
+  <p>
+    高校1年生<br />
+    現在はバイトとweb開発を両立しながら活動中
+  </p>
+
+  <ul>
+    <li>好きなこと：Web制作、アニメ鑑賞、タイピング、小説</li>
+    <li>趣味：ブロスタ、Roblox、タイピング</li>
+    <li>性格：少しひねくれ者。物事を素直に受け入れるよりも『本当にそうなのか？』と考えることが多い。</li>
+    <li>目標：タイピングをもっと速くすること！</li>
+  </ul>
+</div>
 
     <div class="card">
         <div class="character-icon"></div>
