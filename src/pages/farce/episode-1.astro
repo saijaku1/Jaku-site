@@ -1,29 +1,134 @@
 
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const scenes = [
+  { speaker: 'jaku', text: 'というわけで、茶番完成……なのか？' },
+  { speaker: 'kokotu', text: 'うう……まさか僕たち、茶番扱いされていたなんて……。' },
+  { speaker: 'kokotu', text: 'とりあえずさ……この気まずい空気、やめない！？' },
+  { speaker: 'upunushi', text: 'うおーーーー！ 暇だーーーー！' },
+  { speaker: 'kokotu', text: 'おい、うp主。空気を読みなさい。' },
+  { speaker: 'upunushi', text: 'ごめんなさい。' },
+  { speaker: 'jaku', text: 'とりあえず、切り替えよう。あ、そういえば僕、ビーチに行ったんだよ！（切り替えが早い男）' },
+  { speaker: 'upunushi', text: 'おおーーー！！！ 見せて！ 写真！' },
+  { image: 'natujaku.webp', alt: 'ビーチにいる夏のJaku' },
+  { speaker: 'upunushi', text: '……なんでAIで作ってるの？ しかも、これもうじゃくじゃなくてシロクマじゃん。ビーチでパソコンを使う人、初めて見たんだけど……身を張りすぎじゃない？' },
+  { speaker: 'jaku', text: '一言余計だわ！ 仕方ないじゃん！ 写真を撮り忘れたんだって！！' },
+  { speaker: 'upunushi', text: 'それにしても、AIに作らせるのはよくないでしょ……。' },
+  { speaker: 'jaku', text: 'いいじゃないか！！ 別に！！！！ 写真を撮り忘れたのは悪かったけど！！！！' },
+  { speaker: 'kokotu', text: '二人とも、喧嘩はやめよう？ ここは茶番だよ～？ みんな見てるんだよ～～。' },
+  { speaker: 'upunushi', text: 'すみません、これを見ている皆さん。' },
+  { speaker: 'jaku', text: '……うーーー。（素直じゃない）' },
+  { speaker: 'kokotu', text: 'ところでさ、話は変わるんだけど、二人とも夏休みは何するの？ あ、僕はほぼ暇だけど。' },
+  { speaker: 'jaku', text: '不登校め……。引きこもりは黙ってろ！！' },
+  { speaker: 'kokotu', text: '引きこもりじゃないわ！ 僕はじゃくと違って学生じゃないの！！！！ ちなみに僕はねー……' },
+  { note: 'ココツが写真を見せる。' },
+  { image: 'kokotunatu.webp', alt: '夏のココツ' },
+  { speaker: 'jaku', text: 'はい！ 陰キャ確定！チー牛がぁぁぁ！！！ 引・き・こ・も・り！お疲れ様です' },
+  { speaker: 'kokotu', text: '……うp主さん。じゃくを消して。' },
+  { note: 'ココツ、ブチ切れ……。' },
+  { speaker: 'jaku', text: 'ん？ 消す？ どうやって……？（煽っている）' },
+  { speaker: 'upunushi', text: 'あ、じゃく。過去の会話を見てみ。' },
+  { image: 'kaiwa.webp', alt: '過去の会話' },
+  { speaker: 'jaku', text: '……。（意気消沈中）' },
+  { speaker: 'kokotu', text: 'ちなみに、あのときの僕はこんな感じだった。' },
+  { image: 'bousou.webp', alt: '暴走するココツ' },
+  { speaker: 'upunushi', text: 'おーい？ じゃくー？ 大丈夫かー？ 安心しろー？ まだ「消す」とは言ってないぞー？' },
+  { image: 'zetuboujaku.webp', alt: '絶望したJaku' },
+  { note: '絶望しすぎて、とうとう見た目まで変わってしまった。' },
+  { speaker: 'jaku', text: 'あぁぁぁぁぁぁ！！！ やめてぇぇぇ！！ 僕を消さないで！！！' },
+  { image: 'delete.webp', alt: 'Jakuが消される場面' },
+  { speaker: 'upunushi', text: 'あ、消しちゃった★（サイコパス確定）' },
+  { speaker: 'kokotu', text: 'ほ、本当に消されちゃった……。' },
+  { speaker: 'jaku', text: 'ふふふ。僕が消されると思ったか……？' },
+  { speaker: 'kokotu', text: '！？ な、なんで戻ってこれたの！？' },
+  { speaker: 'jaku', text: '残念だったな……！ バックアップは常に取ってあるのだ！！（ドヤ顔）' },
+  { speaker: 'upunushi', text: 'あ～、それ僕が設定したオートリカバリーだわ。' },
+  { speaker: 'jaku', text: 'うわ、バラすなよ！！ 格好がつかないだろ！！' },
+  { speaker: 'kokotu', text: 'ま、まあでも、戻ってきたのは嬉しいよ。茶番を続けられるしね！ ……' },
+  { speaker: 'jaku', text: '……あれ？ ココツって、実はツンデレ……？' },
+  { speaker: 'kokotu', text: 'う……/// はい……。（素直な性格）' },
+  { speaker: 'upunushi', text: 'ココツ……かわいい……。' },
+  { speaker: 'kokotu', text: 'うううう！！！！！！ ……////' },
+  { speaker: 'upunushi', text: 'あのさ、そろそろ茶番も終わりそうだし……あーーー。' },
+  { speaker: 'kokotu', text: '……というかさ、そもそも僕らって何者なんだろうね？' },
+  { speaker: 'jaku', text: '考えるな！ 感じろ！！（ドヤ顔）' },
+  { speaker: 'kokotu', text: 'またテキトーなこと言ってるし……。' },
+  { speaker: 'upunushi', text: 'あ、あのさ。そろそろ編集に疲れてきたんだけど……。' },
+  { speaker: 'jaku', text: '編集ってそんなに大変なの？' },
+  { speaker: 'upunushi', text: '大変だわ！ セリフを考えたり、素材を集めたり、めっちゃ時間がかかるんだぞ！' },
+  { speaker: 'jaku', text: 'ご、ごめんって……って、セリフを考える！？ 僕らを物扱いしているのか！！ このサイコパス主め！ 僕らにだって感情はあるぞ！' },
+  { speaker: 'kokotu', text: '……でも、こうして茶番が完成すると、なんだか達成感があるよね。' },
+  { speaker: 'jaku', text: 'それは確かに！！' },
+  { speaker: 'upunushi', text: '……。じゃあ、なんでこれをアップロードする必要があるんだろう……。' },
+  { speaker: 'jaku', text: 'まあ……まあ……そんなにネガティブになるなって、うp主……。' },
+  { system: 'System Message: うp主 has just logged out.（システムメッセージ：うp主がログアウトしました）' },
+  { speaker: 'kokotu', text: '……あ、うp主がログアウトした！' },
+  { speaker: 'kokotu', text: 'まあいいや。それじゃ、皆さん、また次回会おうね～！' },
+];
 ---
 
 <BaseLayout title="【第一話】 夏だ！！" description="Jakuたちの茶番、第1話！">
 
   <main class="episode">
     <header class="episode-header">
-      <p class="episode-label">JAKU'S FARCE</p>
+      <p class="episode-label">JAKU'S FARCE / EPISODE 01</p>
       <h1>【第一話】 夏だ！！</h1>
-      <p class="episode-description">
-        Jakuたちの、ちょっとおかしな夏の物語。
-      </p>
+      <p class="episode-description">※これは二代目の公式サイトの茶番を新編集した茶番です。</p>
+      <h2 class="episode-description">Jakuたちの、ちょっとおかしな夏の物語。</h2>
     </header>
 
-    <section class="story">
-      <p>ここから第1話の会話を入れていきます。</p>
+    <section class="story" aria-label="第一話の本編">
+      {scenes.map((scene) => (
+        scene.image ? (
+          <figure class="scene-image">
+            <img
+              src={`/farce/episode-1/${scene.image}`}
+              alt={scene.alt ?? ''}
+              loading="lazy"
+            />
+          </figure>
+        ) : scene.note ? (
+          <p class="scene-note">{scene.note}</p>
+        ) : scene.system ? (
+          <h2 class="system-message">{scene.system}</h2>
+        ) : (
+          <article class:list={['talk', scene.speaker]}>
+            <img
+              class="avatar"
+              src={
+                scene.speaker === 'jaku'
+                  ? '/characters/Jaku.svg'
+                  : scene.speaker === 'kokotu'
+                    ? '/characters/kokotu.svg'
+                    : '/characters/upunushi.svg'
+              }
+              alt={
+                scene.speaker === 'jaku'
+                  ? 'Jaku'
+                  : scene.speaker === 'kokotu'
+                    ? 'ココツ'
+                    : 'うp主'
+              }
+              loading="lazy"
+            />
+            <p class="speech">{scene.text}</p>
+          </article>
+        )
+      ))}
+    </section>
+
+    <section class="next-preview">
+      <p class="preview-label">NEXT EPISODE</p>
+      <h2>次回！</h2>
+      <p>第二話「編集大変！」</p>
     </section>
 
     <nav class="episode-navigation" aria-label="エピソード移動">
       <a href="/farce/">茶番一覧へ戻る</a>
-      <a href="/farce/">次の話へ →</a>
+      <a href="/farce/episode-2">次の話を見る →</a>
     </nav>
   </main>
-
 </BaseLayout>
 
 <style>
@@ -38,7 +143,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     text-align: center;
   }
 
-  .episode-label {
+  .episode-label,
+  .preview-label {
     color: var(--accent);
     font-size: 0.8rem;
     font-weight: 700;
@@ -46,8 +152,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .episode-header h1 {
-    font-size: clamp(2rem, 6vw, 3.5rem);
     margin: 16px 0;
+    font-size: clamp(2rem, 6vw, 3.5rem);
   }
 
   .episode-description {
@@ -56,7 +162,106 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .story {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .talk {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    max-width: 85%;
+  }
+
+  .talk.jaku {
+    align-self: flex-start;
+  }
+
+  .talk.kokotu {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .talk.upunushi {
+    align-self: center;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .speech {
+    margin: 0;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--bg);
+    color: var(--text);
     line-height: 1.9;
+    overflow-wrap: anywhere;
+  }
+
+  .jaku .speech {
+    border-top-left-radius: 4px;
+  }
+
+  .kokotu .speech {
+    border-top-right-radius: 4px;
+  }
+
+  .upunushi .speech {
+    border-color: var(--accent);
+    border-radius: 18px;
+  }
+
+  .scene-image {
+    margin: 8px auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .scene-image img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 620px;
+    margin: 0 auto;
+    border-radius: 16px;
+    object-fit: contain;
+  }
+
+  .scene-note {
+    margin: 8px 0;
+    color: var(--text);
+    opacity: 0.7;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .system-message {
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 1rem;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .next-preview {
+    margin-top: 64px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    text-align: center;
+  }
+
+  .next-preview h2 {
+    margin: 8px 0;
   }
 
   .episode-navigation {
@@ -64,7 +269,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
-    margin-top: 56px;
+    margin-top: 36px;
   }
 
   .episode-navigation a {
@@ -75,4 +280,57 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .episode-navigation a:hover {
     text-decoration: underline;
   }
+
+  /* スクロール演出：最初は非表示 */
+  .talk,
+  .scene-image {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  /* 画面に入ったら表示 */
+  .talk.is-visible,
+  .scene-image.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .talk,
+    .scene-image {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
 </style>
+
+<script>
+  const targets = document.querySelectorAll('.talk, .scene-image');
+
+  if (
+    'IntersectionObserver' in window &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    targets.forEach((target) => {
+      observer.observe(target);
+    });
+  } else {
+    targets.forEach((target) => {
+      target.classList.add('is-visible');
+    });
+  }
+</script>
