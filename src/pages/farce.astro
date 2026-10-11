@@ -1,0 +1,80 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="茶番">
+
+  <section class="hero">
+    <h2>茶番</h2>
+
+    <p class="subtitle">
+      Jakuたちの日常（？）
+    </p>
+  </section>
+
+  <section class="farce-list">
+
+    <article class="card">
+      <p class="episode-number">EPISODE 01</p>
+
+      <h3>第1話：夏だ！</h3>
+
+      <p>
+       さあ、7月になったということで、いよいよ本格的な夏が始まった！！僕は、ビーチでぐったり中だけど
+      </p>
+
+      <a href="#episode-1" class="read-more">
+        第1話を読む →
+      </a>
+    </article>
+
+  </section>
+
+  <section id="episode-1" class="episode">
+    <h2>第1話</h2>
+
+    <p>
+      ここに第1話の本文を入れます。
+    </p>
+  </section>
+
+  <style>
+    .farce-list {
+      max-width: 800px;
+      margin: 40px auto;
+    }
+
+    .farce-list .card {
+      padding: 24px;
+      border-radius: 16px;
+    }
+
+    .episode-number {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .read-more:hover {
+      text-decoration: underline;
+    }
+
+    .episode {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+
+</BaseLayout>

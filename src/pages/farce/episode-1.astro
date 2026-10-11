@@ -1,0 +1,78 @@
+
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="【第一話】 夏だ！！" description="Jakuたちの茶番、第1話！">
+
+  <main class="episode">
+    <header class="episode-header">
+      <p class="episode-label">JAKU'S FARCE</p>
+      <h1>【第一話】 夏だ！！</h1>
+      <p class="episode-description">
+        Jakuたちの、ちょっとおかしな夏の物語。
+      </p>
+    </header>
+
+    <section class="story">
+      <p>ここから第1話の会話を入れていきます。</p>
+    </section>
+
+    <nav class="episode-navigation" aria-label="エピソード移動">
+      <a href="/farce/">茶番一覧へ戻る</a>
+      <a href="/farce/">次の話へ →</a>
+    </nav>
+  </main>
+
+</BaseLayout>
+
+<style>
+  .episode {
+    width: min(900px, 100%);
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+
+  .episode-header {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .episode-label {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+  }
+
+  .episode-header h1 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin: 16px 0;
+  }
+
+  .episode-description {
+    color: var(--text);
+    opacity: 0.7;
+  }
+
+  .story {
+    line-height: 1.9;
+  }
+
+  .episode-navigation {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 56px;
+  }
+
+  .episode-navigation a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .episode-navigation a:hover {
+    text-decoration: underline;
+  }
+</style>
