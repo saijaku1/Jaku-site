@@ -316,9 +316,11 @@ const { title = "Jakuのサイト", description = "Jakuの個人サイト" } = A
       .card {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-        gap: 24px;
+        gap: 34px;
         margin-top: 80px;
         align-items: stretch;
+        border-radius: 24px;
+        padding: 28px;
         position: relative;
         overflow: hidden;
         border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
@@ -351,7 +353,11 @@ const { title = "Jakuのサイト", description = "Jakuの個人サイト" } = A
       .card h3 {
         margin-top: 0;
       }
-
+      .card h3,
+      .card p,
+      .card a {
+        overflow-wrap: anywhere;
+      }
       .character-icon {
         width: 64px;
         height: 64px;
