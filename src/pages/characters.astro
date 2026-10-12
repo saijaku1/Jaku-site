@@ -1,142 +1,461 @@
+
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Characters">
-<style>
-  .character-icon {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 20px;
-  border-radius: 50%;
+<BaseLayout title="Characters" description="Jakuのサイトに登場する6人のキャラクター紹介">
+
+  <section class="character-hero">
+    <span class="eyebrow">THE CHARACTERS</span>
+    <h2>Characters<span class="title-dot">.</span></h2>
+    <p class="subtitle">個性豊かな6人を紹介します。</p>
+    <div class="hero-line"></div>
+  </section>
+
+  <section class="character-section" aria-label="キャラクター一覧">
+    <div class="section-heading">
+      <div>
+        <span class="section-label">MEET THE CAST</span>
+        <h3>登場キャラクター</h3>
+      </div>
+      <span class="character-count">06 CHARACTERS</span>
+    </div>
+
+    <div class="character-grid">
+      <article class="character-card" data-reveal>
+        <div class="character-visual">
+          <span class="character-number">01</span>
+          <div class="character-icon">
+            <img src="/characters/Jaku.svg" alt="Jakuのキャラクター画像" loading="eager" />
+          </div>
+        </div>
+        <div class="character-info">
+          <span class="character-role">MAIN CHARACTER</span>
+          <h3>Jaku</h3>
+          <p class="character-description">高校1年生。アルバイトとWeb制作を両立しながら活動中。</p>
+          <div class="character-divider"></div>
+          <ul class="character-details">
+            <li><span>趣味</span><p>ブロスタ、Roblox、タイピング</p></li>
+            <li><span>性格</span><p>少しひねくれ者</p></li>
+          </ul>
+          <blockquote>「今日も開発中！」</blockquote>
+        </div>
+      </article>
+
+      <article class="character-card" data-reveal>
+        <div class="character-visual">
+          <span class="character-number">02</span>
+          <div class="character-icon">
+            <img src="/characters/kokotu.svg" alt="ココツのキャラクター画像" loading="lazy" />
+          </div>
+        </div>
+        <div class="character-info">
+          <span class="character-role">PROGRAMMING EXPERT</span>
+          <h3>ココツ</h3>
+          <p class="character-description">じゃくの助手。プログラミングに詳しい。</p>
+          <div class="character-divider"></div>
+          <ul class="character-details">
+            <li><span>趣味</span><p>ネットサーフィン、ホラーゲーム</p></li>
+            <li><span>性格</span><p>素直で優しいが少し悪戯好き</p></li>
+          </ul>
+          <blockquote>「じゃくくんはおもろいよ」</blockquote>
+        </div>
+      </article>
+
+      <article class="character-card" data-reveal>
+        <div class="character-visual">
+          <span class="character-number">03</span>
+          <div class="character-icon">
+            <img src="/characters/usa.svg" alt="ウサのキャラクター画像" loading="lazy" />
+          </div>
+        </div>
+        <div class="character-info">
+          <span class="character-role">MYSTERIOUS RABBIT</span>
+          <h3>ウサ</h3>
+          <p class="character-description">ある日じゃくの家に来た謎のうさぎ。</p>
+          <div class="character-divider"></div>
+          <ul class="character-details">
+            <li><span>得意言語</span><p>JavaScript、TypeScript</p></li>
+            <li><span>性格</span><p>負けず嫌いだけど意外とビビり</p></li>
+          </ul>
+          <blockquote>「よろしくです！！」</blockquote>
+        </div>
+      </article>
+
+      <article class="character-card" data-reveal>
+        <div class="character-visual">
+          <span class="character-number">04</span>
+          <div class="character-icon">
+            <img src="/characters/upunushi.svg" alt="うｐ主のキャラクター画像" loading="lazy" />
+          </div>
+        </div>
+        <div class="character-info">
+          <span class="character-role">UPLOADER</span>
+          <h3>うｐ主</h3>
+          <p class="character-description">このサイトのアップロード担当。</p>
+          <div class="character-divider"></div>
+          <ul class="character-details">
+            <li><span>担当</span><p>サイトのアップロード</p></li>
+            <li><span>性格</span><p>気さく</p></li>
+          </ul>
+          <blockquote>「気軽に話しかけてね」</blockquote>
+        </div>
+      </article>
+
+      <article class="character-card" data-reveal>
+        <div class="character-visual">
+          <span class="character-number">05</span>
+          <div class="character-icon">
+            <img src="/characters/aoi.svg" alt="葵のキャラクター画像" loading="lazy" />
+          </div>
+        </div>
+        <div class="character-info">
+          <span class="character-role">MYSTERIOUS GIRL</span>
+          <h3>葵</h3>
+          <p class="character-description">なぜかこちらの世界に来てしまった少女。</p>
+          <div class="character-divider"></div>
+          <ul class="character-details">
+            <li><span>特徴</span><p>背中に羽がある</p></li>
+            <li><span>性格</span><p>ドジで優しい、少しツンデレ</p></li>
+          </ul>
+          <blockquote>「わ、私は天使じゃないからね！」</blockquote>
+        </div>
+      </article>
+
+      <article class="character-card" data-reveal>
+        <div class="character-visual">
+          <span class="character-number">06</span>
+          <div class="character-icon">
+            <img src="/characters/mie.svg" alt="ミエのキャラクター画像" loading="lazy" />
+          </div>
+        </div>
+        <div class="character-info">
+          <span class="character-role">CHEERFUL GIRL</span>
+          <h3>ミエ</h3>
+          <p class="character-description">無邪気で人懐っこい少女。</p>
+          <div class="character-divider"></div>
+          <ul class="character-details">
+            <li><span>特徴</span><p>距離感が近すぎる</p></li>
+            <li><span>性格</span><p>明るく天然</p></li>
+          </ul>
+          <blockquote>「みんな可愛い！」</blockquote>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <style>
+
+.character-hero {
+  padding: 76px 20px 64px;
+  text-align: center;
+}
+
+.eyebrow,
+.section-label,
+.character-role,
+.character-count {
+  color: var(--accent, #0071e3);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.character-hero h2 {
+  margin: 14px 0 12px;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 750;
+  letter-spacing: -0.065em;
+  line-height: 1.05;
+}
+
+.title-dot {
+  color: var(--accent, #0071e3);
+}
+
+.character-hero .subtitle {
+  margin: 0;
+  color: var(--text-secondary, #777);
+  font-size: 1.05rem;
+}
+
+.hero-line {
+  width: 48px;
+  height: 3px;
+  margin: 28px auto 0;
+  border-radius: 999px;
+  background: var(--accent, #0071e3);
+  transition: width 260ms ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .character-hero:hover .hero-line {
+    width: 76px;
+  }
+}
+
+.character-section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.section-heading h3 {
+  margin: 8px 0 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.character-count {
+  padding-bottom: 5px;
+  color: var(--text-secondary, #888);
+  white-space: nowrap;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.character-card {
+  min-width: 0;
   overflow: hidden;
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 22px;
+  background: var(--card-bg, var(--bg, #fff));
+  box-shadow: 0 3px 10px rgb(0 0 0 / 3%);
+  transition:
+    transform 260ms ease,
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .character-card:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(
+      in srgb,
+      var(--accent, #0071e3) 45%,
+      var(--border, #e5e5e5)
+    );
+    box-shadow: 0 12px 28px rgb(0 0 0 / 7%);
+  }
+}
+
+.character-number {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  color: var(--text-secondary, #888);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.character-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 215px;
+  padding: 30px 20px 20px;
+  background: color-mix(
+    in srgb,
+    var(--accent, #0071e3) 5%,
+    var(--bg, #fff)
+  );
+  border-bottom: 1px solid var(--border, #e5e5e5);
+}
+
+.character-icon {
+  width: 132px;
+  height: 132px;
+  overflow: hidden;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--accent, #0071e3) 20%,
+    var(--border, #e5e5e5)
+  );
+  border-radius: 50%;
+  background: var(--bg, #fff);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 5%);
 }
 
 .character-icon img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-</style>
-  <section class="hero">
-    <h2>Characters</h2>
 
-    <p class="subtitle">
-      キャラクター紹介
-    </p>
-  </section>
+.character-info {
+  padding: 24px;
+}
 
-  <section class="cards">
+.character-role {
+  display: block;
+  font-size: 0.64rem;
+  overflow-wrap: anywhere;
+}
 
-  <div class="card">
-    <div class="character-icon">
-      <img src="/characters/Jaku.svg" alt="Jaku" />
-    </div>
+.character-info h3 {
+  margin: 8px 0 10px;
+  font-size: 1.7rem;
+  letter-spacing: -0.045em;
+}
 
-    <h3>Jaku</h3>
+.character-description {
+  min-height: 3.3em;
+  margin: 0;
+  color: var(--text-secondary, #666);
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
 
-    <p>
-      高校1年生。<br />
-      アルバイトとWeb制作を両立しながら活動中。
-    </p>
+.character-divider {
+  height: 1px;
+  margin: 20px 0;
+  background: var(--border, #e5e5e5);
+}
 
-    <ul>
-      <li>趣味：ブロスタ、Roblox、タイピング</li>
-      <li>性格：少しひねくれ者</li>
-      <li>一言：今日も開発中！</li>
-    </ul>
-  </div>
+.character-details {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
-  <div class="card">
-    <div class="character-icon">
-      <img src="/characters/kokotu.svg" alt="ココツ" />
-    </div>
+.character-details li > span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text-secondary, #777);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
 
-    <h3>ココツ</h3>
+.character-details li p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
 
-    <p>
-      じゃくの助手。プログラミングに詳しい。
-    </p>
+.character-info blockquote {
+  margin: 22px 0 0;
+  padding: 13px 15px;
+  border-left: 3px solid var(--accent, #0071e3);
+  border-radius: 0 8px 8px 0;
+  background: var(--quote-bg, var(--bg, #fff));
+  font-size: 0.88rem;
+  line-height: 1.7;
+  font-weight: 550;
+  overflow-wrap: anywhere;
+}
 
-    <ul>
-      <li>趣味：ネットサーフィン、ホラーゲーム</li>
-      <li>性格：素直で優しいが少し悪戯好き</li>
-      <li>一言：じゃくくんはおもろいよ</li>
-    </ul>
-  </div>
+/* スクロール時は軽いフェードインのみ */
+:global(.has-character-reveal) .character-card[data-reveal] {
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
 
-  <div class="card">
-    <div class="character-icon">
-      <img src="/characters/usa.svg" alt="ウサ" />
-    </div>
+:global(.has-character-reveal) .character-card[data-reveal].is-visible {
+  opacity: 1;
+}
 
-    <h3>ウサ</h3>
+@media (max-width: 900px) {
+  .character-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
 
-    <p>
-      ある日じゃくの家に来た謎のうさぎ。
-    </p>
+@media (max-width: 560px) {
+  .character-hero {
+    padding: 56px 16px 48px;
+  }
 
-    <ul>
-      <li>得意言語：JavaScript、TypeScript</li>
-      <li>性格：負けず嫌いだけど意外とビビり</li>
-      <li>一言：よろしくです！！</li>
-    </ul>
-  </div>
+  .character-section {
+    padding: 0 14px 56px;
+  }
 
-  <div class="card">
-    <div class="character-icon">
-      <img src="/characters/upunushi.svg" alt="うｐ主" />
-    </div>
+  .section-heading {
+    align-items: start;
+  }
 
-    <h3>うｐ主</h3>
+  .character-count {
+    padding-top: 5px;
+    font-size: 0.6rem;
+  }
 
-    <p>
-      このサイトのアップロード担当。
-    </p>
+  .character-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
 
-    <ul>
-      <li>担当：サイトのアップロード</li>
-      <li>性格：気さく</li>
-      <li>一言：気軽に話しかけてね</li>
-    </ul>
-  </div>
+  .character-visual {
+    min-height: 200px;
+  }
 
-  <div class="card">
-    <div class="character-icon">
-      <img src="/characters/aoi.svg" alt="葵" />
-    </div>
+  .character-info {
+    padding: 22px;
+  }
 
-    <h3>葵</h3>
+  .character-description {
+    min-height: 0;
+  }
+}
 
-    <p>
-      なぜかこちらの世界に来てしまった少女。
-    </p>
+@media (prefers-reduced-motion: reduce) {
+  :global(.has-character-reveal) .character-card[data-reveal] {
+    opacity: 1;
+    transition: none;
+  }
 
-    <ul>
-      <li>特徴：背中に羽がある</li>
-      <li>性格：ドジで優しい、少しツンデレ</li>
-      <li>一言：わ、私は天使じゃないからね！</li>
-    </ul>
-  </div>
+  .character-card,
+  .hero-line {
+    transition: none;
+  }
+}
 
-  <div class="card">
-    <div class="character-icon">
-      <img src="/characters/mie.svg" alt="ミエ" />
-    </div>
+  </style>
 
-    <h3>ミエ</h3>
+  <script>
+    const cards = document.querySelectorAll("[data-reveal]");
 
-    <p>
-      無邪気で人懐っこい少女。
-    </p>
+    if (
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      "IntersectionObserver" in window
+    ) {
+      document.documentElement.classList.add("has-character-reveal");
 
-    <ul>
-      <li>特徴：距離感が近すぎる</li>
-      <li>性格：明るく天然</li>
-      <li>一言：みんな可愛い！</li>
-    </ul>
-  </div>
+      const observer = new IntersectionObserver(
+        (entries, currentObserver) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              currentObserver.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0,
+          rootMargin: "0px 0px 80px 0px",
+        }
+      );
 
-</section>
+      cards.forEach((card) => observer.observe(card));
+    } else {
+      cards.forEach((card) => card.classList.add("is-visible"));
+    }
+  </script>
 
 </BaseLayout>

@@ -1,74 +1,324 @@
+
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
+
 <BaseLayout title="Jakuのサイト">
-<section class="hero">
 
-  <div class="logo-circle">
-   <img src="/characters/Jaku.svg" alt="Jaku">
-  </div>
+  <section class="hero">
+    <div class="logo-circle">
+      <img src="/characters/Jaku.svg" alt="Jaku">
+    </div>
 
+    <h2>Jakuのサイト</h2>
 
-  <h2>Jakuのサイト</h2>
-
-  <p class="subtitle">
-    ようこそ！！
-  </p>
-
-  <p>
-    ここではJakuの個人サイトです！気軽に見て行ってね！
-  </p>
-
-  <a href="/blog" class="button">
-    ブログを見る
-  </a>
-
-  <a href="/farce" class="button">
-    茶番を見る
-  </a>
-
-</section>
-<section class="cards">
-
-  <a href="/blog" class="card">
-    <h3>ブログ</h3>
-    <p>日記や技術記事を掲載しています。</p>
-  </a>
-
-  <a href="/farce" class="card">
-    <h3>茶番</h3>
-    <p>
-     Jakuたちの日常（？）を描いた茶番シリーズ。
+    <p class="subtitle">
+      ようこそ！！
     </p>
+
+    <p>
+      ここではJakuの個人サイトです！気軽に見て行ってね！
+    </p>
+
+    <a href="/blog" class="button">
+      ブログを見る
+    </a>
+
+    <a href="/farce" class="button">
+      茶番を見る
+    </a>
+  </section>
+
+
+<section class="cards home-cards">
+  <a href="/blog" class="card home-card">
+    <div class="home-card-content">
+      <h3>ブログ</h3>
+      <p>日記や技術記事を掲載しています。</p>
+    </div>
+    <span class="home-card-link">記事を読む <span aria-hidden="true">↗</span></span>
   </a>
 
-  <a href="/characters" class="card">
-    <h3>キャラクター</h3>
-    <p>僕以外にもたくさんのキャラたちがいます！</p>
+  <a href="/farce" class="card home-card">
+    <div class="home-card-content">
+      <h3>茶番</h3>
+      <p>Jakuたちの日常（？）を描いた茶番シリーズ。</p>
+    </div>
+    <span class="home-card-link">茶番を見る <span aria-hidden="true">↗</span></span>
   </a>
 
+  <a href="/characters" class="card home-card">
+    <div class="home-card-content">
+      <h3>キャラクター</h3>
+      <p>僕以外にもたくさんのキャラたちがいます！</p>
+    </div>
+    <span class="home-card-link">キャラクターを見る <span aria-hidden="true">↗</span></span>
+  </a>
 </section>
-<section class="updates">
-  <h2>最新の更新</h2>
-
-  <div class="update-list">
 
 
-    <div class="update-item">
-      <span class="date">2026-10-11</span>
-      <p>サイトのデザインをリニューアルしました。</p>
+  <section class="updates">
+    <h2>最新の更新</h2>
+
+    <div class="update-list">
+      <div class="update-item">
+        <span class="date">2026-10-11</span>
+        <p>サイトのデザインをリニューアルしました。</p>
+      </div>
+
+      <div class="update-item">
+        <span class="date">2026-09-23</span>
+        <p>ダークモードを実装しました。</p>
+      </div>
+
+      <div class="update-item">
+        <span class="date">2026-09-22</span>
+        <p>Jakuのサイトを公開しました。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 歴代のサイト -->
+  <section class="site-history">
+    <div class="history-heading">
+      <p class="history-eyebrow">MY WEBSITE HISTORY</p>
+      <h2>歴代のサイト</h2>
+      <p>これまでに作ってきたサイトをまとめました。</p>
     </div>
 
-    <div class="update-item">
-      <span class="date">2026-09-23</span>
-      <p>ダークモードを実装しました。</p>
-    </div>
+    <div class="history-grid">
 
-    <div class="update-item">
-      <span class="date">2026-09-22</span>
-      <p>Jakuのサイトを公開しました。</p>
-    </div>
+      <a
+        class="history-card"
+        href="https://mysite.f5.si"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="history-number">01</span>
+        <div class="history-content">
+          <span class="history-label">FIRST SITE</span>
+          <h3>一代目代サイト</h3>
+          <p>初めてGithubやコーディングを使って作ったサイト。</p>
+          <span class="history-link">サイトを見る ↗</span>
+        </div>
+      </a>
 
-  </div>
-</section>
+      <a
+        class="history-card"
+        href="https://saijaku.f5.si"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="history-number">02</span>
+        <div class="history-content">
+          <span class="history-label">SECOND SITE</span>
+          <h3>二代目サイト</h3>
+          <p>初代から改良を重ねたサイト。</p>
+          <span class="history-link">サイトを見る ↗</span>
+        </div>
+      </a>
+
+      <a
+        class="history-card"
+        href="https://sites.google.com/view/saijaku-site/ホーム"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="history-number">03</span>
+        <div class="history-content">
+          <span class="history-label">GOOGLE SITES</span>
+          <h3>Googleサイト版</h3>
+          <p>こちらはブログ様に</p>
+          <span class="history-link">サイトを見る ↗</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <style>
+    .site-history {
+      margin-top: 110px;
+    }
+
+    .history-heading {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .history-eyebrow {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+
+    .history-heading h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      letter-spacing: -0.05em;
+    }
+
+    .history-heading > p:last-child {
+      color: var(--text);
+      opacity: 0.7;
+      font-size: 0.92rem;
+    }
+
+    .history-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .history-card {
+      position: relative;
+      display: flex;
+      min-width: 0;
+      min-height: 230px;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--text) 2%, var(--bg));
+      transition:
+        transform 220ms ease,
+        border-color 220ms ease,
+        background-color 220ms ease;
+    }
+
+    .history-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      opacity: 1;
+    }
+
+    .history-number {
+      color: var(--accent);
+      font-size: 2rem;
+      font-weight: 750;
+      letter-spacing: -0.06em;
+    }
+
+    .history-content {
+      margin-top: 28px;
+    }
+
+    .history-label {
+      color: var(--text);
+      opacity: 0.55;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .history-content h3 {
+      margin: 8px 0;
+      font-size: 1.25rem;
+    }
+
+    .history-content p {
+      margin: 0 0 18px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      opacity: 0.7;
+    }
+
+    .history-link {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+.home-cards {
+  align-items: stretch;
+  gap: 20px;
+}
+
+.home-cards .home-card {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 220px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  text-align: left;
+  gap: 28px;
+}
+
+.home-card-content {
+  width: 100%;
+}
+
+.home-cards .home-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+.home-cards .home-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  opacity: 0.72;
+  overflow-wrap: anywhere;
+}
+
+.home-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.home-card-link span {
+  transition: transform 0.2s ease;
+}
+
+.home-cards .home-card:hover .home-card-link span {
+  transform: translate(3px, -3px);
+}
+
+@media (max-width: 768px) {
+  .home-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .home-cards .home-card {
+    min-height: 180px;
+    padding: 24px;
+  }
+
+  .history-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .history-card {
+    min-height: 190px;
+  }
+
+  .site-history {
+    margin-top: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-card-link span,
+  .history-card {
+    transition: none;
+  }
+}
+
+  </style>
+
 </BaseLayout>

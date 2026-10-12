@@ -12,35 +12,98 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </p>
   </section>
 
-  <section class="cards">
-    <a class="card" href="https://w.atwiki.jp/typerjiten/pages/875.html" target="_blank">
-      <h3>タイパー辞典</h3>
-      <p>自分のタイピング記録などを載せています</p>
-    </a>
+  <section class="cards links-cards">
+  <a class="card links-card" href="https://w.atwiki.jp/typerjiten/pages/875.html" target="_blank" rel="noopener noreferrer">
+    <h3>タイパー辞典</h3>
+    <p>自分のタイピング記録などを載せています。</p>
+    <span class="links-card-link">サイトを見る ↗</span>
+  </a>
 
-    <a class="card" href="https://www.youtube.com/@Jaku-1023" target="_blank">
-      <h3>YouTube</h3>
-      <p>タイピングを中心に関する動画を投稿しています。</p>
-    </a>
-    <a class="card" href="https://x.com/Jaku_1023" target="_blank">
-      <h3>X(旧Twitter)</h3>
-      <p>日々の日常などを投稿しています</p>
-    </a>
-    <a class="card" href="https://github.com/saijaku1" target="_blank">
-      <h3>GitHub</h3>
-      <p>開発中のプロジェクトを公開しています。</p>
-    </a>
+  <a class="card links-card" href="https://www.youtube.com/@Jaku-1023" target="_blank" rel="noopener noreferrer">
+    <h3>YouTube</h3>
+    <p>タイピングを中心に、動画を投稿しています。</p>
+    <span class="links-card-link">チャンネルを見る ↗</span>
+  </a>
 
-    <a class="card" href="/">
-      <h3>ホームページ</h3>
-      <p>トップページへ戻る。</p>
-    </a>
+  <a class="card links-card" href="https://x.com/Jaku_1023" target="_blank" rel="noopener noreferrer">
+    <h3>X（旧Twitter）</h3>
+    <p>日々の出来事などを投稿しています。</p>
+    <span class="links-card-link">プロフィールを見る ↗</span>
+  </a>
 
-    <a class="card" href="/about">
-      <h3>About</h3>
-      <p>管理人について。</p>
-    </a>
+  <a class="card links-card" href="https://github.com/saijaku1" target="_blank" rel="noopener noreferrer">
+    <h3>GitHub</h3>
+    <p>開発中のプロジェクトを公開しています。</p>
+    <span class="links-card-link">プロジェクトを見る ↗</span>
+  </a>
 
-  </section>
+  <a class="card links-card" href="/">
+    <h3>ホームページ</h3>
+    <p>トップページへ戻ります。</p>
+    <span class="links-card-link">ホームへ戻る ↗</span>
+  </a>
+
+  <a class="card links-card" href="/about">
+    <h3>About</h3>
+    <p>管理人Jakuについて紹介しています。</p>
+    <span class="links-card-link">プロフィールを見る ↗</span>
+  </a>
+</section>
+
+<style>
+  .links-cards {
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .links-cards .links-card {
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 210px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 12px;
+  }
+
+  .links-cards .links-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .links-cards .links-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    opacity: 0.72;
+    overflow-wrap: anywhere;
+  }
+
+  .links-card-link {
+    margin-top: auto;
+    padding-top: 12px;
+    color: var(--accent);
+    font-size: 0.84rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+  .links-cards {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .links-cards .links-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+</style>
 
 </BaseLayout>

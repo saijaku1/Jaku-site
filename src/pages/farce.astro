@@ -45,47 +45,43 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </div>
 
   <style>
-    /* 茶番一覧 */
-    .farce-list {
-      max-width: 800px;
-      margin: 40px auto;
-    }
+   
+.farce-list .card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 28px;
+}
 
-    .farce-list .card {
-      padding: 24px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--bg);
-      transition:
-        transform 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-    }
+.farce-list .card .episode-number,
+.farce-list .card h3,
+.farce-list .card p,
+.farce-list .card .read-more {
+  margin: 0;
+}
 
-    .farce-list .card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent);
-      box-shadow: 0 12px 32px rgba(0, 113, 227, 0.1);
-    }
+.farce-list .card h3 {
+  width: 100%;
+}
 
-    .episode-number {
-      color: var(--accent);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-    }
+.farce-list .card > p:not(.episode-number) {
+  width: 100%;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
 
-    .read-more {
-      display: inline-block;
-      margin-top: 12px;
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-    }
+.farce-list .card .read-more {
+  display: inline-block;
+  margin-top: 4px;
+}
 
-    .read-more:hover {
-      text-decoration: underline;
-    }
+@media (max-width: 600px) {
+  .farce-list .card {
+    padding: 20px;
+    gap: 14px;
+  }
+}
 
     /* キャラクターの共通設定 */
     .character-widget {
@@ -237,7 +233,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           "勉強って本当に大変だよね。マジでわかる",
           "プログラミングと山登りって実は似てるんだよね。どっちも大変だけど、登りきったときの達成感が最高なんだよね。" ,
           "やっぱりホラーゲームは楽しいね。ジャンプスケアが最高だよね。",
-          "僕は学生じゃないよ！かと言って犬じゃないからね！？",
+          "僕は学生じゃないよ！かと言って犬じゃないからね！？", 
+          "最近、じゃくくんが梨をもらったらしくて一緒に食べてるんだ",
+          "実はこのサイトもちょっと僕も手伝ってるんだよね。まぁって言ってもJSの部分だけだけどね。",
         ],
       },
       {
@@ -251,7 +249,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           "これでもTypeScriptできるんですからね！？",
           "我が名はウサ！ウサギ族随一のプログラマーとして、TypeScriptの世界を書き開くもの！！！...あ、セリフ間違えちゃいました...",
           "本当にじゃくってひねくれてますよね...だけど私はそんなじゃくを尊敬してますけどね！",
-          "そういえば最近アニメハマりました！！『この素晴らしい世界に祝福を！』ってやつめっちゃ面白いですね！"
+          "そういえば最近アニメハマりました！！『この素晴らしい世界に祝福を！』ってやつめっちゃ面白いですね！",
+          "なんだか最近じゃくが『エルプサイ・コングルゥ』って言ってるんですけど、あれってなんですか？",
         ],
       },
       {
@@ -263,7 +262,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           "僕はじゃくとココツたちの茶番を見守るだけの存在だよ",
           "はぁ...更新めんどくせぇ",
           "人生って山あり谷ありだよね",
-          "Githubが誕生してなかったらどうなってたんだろうね..."
+          "Githubが誕生してなかったらどうなってたんだろうね...",
+          "嫌いな人と関わるのって本当に大変だよね。僕は嫌いな人と関わるのが苦手だから、なるべく関わらないようにしてるんだよね。",
+          "たまにじゃくって頭おかしくなることがあるけど、その時は無視して大丈夫だからね"
         ],
       },
       {
