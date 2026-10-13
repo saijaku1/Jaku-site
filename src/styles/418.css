@@ -1,0 +1,124 @@
+.teapot-page {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.teapot-icon {
+  font-size: 5rem;
+  margin-bottom: 16px;
+  animation: teapot-float 3s ease-in-out infinite;
+}
+
+.teapot-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.teapot-code {
+  font-size: clamp(5rem, 15vw, 9rem);
+  line-height: 1;
+  margin: 12px 0;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.teapot-page h3 {
+  font-size: 1.5rem;
+  margin: 8px 0;
+}
+
+.teapot-page .subtitle {
+  line-height: 1.9;
+  margin-bottom: 28px;
+}
+
+@keyframes teapot-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teapot-icon {
+    animation: none;
+  }
+}
+/* キャラクターの会話 */
+.teapot-dialogue {
+  width: min(100%, 560px);
+  margin: 32px auto;
+  display: grid;
+  gap: 16px;
+}
+
+.teapot-line {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg);
+  color: var(--text);
+  text-align: left;
+  animation: dialogue-in 0.6s ease both;
+}
+
+.teapot-line:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.teapot-line:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.teapot-character {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.teapot-character img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.teapot-line p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+@keyframes dialogue-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teapot-line {
+    animation: none;
+  }
+}

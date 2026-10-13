@@ -1,0 +1,154 @@
+.farce-list .card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 28px;
+}
+
+.farce-list .card .episode-number,
+.farce-list .card h3,
+.farce-list .card p,
+.farce-list .card .read-more {
+  margin: 0;
+}
+
+.farce-list .card h3 {
+  width: 100%;
+}
+
+.farce-list .card > p:not(.episode-number) {
+  width: 100%;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.farce-list .card .read-more {
+  display: inline-block;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .farce-list .card {
+    padding: 20px;
+    gap: 14px;
+  }
+}
+
+/* キャラクターの共通設定 */
+.character-widget {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 四隅への配置 */
+.character-widget.position-right-bottom {
+  right: 24px;
+  bottom: 20px;
+}
+
+.character-widget.position-left-bottom {
+  left: 24px;
+  bottom: 20px;
+}
+
+.character-widget.position-right-top {
+  right: 24px;
+  top: 100px;
+}
+
+.character-widget.position-left-top {
+  left: 24px;
+  top: 100px;
+}
+
+/* 丸いキャラクター画像 */
+.character-avatar {
+  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.character-avatar:hover {
+  transform: translateY(-5px) scale(1.05);
+}
+
+/* セリフの吹き出し */
+.character-message {
+  max-width: 240px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+}
+
+/* マウスを乗せると表示 */
+.character-widget:hover .character-message,
+.character-widget:focus-within .character-message {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+  .character-widget.position-right-bottom {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .character-widget.position-left-bottom {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .character-widget.position-right-top {
+    right: 12px;
+    top: 80px;
+  }
+
+  .character-widget.position-left-top {
+    left: 12px;
+    top: 80px;
+  }
+
+  .character-avatar {
+    width: 76px;
+    height: 76px;
+  }
+
+  .character-message {
+    max-width: min(200px, 65vw);
+    font-size: 0.85rem;
+  }
+}
+
+/* 動きを減らしたい設定への配慮 */
+@media (prefers-reduced-motion: reduce) {
+  .character-avatar,
+  .character-message,
+  .farce-list .card {
+    transition: none;
+  }
+}

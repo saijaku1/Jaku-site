@@ -1,29 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/404.css";
 ---
+<BaseLayout title="404" description="お探しのページが見つかりませんでした。">
 
-<BaseLayout title="404">
+  <section class="hero error-page">
 
-  <section class="hero">
+<div class="logo-circle" aria-hidden="true">
+  <img src="/characters/404Jaku.svg" alt="Jaku">
+</div>
 
-    <div class="logo-circle">
-      !
-    </div>
+<p class="error-label">PAGE NOT FOUND</p>
 
-    <h2>404</h2>
+<h2 class="error-code">404</h2>
 
-    <p class="subtitle">
-      ページが見つかりません
-    </p>
+<p class="subtitle">
+  ページが見つかりません
+</p>
 
-    <p>
-      お探しのページは存在しないか、
-      移動された可能性があります。
-    </p>
+<p class="error-description">
+  お探しのページは存在しないか、<br />
+  移動された可能性があります。
+</p>
 
-    <a href="/" class="button">
-      ホームへ戻る
-    </a>
+<a href="/" class="button">
+  ホームへ戻る
+</a>
 
   </section>
 

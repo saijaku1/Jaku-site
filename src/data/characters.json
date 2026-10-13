@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "jaku",
+    "name": "Jaku",
+    "number": "01",
+    "role": "MAIN CHARACTER",
+    "image": "/characters/Jaku.svg",
+    "description": "高校1年生。アルバイトとWeb制作を両立しながら活動中。",
+    "details": [
+      {
+        "label": "趣味",
+        "value": "ブロスタ、Roblox、タイピング"
+      },
+      {
+        "label": "性格",
+        "value": "少しひねくれ者"
+      }
+    ],
+    "quote": "今日も開発中！",
+    "keywords": ["じゃく", "Web制作", "プログラミング"]
+  },
+  {
+    "slug": "kokotu",
+    "name": "ココツ",
+    "number": "02",
+    "role": "PROGRAMMING EXPERT",
+    "image": "/characters/kokotu.svg",
+    "description": "じゃくの助手。プログラミングに詳しい。",
+    "details": [
+      {
+        "label": "趣味",
+        "value": "ネットサーフィン、ホラーゲーム"
+      },
+      {
+        "label": "性格",
+        "value": "素直で優しいが少し悪戯好き"
+      }
+    ],
+    "quote": "じゃくくんはおもろいよ",
+    "keywords": ["プログラミング", "助手", "ホラーゲーム"]
+  },
+  {
+    "slug": "usa",
+    "name": "ウサ",
+    "number": "03",
+    "role": "MYSTERIOUS RABBIT",
+    "image": "/characters/usa.svg",
+    "description": "ある日じゃくの家に来た謎のうさぎ。",
+    "details": [
+      {
+        "label": "得意言語",
+        "value": "JavaScript、TypeScript"
+      },
+      {
+        "label": "性格",
+        "value": "負けず嫌いだけど意外とビビり"
+      }
+    ],
+    "quote": "よろしくです！！",
+    "keywords": ["うさぎ", "JavaScript", "TypeScript"]
+  },
+  {
+    "slug": "upunushi",
+    "name": "うｐ主",
+    "number": "04",
+    "role": "UPLOADER",
+    "image": "/characters/upunushi.svg",
+    "description": "このサイトのアップロード担当。",
+    "details": [
+      {
+        "label": "担当",
+        "value": "サイトのアップロード"
+      },
+      {
+        "label": "性格",
+        "value": "気さく"
+      }
+    ],
+    "quote": "気軽に話しかけてね",
+    "keywords": ["うp主", "アップロード", "サイト管理"]
+  },
+  {
+    "slug": "aoi",
+    "name": "葵",
+    "number": "05",
+    "role": "MYSTERIOUS GIRL",
+    "image": "/characters/aoi.svg",
+    "description": "なぜかこちらの世界に来てしまった少女。",
+    "details": [
+      {
+        "label": "特徴",
+        "value": "背中に羽がある"
+      },
+      {
+        "label": "性格",
+        "value": "ドジで優しい、少しツンデレ"
+      }
+    ],
+    "quote": "わ、私は天使じゃないからね！",
+    "keywords": ["天使", "羽", "ツンデレ"]
+  },
+  {
+    "slug": "mie",
+    "name": "ミエ",
+    "number": "06",
+    "role": "CHEERFUL GIRL",
+    "image": "/characters/mie.svg",
+    "description": "無邪気で人懐っこい少女。",
+    "details": [
+      {
+        "label": "特徴",
+        "value": "距離感が近すぎる"
+      },
+      {
+        "label": "性格",
+        "value": "明るく天然"
+      }
+    ],
+    "quote": "みんな可愛い！",
+    "keywords": ["明るい", "天然", "人懐っこい"]
+  }
+]

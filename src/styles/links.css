@@ -1,0 +1,53 @@
+.links-cards {
+  align-items: stretch;
+  gap: 20px;
+}
+
+.links-cards .links-card {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 210px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 12px;
+}
+
+.links-cards .links-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.links-cards .links-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  opacity: 0.72;
+  overflow-wrap: anywhere;
+}
+
+.links-card-link {
+  margin-top: auto;
+  padding-top: 12px;
+  color: var(--accent);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .links-cards {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .links-cards .links-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
