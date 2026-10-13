@@ -1,43 +1,64 @@
-# Astro Starter Kit: Minimal
+# Jaku
 
-```sh
-npm create astro@latest -- --template minimal
-```
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0D1117,50:161B22,100:1F6FEB&height=200&section=header&text=Jaku&fontSize=70&fontColor=FFFFFF&fontAlignY=38&desc=技術と創作、その先へ。&descAlignY=60&descSize=18" width="100%" alt="Jakuのプロフィールバナー" />
+</p>
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+<p align="center">
+  <b>WEB DEVELOPER / CREATOR</b><br>
+  自分だけの世界を、コードで形にする。
+</p>
 
-## 🚀 Project Structure
+<p align="center">
+  <a href="https://jaku-site.vercel.app">Jakuのサイト</a>
+  ・
+  <a href="https://github.com/saijaku1">GitHub</a>
+</p>
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## // ABOUT ME
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+こんにちは、Jakuです。
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Web開発を学びながら、個人サイトの制作やゲームをしたり、
+タイピングなどをしてる高校一年生です！
 
-Any static assets, like images, can be placed in the `public/` directory.
+僕はただコードを書くのではなく、**自分のアイデアを実際に動くものへ変えること**を目標にしています。
 
-## 🧞 Commands
+- 個人サイト **[Jakuのサイト](https://jaku-site.vercel.app)** を開発・運営
+- Web技術を学びながら、実際のプロジェクトに挑戦
+- オリジナルキャラクターや「茶番」などの創作活動
+- 試行錯誤を重ねながら、自分の理想のサイトを追求中
 
-All commands are run from the root of the project, from a terminal:
+## // TECH STACK
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+<p>
+  <img src="https://skillicons.dev/icons?i=html,css,js,astro,git,github,vscode&theme=dark" alt="使用技術：HTML、CSS、JavaScript、Astro、Git、GitHub、VS Code" />
+</p>
 
-## 👀 Want to learn more?
+## // PROJECTS
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Jakuのサイト — PERSONAL WEBSITE
+
+**技術と創作をまとめた、自分だけのインターネット上の拠点。**
+
+ブログ、オリジナルキャラクター、茶番などを集約した個人サイトを開発しています。
+
+[サイトを見る →](https://jaku-site.vercel.app)
+
+## // PHILOSOPHY
+
+> アイデアを、形にする。
+>
+> 分からないことは学び、できないことには挑戦する。
+>
+> 少しずつでも、自分の理想に近づけていく。
+
+---
+
+<p align="center">
+  <sub>CODE · STORIES · CHARACTERS</sub><br>
+  <sub>© Jaku</sub>
+</p>
+
