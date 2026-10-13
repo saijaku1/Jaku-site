@@ -1,6 +1,6 @@
-
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/bug-report.css";
 ---
 
 <BaseLayout
@@ -62,120 +62,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <p class="form-note">
         送信内容はサイトの改善のために使用します。
-        パスワードなどの個人情報は入力しないでください。
+        パスワードなどの個人情報は絶対に入力しないでください。
       </p>
     </form>
   </section>
 </BaseLayout>
-
-<style>
-  .bug-page {
-    width: min(100% - 40px, 720px);
-    margin: 64px auto 100px;
-  }
-
-  .bug-heading {
-    margin-bottom: 36px;
-    text-align: center;
-  }
-
-  .eyebrow {
-    color: var(--accent);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-  }
-
-  .bug-heading h2 {
-    margin: 12px 0;
-    font-size: clamp(2rem, 5vw, 3rem);
-    letter-spacing: -0.04em;
-  }
-
-  .description {
-    line-height: 1.9;
-    opacity: 0.75;
-  }
-
-  .bug-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 28px;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    background: var(--bg);
-  }
-
-  .bug-form label {
-    margin-top: 12px;
-    font-weight: 600;
-  }
-
-  .bug-form input,
-  .bug-form select,
-  .bug-form textarea {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg);
-    color: var(--text);
-    font: inherit;
-  }
-
-  .bug-form textarea {
-    resize: vertical;
-    line-height: 1.8;
-  }
-
-  .bug-form input:focus,
-  .bug-form select:focus,
-  .bug-form textarea:focus {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .bug-form button {
-    margin-top: 16px;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 14px;
-    background: var(--accent);
-    color: white;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-  }
-
-  .bug-form button:hover {
-    opacity: 0.85;
-  }
-
-  .form-note {
-    margin: 8px 0 0;
-    font-size: 0.85rem;
-    line-height: 1.8;
-    opacity: 0.7;
-  }
-
-  @media (max-width: 600px) {
-    .bug-page {
-      margin-top: 40px;
-      margin-bottom: 64px;
-    }
-
-    .bug-form {
-      padding: 20px;
-      border-radius: 18px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bug-form button {
-      transition: none;
-    }
-  }
-</style>
