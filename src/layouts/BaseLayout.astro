@@ -12,7 +12,15 @@ import "../styles/global.css";
     <link rel="icon" href="/characters/Jaku.svg" />
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="NWbNGyNv3Gs44SsLOsfA_FMj4IBu4SIdirn_51V7Rlc" />
-    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QEGBZE58NB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QEGBZE58NB');
+    </script>
   </head>
 
   <body>
@@ -160,13 +168,4 @@ import "../styles/global.css";
       import "../scripts/smooth-scroll.js";
 </script>
   </body>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QEGBZE58NB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-QEGBZE58NB');
-</script>
 </html>
