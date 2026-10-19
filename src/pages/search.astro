@@ -1,0 +1,42 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/search.css";
+---
+
+<BaseLayout
+  title="サイト内検索"
+  description="Jakuのサイト内の記事やページを検索できます。"
+>
+  <section class="search-page">
+    <div class="search-heading">
+      <span class="search-eyebrow">SEARCH</span>
+      <h2>サイト内検索</h2>
+      <p>記事やキャラクター、気になる言葉を探してみよう。</p>
+    </div>
+
+    <form id="pagefind-search-form" class="search-form">
+      <label for="pagefind-search-input">検索キーワード</label>
+
+      <div class="search-input-wrap">
+        <input
+          id="pagefind-search-input"
+          type="search"
+          name="q"
+          placeholder="例：Astro、Jaku、第一話..."
+          autocomplete="off"
+        />
+        <button type="submit">検索</button>
+      </div>
+    </form>
+
+    <p id="pagefind-status" class="search-status" aria-live="polite">
+      キーワードを入力して検索してください。
+    </p>
+
+    <div id="pagefind-results" class="search-results"></div>
+  </section>
+
+<script is:inline src="/page-search.js"></script>
+
+</BaseLayout>

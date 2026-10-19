@@ -362,10 +362,56 @@ a:hover {
 }
 
 .update-item {
+  box-sizing: border-box;
+  width: 100%;
   padding: 20px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: color-mix(in srgb, var(--bg) 90%, transparent);
+  line-height: 1.7;
+}
+
+.update-item .date {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.update-item h3 {
+  margin: 0 0 10px;
+}
+
+.update-item p {
+  margin: 0 0 12px;
+}
+
+.update-item ul {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+
+.update-item li {
+  margin-bottom: 6px;
+}
+
+.update-item h4 {
+  margin: 12px 0 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.updates-more {
+  display: block;
+  width: fit-content;
+  margin: 24px auto 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.updates-more:hover {
+  opacity: 0.7;
 }
 
 .date {

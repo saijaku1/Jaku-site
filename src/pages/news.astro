@@ -1,0 +1,129 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import news from "../data/news.json";
+import "../styles/news.css";
+
+const sortedNews = [...news].sort((a, b) =>
+  b.date.localeCompare(a.date)
+);
+
+const categories = [
+  ...new Set(sortedNews.map((item) => item.category || "未分類"))
+].sort();
+
+const months = [
+  ...new Set(sortedNews.map((item) => item.date.slice(0, 7)))
+].sort((a, b) => b.localeCompare(a));
+---
+
+<BaseLayout
+  title="サイトの更新履歴"
+  description="Jakuのサイトの更新履歴一覧"
+>
+  <main class="news-page">
+    <header class="news-header">
+      <p class="eyebrow">NEWS ARCHIVE</p>
+      <h1>更新履歴</h1>
+      <p>サイトの更新情報をチェックできます。</p>
+    </header>
+
+    <!-- フィルター -->
+    <section class="news-filters" aria-label="更新履歴の絞り込み">
+      <div class="news-filter-field">
+        <label for="news-category">カテゴリー</label>
+        <select id="news-category">
+          <option value="all">すべてのカテゴリー</option>
+          {categories.map((category) => (
+            <option value={category}>{category}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="news-filter-field">
+        <label for="news-month">年月</label>
+        <select id="news-month">
+          <option value="all">すべての年月</option>
+          {months.map((month) => {
+            const [year, monthNumber] = month.split("-");
+            return (
+              <option value={month}>
+                {year}年{Number(monthNumber)}月
+              </option>
+            );
+          })}
+        </select>
+      </div>
+
+      <div class="news-filter-field news-search-field">
+        <label for="news-search">キーワード</label>
+        <input
+          id="news-search"
+          type="search"
+          placeholder="更新内容を検索..."
+          autocomplete="off"
+        />
+      </div>
+
+      <button class="news-reset" id="news-reset" type="button">
+        条件をリセット
+      </button>
+    </section>
+
+    <p class="news-result" id="news-result" aria-live="polite">
+      全 {sortedNews.length} 件
+    </p>
+
+    <!-- 更新履歴一覧 -->
+    <div class="news-list" id="news-list">
+      {sortedNews.map((item) => (
+        <article
+          class="news-card"
+          data-category={item.category || "未分類"}
+          data-month={item.date.slice(0, 7)}
+          data-search={[
+            item.title,
+            item.version,
+            item.description,
+            ...(item.details || []),
+            item.note,
+            item.date,
+            item.category
+          ].filter(Boolean).join(" ").toLowerCase()}
+        >
+          <time class="news-date" datetime={item.date}>
+            {item.date}
+          </time>
+
+          {item.title && <h2>{item.title}</h2>}
+          {item.version && <p class="news-version">{item.version}</p>}
+          {item.description && <p>{item.description}</p>}
+
+          {item.details && (
+            <ul>
+              {item.details.map((detail) => (
+                <li>{detail}</li>
+              ))}
+            </ul>
+          )}
+
+          {item.note && (
+            <p class="news-note">{item.note}</p>
+          )}
+        </article>
+      ))}
+    </div>
+
+    <p class="news-empty" id="news-empty" hidden>
+      条件に一致する更新情報はありません。
+    </p>
+
+    <a class="back-link" href="/">
+      <span aria-hidden="true">←</span> ホームに戻る
+    </a>
+  </main>
+
+  <script>
+ import "../scripts/news.js"
+  </script>
+</BaseLayout>

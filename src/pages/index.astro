@@ -1,6 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/index.css";
+import news from "../data/news.json";
+
+const sortedNews = [...news].sort((a, b) =>
+  b.date.localeCompare(a.date)
+);
+
+const latestNews = sortedNews.slice(0, 3);
 ---
 
 <BaseLayout title="Jakuのサイト">
@@ -57,44 +64,41 @@ import "../styles/index.css";
 </section>
 
 
-  <section class="updates">
-    <h2>最新の更新</h2>
-    <div class="update-list">
-      <div class="update-item">
-        <span class="date">2026-10-13</span>
-        <h3>サイトがアップデートされました！</h3>
-        <h3>V1.0→V1.1</h3>
-        <p>サイト全体のデザインを見直し、UIや操作性を改善しました！</p>
-        <ul>
-          <li>ハンバーガーメニューを追加し、スマートフォンでの操作性を改善</li>
-          <li>サイト全体のUIをブラッシュアップし、よりスタイリッシュなデザインに変更</li>
-          <li>サイトのパフォーマンスを改善し、読み込み速度を向上</li>
-          <li>隠しページを追加</li>
-          <li>検索機能を追加</li>
-        </ul>
-        <h4>ちなみにシークレットページのアクセスするヒントタグは"コーヒー"です！ぜひ探してみてね！</h4>
-      </div>
-      <div class="update-item">
-        <span class="date">2026-10-12</span>
-        <h3>サイトを公開しました！</h3>
-      </div>
+ 
+<section class="updates">
+  <h2>最新の更新</h2>
 
-      <div class="update-item">
-        <span class="date">2026-10-11</span>
-        <p>サイトのデザインをリニューアルしました。</p>
-      </div>
+  <div class="update-list">
+    {latestNews.map((item) => (
+      <article class="update-item">
+        <time class="date" datetime={item.date}>
+          {item.date}
+        </time>
 
-      <div class="update-item">
-        <span class="date">2026-09-23</span>
-        <p>ダークモードを実装しました。</p>
-      </div>
+        {item.title && <h3>{item.title}</h3>}
 
-      <div class="update-item">
-        <span class="date">2026-09-22</span>
-        <p>Jakuのサイトを公開しました。</p>
-      </div>
-    </div>
-  </section>
+        {item.version && <h3>{item.version}</h3>}
+
+        {item.description && <p>{item.description}</p>}
+
+        {item.details && (
+          <ul>
+            {item.details.map((detail) => (
+              <li>{detail}</li>
+            ))}
+          </ul>
+        )}
+
+        {item.note && <h4>{item.note}</h4>}
+      </article>
+    ))}
+  </div>
+
+  <a class="updates-more" href="/news/">
+    MORE <span aria-hidden="true">→</span>
+  </a>
+</section>
+
 
   <!-- 歴代のサイト -->
   <section class="site-history">
