@@ -1,18 +1,18 @@
 <div align="center">
 
-  <!-- 🔥 ネオン・グラデーションバナー -->
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0:0D1117,30:161B22,70:1F6FEB,100:58A6FF&height=220&section=header&text=JAKU&fontSize=80&fontColor=FFFFFF&animation=twinkling&fontAlignY=38&desc=%E6%8A%80%E8%A1%93%E3%81%A8%E2%80%9D%E5%89%B0%E4%BD%9C%E2%80%9D%E3%81%AE%E1%B1%80%E3%81%B8%E3%80%82&descAlignY=62&descSize=20" width="100%" alt="Jaku Header" />
+  <!-- 🔥 ヘッダーバナー -->
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0:0D1117,30:161B22,70:1F6FEB,100:58A6FF&height=220&section=header&text=JAKU&fontSize=80&fontColor=FFFFFF&animation=twinkling&fontAlignY=38&desc=%E3%81%BE%E3%81%A3%E3%81%9F%E3%82%8A%E3%82%8F%E3%81%8F%E3%82%8F%E3%81%8F%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BE%E3%81%99%E3%80%82&descAlignY=62&descSize=20" width="100%" alt="Jaku Header" />
 
   <!-- ⚡ タイピングアニメーション -->
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=58A6FF&center=true&vCenter=true&width=600&lines=WEB+DEVELOPER+%2F+CREATOR;Building+my+own+world+with+code.;Idea+%E2%86%92+Code+%E2%86%92+Creation;" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=58A6FF&center=true&vCenter=true&width=600&lines=High+School+Student+(15-16yo);Web+Dev+%2B+Creator;Idea+%E2%86%92+Code+%E2%86%92+Enjoy!;Welcome+to+my+profile!;" alt="Typing SVG" />
   </a>
 
   <br><br>
 
-  <!-- 🔗 Quick Links -->
+  <!-- 🔗 Links -->
   <a href="https://jaku-site.vercel.app">
-    <img src="https://img.shields.io/badge/Official_Site-Jaku's_World-1F6FEB?style=for-the-badge&logo=vercel&logoColor=white" alt="Jaku Site" />
+    <img src="https://img.shields.io/badge/My_Website-Jaku's_World-1F6FEB?style=for-the-badge&logo=vercel&logoColor=white" alt="Jaku Site" />
   </a>
   &nbsp;
   <a href="https://github.com/saijaku1">
@@ -25,15 +25,15 @@
 
 ---
 
-### ⚡ // SYSTEM OVERVIEW (自己紹介)
+### 👋 自己紹介
 
 <table>
   <tr>
     <td width="55%" valign="top">
-      <h3>👋 Welcome to my matrix</h3>
-      <p>こんにちは、<b>Jaku</b> です！</p>
-      <p>Web技術を学びながら、自分のアイデアや世界観をコードで形にしている<b>高校1年生のWebディベロッパー / クリエイター</b>です。</p>
-      <p>「ただ動くWebサイト」ではなく、独自性のあるデザインや創作コンテンツを詰めた<b>理想の拠点</b>を日々追求・構築しています！</p>
+      <h3>やっほー、Jaku です！</h3>
+      <p>Web制作とか創作が好きで、いろいろコード書いて遊んでる<b>高校1年生（15〜16歳）</b>です ✌️</p>
+      <p>「とりあえず自分で作ってみたら面白くね？」の精神で、自分の好きなデザインとか世界観を詰め込んだ個人サイトをぬるぬる育ててます！</p>
+      <p>分からないことだらけだけど、ググりまくって手探りで形にしていくのが最高にたのしい。</p>
     </td>
     <td width="45%" valign="top" align="center">
       <img src="https://github-readme-stats.vercel.app/api?username=saijaku1&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117" width="100%" alt="GitHub Stats" />
@@ -41,12 +41,47 @@
   </tr>
 </table>
 
+<br>
+
+### 🍕 好きなもの・嫌いなもの
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h4>❤️ 好きなこと・好物</h4>
+      <ul>
+        <li><b>好きな食べ物：</b> ラーメン 🍜 / ピザ 🍕 / ハンバーグ 🍔（ジャンク寄り）</li>
+        <li><b>Webサイトづくり：</b> 見た目イケてるサイトをコードで組むこと</li>
+        <li><b>創作・文章書き：</b> 妄想した世界観を物語に落とし込むこと</li>
+        <li><b>タイピング：</b> 思考の速度で文字打てると気持ちいい</li>
+      </ul>
+    </td>
+    <td width="50%" valign="top">
+      <h4>💔 苦手・嫌いなこと・食べ物</h4>
+      <ul>
+        <li><b>苦手な食べ物：</b> 激辛料理やわさび 🌶️ / 卵料理　🥚  </li>
+        <li><b>原因不明のエラー：</b> セミコロン1個で1時間消えるやつ</li>
+        <li><b>めんどくさい手作業：</b> 全部スクリプトで自動化したい…</li>
+        <li><b>勉強の丸暗記：</b> 意味理解して使いたい派</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+### ⚙️ プロフィールコード
+
 ```javascript
 const developer = {
   name: "Jaku",
-  role: "Web Developer / Creator",
-  status: "High School Student (1st Year)",
-  baseSite: "[https://jaku-site.vercel.app](https://jaku-site.vercel.app)",
-  passions: ["Web Design", "Creative Writing", "High-speed Typing"],
-  philosophy: "分からないことは学び、できないことには挑戦する。"
+  age: "15-16", // 高校1年生
+  status: "Web作ったり創作したりする高校生",
+  favoriteFoods: ["Ramen", "Pizza", "Hamburg Steak"],
+  mySite: "[https://jaku-site.vercel.app](https://jaku-site.vercel.app)",
+  motto: "分からないなら調べればいいし、できないなら挑戦すればいいじゃん！",
+  
+  currentlyDoing: () => {
+    return "今日も今日とてコード書いて遊んでます 💻✨";
+  }
 };
