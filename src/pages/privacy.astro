@@ -1,0 +1,249 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="プライバシーポリシー"
+  description="Jakuのサイトにおける個人情報の取り扱いについて"
+>
+  <main class="legal-page">
+    <header class="legal-header">
+      <a href="/" class="back-link">← ホームに戻る</a>
+      <p class="eyebrow">PRIVACY POLICY</p>
+      <h1>プライバシーポリシー</h1>
+      <p>Jakuのサイトにおける個人情報の取り扱いについて説明します。</p>
+    </header>
+
+    <article class="legal-content">
+      <p>
+        Jaku（以下「運営者」といいます。）は、本サイトにおける
+        ユーザーの個人情報および関連情報を、以下の方針に従って取り扱います。
+      </p>
+
+      <h2>1. 取得する情報</h2>
+      <p>本サイトでは、以下の情報を取得・保存する場合があります。</p>
+      <ul>
+        <li>Googleログインを通じて取得するメールアドレス</li>
+        <li>Googleアカウントのプロフィール名およびプロフィール画像</li>
+        <li>本サイトでユーザーが設定したユーザー名および自己紹介</li>
+        <li>アカウントを識別するためのユーザーID</li>
+        <li>いいねした記事の情報およびその記録日時</li>
+        <li>本サイトの利用に伴って生じるアクセス情報やブラウザ等の情報</li>
+      </ul>
+
+      <h2>2. Googleログインについて</h2>
+      <p>
+        本サイトでは、Googleアカウントを利用したログイン機能を提供しています。
+        ログイン時にはGoogleの認証サービスを利用し、認証に必要な情報を取得します。
+      </p>
+      <p>
+        取得したメールアドレス等は、ログイン認証やアカウント管理のために使用します。
+        本サイトがGoogleアカウントのパスワードを取得することはありません。
+      </p>
+      <p>
+        Googleによる情報の取り扱いについては、
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+          Googleプライバシーポリシー
+        </a>
+        をご確認ください。
+      </p>
+
+      <h2>3. プロフィール情報について</h2>
+      <p>
+        ユーザーは、アカウント設定からユーザー名や自己紹介を登録・変更できます。
+        登録されたプロフィール情報は、Supabaseのデータベースに保存されます。
+      </p>
+      <p>
+        公開プロフィールに登録されたユーザー名、自己紹介、プロフィール画像等は、
+        ログインしていない人を含め、誰でも閲覧できる場合があります。
+        公開する情報には十分ご注意ください。
+      </p>
+      <p>
+        公開プロフィールのURLを第三者に共有した場合、その第三者もプロフィールを閲覧できます。
+      </p>
+
+      <h2>4. いいね機能について</h2>
+      <p>
+        本サイトでは、ログインしたユーザーがブログ記事に「いいね」を付ける機能を提供しています。
+      </p>
+      <p>この機能では、以下の情報をSupabaseに保存します。</p>
+      <ul>
+        <li>ユーザーID</li>
+        <li>いいねした記事を識別する情報</li>
+        <li>記録日時</li>
+      </ul>
+      <p>
+        これらの情報は、いいねの状態や記事ごとのいいね数を管理するために使用します。
+      </p>
+
+      <h2>5. 情報の利用目的</h2>
+      <p>取得した情報は、以下の目的で利用します。</p>
+      <ul>
+        <li>ユーザー認証およびログイン状態の管理</li>
+        <li>アカウント情報やプロフィールの表示・管理</li>
+        <li>いいね機能の提供および管理</li>
+        <li>本サイトの維持、改善および不正利用の防止</li>
+        <li>お問い合わせへの対応</li>
+        <li>アクセス状況の分析</li>
+      </ul>
+
+      <h2>6. 外部サービスの利用</h2>
+      <p>本サイトでは、以下の外部サービスを利用しています。</p>
+      <ul>
+        <li>
+          <strong>Google</strong>：Googleアカウントによる認証
+        </li>
+        <li>
+          <strong>Supabase</strong>：認証、アカウント情報およびデータの管理
+        </li>
+        <li>
+          <strong>Vercel</strong>：本サイトのホスティングおよび配信
+        </li>
+        <li>
+          <strong>Google Analytics 4</strong>：アクセス状況の分析
+        </li>
+      </ul>
+      <p>
+        これらのサービスの利用に伴い、各サービス提供者が必要な情報を取り扱う場合があります。
+        情報の取り扱いについては、それぞれのサービス提供者のプライバシーポリシー等をご確認ください。
+      </p>
+      <ul>
+        <li>
+          <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">
+            Supabase Privacy Policy
+          </a>
+        </li>
+        <li>
+          <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
+            Vercel Privacy Policy
+          </a>
+        </li>
+        <li>
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+            Google Privacy Policy
+          </a>
+        </li>
+      </ul>
+
+      <h2>7. Cookie等の利用</h2>
+      <p>
+        本サイトでは、ログイン状態の維持やアクセス状況の分析等のために、
+        Cookieやブラウザ内の保存領域などを利用する場合があります。
+      </p>
+      <p>
+        ブラウザの設定によってCookieを制限できますが、
+        その場合、本サイトの一部機能が正常に動作しないことがあります。
+      </p>
+
+      <h2>8. 情報の管理と第三者提供</h2>
+      <p>
+        運営者は、取得した情報について適切な管理に努めます。
+        法令に基づく場合などを除き、本人の同意なく個人情報を第三者に提供しません。
+      </p>
+      <p>
+        ただし、本ポリシーに記載した外部サービスの利用に伴い、
+        各サービス提供者がサービスの提供に必要な範囲で情報を取り扱う場合があります。
+      </p>
+
+      <h2>9. 情報の確認・変更・削除</h2>
+      <p>
+        ユーザーは、アカウント設定から一部のプロフィール情報を変更できます。
+        アカウント情報や保存されたデータの削除を希望する場合は、
+        下記のお問い合わせ先までご連絡ください。
+      </p>
+      <p>
+        本人確認等を行ったうえで、法令やサービスの仕様に従い対応します。
+      </p>
+
+      <h2>10. 本ポリシーの変更</h2>
+      <p>
+        運営者は、必要に応じて本ポリシーを変更することがあります。
+        変更後の内容は、本ページに掲載した時点から適用されます。
+      </p>
+
+      <h2>11. お問い合わせ</h2>
+      <p>
+        本ポリシーに関するお問い合わせは、以下のメールアドレスまでご連絡ください。
+      </p>
+      <p>
+        メールアドレス：
+        <a href="mailto:jaku.support@gmail.com">jaku.support@gmail.com</a>
+      </p>
+
+      <p class="updated">最終更新日：2026年10月30日</p>
+    </article>
+  </main>
+
+  <style>
+    .legal-page {
+      width: min(820px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 90px;
+    }
+
+    .legal-header {
+      margin-bottom: 42px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: var(--text);
+      opacity: .7;
+      text-decoration: none;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+    }
+
+    .legal-header h1 {
+      font-size: clamp(28px, 5vw, 40px);
+      letter-spacing: -.04em;
+    }
+
+    .legal-header > p:last-child {
+      line-height: 1.8;
+      opacity: .7;
+    }
+
+    .legal-content {
+      padding: clamp(20px, 4vw, 36px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      line-height: 2;
+      overflow-wrap: anywhere;
+    }
+
+    .legal-content h2 {
+      margin-top: 36px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      font-size: 19px;
+    }
+
+    .legal-content h2:first-of-type {
+      margin-top: 28px;
+    }
+
+    .legal-content li {
+      margin: 6px 0;
+    }
+
+    .legal-content a {
+      color: var(--accent);
+      overflow-wrap: anywhere;
+    }
+
+    .updated {
+      margin-top: 40px;
+      text-align: right;
+      font-size: 13px;
+      opacity: .65;
+    }
+  </style>
+</BaseLayout>

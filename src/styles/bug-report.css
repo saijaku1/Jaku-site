@@ -1,10 +1,5 @@
-
-/* =========================
-   バグ報告ページ
-========================= */
-
 .bug-page {
-  width: min(calc(100% - 40px), 720px);
+  width: min(100% - 40px, 720px);
   margin: 64px auto 100px;
 }
 
@@ -13,34 +8,23 @@
   text-align: center;
 }
 
-.bug-heading .eyebrow {
-  margin-bottom: 12px;
+.eyebrow {
   color: var(--accent);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
-.bug-heading h1 {
-  margin: 0 0 16px;
-  color: var(--text);
+.bug-heading h2 {
+  margin: 12px 0;
   font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 750;
   letter-spacing: -0.04em;
-  line-height: 1.2;
 }
 
-.bug-heading .description {
-  max-width: 540px;
-  margin: 0 auto;
-  color: var(--text);
-  opacity: 0.7;
-  font-size: 0.95rem;
+.description {
   line-height: 1.9;
+  opacity: 0.75;
 }
-
-/* フォーム全体 */
 
 .bug-form {
   display: flex;
@@ -50,19 +34,12 @@
   border: 1px solid var(--border);
   border-radius: 24px;
   background: var(--bg);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
 }
-
-/* ラベル */
 
 .bug-form label {
-  margin-top: 10px;
-  color: var(--text);
-  font-size: 0.9rem;
-  font-weight: 650;
+  margin-top: 12px;
+  font-weight: 600;
 }
-
-/* 入力欄 */
 
 .bug-form input,
 .bug-form select,
@@ -75,103 +52,58 @@
   background: var(--bg);
   color: var(--text);
   font: inherit;
-  font-size: 0.95rem;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .bug-form textarea {
-  min-height: 160px;
   resize: vertical;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 .bug-form input:focus,
 .bug-form select:focus,
 .bug-form textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.bug-form input::placeholder,
-.bug-form textarea::placeholder {
-  color: var(--text);
-  opacity: 0.45;
-}
-
-/* 送信ボタン */
-
-.bug-form button[type="submit"] {
+.bug-form button {
   margin-top: 16px;
-  padding: 15px 22px;
+  padding: 15px 20px;
   border: none;
-  border-radius: 999px;
+  border-radius: 14px;
   background: var(--accent);
-  color: #fff;
+  color: white;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
-.bug-form button[type="submit"]:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.2);
+.bug-form button:hover {
+  opacity: 0.85;
 }
-
-.bug-form button[type="submit"]:active {
-  transform: translateY(0);
-}
-
-/* 注意書き */
 
 .form-note {
-  margin-top: 20px;
-  color: var(--text);
-  opacity: 0.65;
-  font-size: 0.82rem;
+  margin: 8px 0 0;
+  font-size: 0.85rem;
   line-height: 1.8;
-  text-align: center;
+  opacity: 0.7;
 }
-
-/* スマートフォン */
 
 @media (max-width: 600px) {
   .bug-page {
-    width: calc(100% - 32px);
-    margin: 40px auto 72px;
-  }
-
-  .bug-heading {
-    margin-bottom: 28px;
+    margin-top: 40px;
+    margin-bottom: 64px;
   }
 
   .bug-form {
-    gap: 10px;
     padding: 20px;
-    border-radius: 20px;
-  }
-
-  .bug-form input,
-  .bug-form select,
-  .bug-form textarea {
-    padding: 13px 14px;
+    border-radius: 18px;
   }
 }
 
-/* 動きを控えたい環境への配慮 */
-
 @media (prefers-reduced-motion: reduce) {
-  .bug-form input,
-  .bug-form select,
-  .bug-form textarea,
-  .bug-form button[type="submit"] {
+  .bug-form button {
     transition: none;
   }
 }
