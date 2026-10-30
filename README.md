@@ -36,7 +36,7 @@
       <p>分からないことだらけだけど、ググりまくって手探りで形にしていくのが最高にたのしい。</p>
     </td>
     <td width="45%" valign="top" align="center">
-      <img src="https://github-readme-stats.vercel.app/api?username=saijaku1&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117" width="100%" alt="GitHub Stats" />
+<img src="https://github-readme-stats-sigma-five.vercel.app/api?username=saijaku1&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117" width="100%" alt="GitHub Stats" />
     </td>
   </tr>
 </table>
