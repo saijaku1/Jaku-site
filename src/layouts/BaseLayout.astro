@@ -35,49 +35,98 @@ import "../styles/global.css";
           <a href="/characters">キャラクター</a>
           <a href="/links">リンク</a>
           <a href="/about">Jakuについて</a>
-                  <a href="/search/" class="header-search" aria-label="サイト内検索" title="サイト内検索">
-　　　　　　サイトを検索する
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m20 20-4-4"></path>
-          </svg>
-        </a>
-
         </nav>
          <SiteSearch client:load />
-        <div class="header-actions">
-          <button
-            id="theme-toggle"
-            type="button"
-            aria-label="テーマを切り替える"
-          >
-            🌙
-          </button>
+          <div class="header-actions">
+            <div class="header-account-wrap" id="header-account-wrap">
+              <a
+                href="/login"
+                id="header-account-link"
+                class="header-account-link"
+                aria-label="Googleログイン"
+              >
+                ログイン
+              </a>
 
-          <button
-            id="menu-toggle"
-            class="menu-toggle"
-            type="button"
-            aria-label="メニューを開く"
-            aria-controls="site-nav"
-            aria-expanded="false"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
+              <div
+                class="header-account-menu"
+                id="header-account-menu"
+                role="menu"
+                aria-label="アカウントメニュー"
+                hidden
+              >
+                <div class="header-account-menu-user">
+                  <span id="header-account-name">ユーザー</span>
+                  <span class="header-account-menu-label">ログイン中</span>
+                </div>
+
+                <div class="header-account-menu-divider"></div>
+
+                <a
+                  href="/account/settings/"
+                  class="header-account-menu-item"
+                  role="menuitem"
+                  id="header-account-settings"
+                >
+                  <span>設定</span>
+                  <span class="header-account-menu-label">準備中</span>
+                </a>
+
+                <button
+                  type="button"
+                  class="header-account-menu-item header-account-logout"
+                  id="header-account-logout"
+                  role="menuitem"
+                >
+                  ログアウト
+                </button>
+              </div>
+            </div>
+
+            <a
+              href="/search/"
+              class="header-search"
+              aria-label="サイト内検索"
+              title="サイト内検索"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4-4"></path>
+              </svg>
+            </a>
+
+            <button
+              id="theme-toggle"
+              type="button"
+              aria-label="テーマを切り替える"
+            >
+              🌙
+            </button>
+
+            <button
+              id="menu-toggle"
+              class="menu-toggle"
+              type="button"
+              aria-label="メニューを開く"
+              aria-controls="site-nav"
+              aria-expanded="false"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
       </div>
     </header>
 
@@ -163,10 +212,11 @@ import "../styles/global.css";
         <a href="#top" class="footer-top-link">ページ上部へ ↑</a>
       </div>
     </footer>
-<script>
+　　<script>
       import "../scripts/theme.js";
       import "../scripts/menu.js";
       import "../scripts/smooth-scroll.js";
-</script>
+      import "../scripts/header-auth.js";
+　　</script>
   </body>
 </html>

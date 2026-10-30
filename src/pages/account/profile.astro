@@ -1,0 +1,339 @@
+
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="マイプロフィール"
+  description="Jakuのサイトのプロフィール"
+>
+  <main class="profile-page">
+    <a href="/account/settings/" class="back-link">
+      ← アカウント設定に戻る
+    </a>
+
+    <header class="page-heading">
+      <p class="eyebrow">MY PROFILE</p>
+      <h1>マイプロフィール</h1>
+      <p>あなたのプロフィール情報を確認できます。</p>
+    </header>
+
+    <section class="profile-card">
+      <div id="profile-loading" class="notice">
+        プロフィールを読み込んでいます...
+      </div>
+
+      <div id="profile-logged-out" class="notice" hidden>
+        <p>プロフィールを見るにはログインしてください。</p>
+        <a href="/login" class="primary-button">
+          ログインする
+        </a>
+      </div>
+
+      <div id="profile-content" hidden>
+        <div class="profile-header">
+          <img
+            id="profile-avatar"
+            class="profile-avatar"
+            src="/characters/Jaku.svg"
+            alt="プロフィール画像"
+          />
+
+          <div class="profile-identity">
+            <h2 id="profile-name">ユーザー</h2>
+            <p id="profile-email"></p>
+          </div>
+        </div>
+
+        <div class="profile-section">
+        <h3>自己紹介</h3>
+        <p id="profile-bio" class="empty-bio">
+            自己紹介はまだ設定されていません。
+        </p>
+        </div>
+        <div class="profile-actions">
+          <a href="/account/settings/" class="primary-button">
+            プロフィールを編集
+          </a>
+
+          <a href="/likes/" class="secondary-button">
+            いいねした記事を見る
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { supabase } from "../../lib/supabase.js";
+
+    const loading = document.querySelector("#profile-loading");
+    const loggedOut = document.querySelector("#profile-logged-out");
+    const content = document.querySelector("#profile-content");
+    const avatar = document.querySelector("#profile-avatar");
+    const name = document.querySelector("#profile-name");
+    const email = document.querySelector("#profile-email");
+    const bio = document.querySelector("#profile-bio");
+
+    function showLoggedOut() {
+      loading.hidden = true;
+      content.hidden = true;
+      loggedOut.hidden = false;
+    }
+
+    function showProfile(user) {
+      const metadata = user.user_metadata ?? {};
+
+      name.textContent =
+        metadata.display_name ??
+        metadata.full_name ??
+        metadata.name ??
+        user.email?.split("@")[0] ??
+        "ユーザー";
+
+      email.textContent = user.email ?? "";
+      const introduction = metadata.bio?.trim() ?? "";
+      bio.textContent = introduction || "自己紹介はまだ設定されていません。";
+
+      avatar.src =
+        metadata.avatar_url ??
+        metadata.picture ??
+        "/characters/Jaku.svg";
+
+      loading.hidden = true;
+      loggedOut.hidden = true;
+      content.hidden = false;
+    }
+
+    async function initializeProfile() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        if (!data.session?.user) {
+          showLoggedOut();
+          return;
+        }
+
+        showProfile(data.session.user);
+      } catch (error) {
+        console.error("プロフィール取得エラー:", error);
+        loading.textContent =
+          "プロフィールを読み込めませんでした。ページを再読み込みしてください。";
+      }
+    }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session?.user) {
+        showLoggedOut();
+        return;
+      }
+
+      if (event === "USER_UPDATED") {
+        showProfile(session.user);
+      }
+    });
+
+    void initializeProfile();
+  </script>
+
+  <style>
+    .profile-page {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 88px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: var(--text);
+      opacity: 0.7;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      opacity: 1;
+    }
+
+    .page-heading {
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+    }
+
+    .page-heading h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 40px);
+      letter-spacing: -0.04em;
+    }
+
+    .page-heading > p:last-child {
+      margin-top: 12px;
+      color: var(--text);
+      opacity: 0.7;
+      line-height: 1.8;
+    }
+
+    .profile-card {
+      padding: clamp(20px, 4vw, 32px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--bg);
+      box-shadow: 0 12px 36px rgb(0 0 0 / 5%);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-avatar {
+      width: 88px;
+      height: 88px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg);
+    }
+
+    .profile-identity {
+      min-width: 0;
+    }
+
+    .profile-identity h2 {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-size: 24px;
+    }
+
+    .profile-identity p {
+      margin: 8px 0 0;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      opacity: 0.65;
+    }
+
+    .profile-section {
+      padding: 24px 0;
+    }
+
+    .profile-section h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .empty-bio {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      opacity: 0.65;
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .primary-button,
+    .secondary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 11px 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .primary-button {
+      border-color: transparent;
+      background: var(--accent);
+      color: white;
+    }
+
+    .secondary-button {
+      color: var(--text);
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+
+    .notice {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .notice[hidden],
+    #profile-content[hidden],
+    #profile-logged-out[hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .profile-page {
+        padding-top: 36px;
+      }
+
+      .profile-card {
+        border-radius: 18px;
+      }
+
+      .profile-header {
+        gap: 14px;
+      }
+
+      .profile-avatar {
+        width: 68px;
+        height: 68px;
+      }
+
+      .profile-identity h2 {
+        font-size: 20px;
+      }
+
+      .profile-actions {
+        flex-direction: column;
+      }
+
+      .profile-actions a {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .primary-button,
+      .secondary-button {
+        transition: none;
+      }
+    }
+  </style>
+</BaseLayout>

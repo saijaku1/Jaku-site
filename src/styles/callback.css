@@ -1,0 +1,36 @@
+.callback-page {
+  display: grid;
+  min-height: 65vh;
+  place-items: center;
+  padding: 40px 20px;
+}
+
+.callback-card {
+  width: min(100%, 480px);
+  padding: 36px 24px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--bg);
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.callback-card h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.callback-card p {
+  line-height: 1.8;
+}
+
+#callback-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--text);
+}

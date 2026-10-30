@@ -1,0 +1,273 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="公開プロフィール"
+  description="Jakuのサイトの公開プロフィール"
+>
+  <main class="public-profile-page">
+    <a href="/" class="back-link">← ホームに戻る</a>
+
+    <section class="profile-card">
+      <div id="profile-loading" class="notice" aria-live="polite">
+        プロフィールを読み込んでいます...
+      </div>
+
+      <div id="profile-error" class="notice" hidden>
+        <h1>プロフィールを表示できません</h1>
+        <p id="profile-error-message">
+          プロフィールが見つかりませんでした。
+        </p>
+        <a href="/" class="primary-button">ホームに戻る</a>
+      </div>
+
+      <div id="profile-content" hidden>
+        <p class="eyebrow">PUBLIC PROFILE</p>
+
+        <div class="profile-header">
+          <img
+            id="profile-avatar"
+            class="profile-avatar"
+            src="/characters/Jaku.svg"
+            alt="プロフィール画像"
+          />
+
+          <div class="profile-identity">
+            <h1 id="profile-username">ユーザー</h1>
+            <p class="profile-label">Jakuのサイトのユーザー</p>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h2>自己紹介</h2>
+          <p id="profile-bio" class="profile-bio">
+            自己紹介はまだ設定されていません。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { supabase } from "../lib/supabase.js";
+
+    const loading = document.querySelector("#profile-loading");
+    const errorBox = document.querySelector("#profile-error");
+    const errorMessage = document.querySelector(
+      "#profile-error-message"
+    );
+    const content = document.querySelector("#profile-content");
+    const avatar = document.querySelector("#profile-avatar");
+    const username = document.querySelector("#profile-username");
+    const bio = document.querySelector("#profile-bio");
+
+    function showError(message) {
+      loading.hidden = true;
+      content.hidden = true;
+      errorBox.hidden = false;
+      errorMessage.textContent = message;
+    }
+
+    async function loadProfile() {
+      const params = new URLSearchParams(window.location.search);
+      const userId = params.get("id");
+
+      if (!userId) {
+        showError("プロフィールIDが指定されていません。");
+        return;
+      }
+
+      // UUID形式のIDだけを受け付ける
+      const uuidPattern =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+      if (!uuidPattern.test(userId)) {
+        showError("プロフィールIDが正しくありません。");
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("username, bio, avatar_url")
+          .eq("id", userId)
+          .maybeSingle();
+
+        if (error) {
+          throw error;
+        }
+
+        if (!data) {
+          showError("このプロフィールは見つかりませんでした。");
+          return;
+        }
+
+        username.textContent = data.username || "ユーザー";
+
+        const introduction = data.bio?.trim() ?? "";
+        bio.textContent =
+          introduction || "自己紹介はまだ設定されていません。";
+
+        const avatarUrl = data.avatar_url?.trim();
+
+        avatar.src = avatarUrl || "/characters/Jaku.svg";
+
+        loading.hidden = true;
+        errorBox.hidden = true;
+        content.hidden = false;
+      } catch (error) {
+        console.error("公開プロフィール取得エラー:", error);
+
+        showError(
+          "プロフィールの読み込みに失敗しました。時間をおいて再度お試しください。"
+        );
+      }
+    }
+
+    // 外部画像が読み込めない場合は既定の画像に切り替える
+    avatar.addEventListener("error", () => {
+      if (avatar.getAttribute("src") !== "/characters/Jaku.svg") {
+        avatar.src = "/characters/Jaku.svg";
+      }
+    });
+
+    void loadProfile();
+  </script>
+
+  <style>
+    .public-profile-page {
+      width: min(720px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 88px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 28px;
+      color: var(--text);
+      opacity: 0.7;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      opacity: 1;
+    }
+
+    .profile-card {
+      padding: clamp(22px, 5vw, 36px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--bg);
+      box-shadow: 0 12px 36px rgb(0 0 0 / 5%);
+    }
+
+    .eyebrow {
+      margin: 0 0 24px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-avatar {
+      width: 104px;
+      height: 104px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--bg);
+      object-fit: cover;
+    }
+
+    .profile-identity {
+      min-width: 0;
+    }
+
+    .profile-identity h1 {
+      margin: 0;
+      font-size: clamp(22px, 4vw, 30px);
+      overflow-wrap: anywhere;
+    }
+
+    .profile-label {
+      margin: 8px 0 0;
+      font-size: 13px;
+      opacity: 0.65;
+    }
+
+    .profile-section {
+      padding-top: 26px;
+    }
+
+    .profile-section h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+
+    .profile-bio {
+      margin: 0;
+      line-height: 1.9;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      opacity: 0.85;
+    }
+
+    .notice {
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .notice h1 {
+      font-size: 22px;
+    }
+
+    .notice[hidden],
+    #profile-content[hidden] {
+      display: none !important;
+    }
+
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      .public-profile-page {
+        padding-top: 36px;
+      }
+
+      .profile-header {
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .profile-avatar {
+        width: 76px;
+        height: 76px;
+      }
+
+      .profile-card {
+        border-radius: 18px;
+      }
+    }
+  </style>
+</BaseLayout>

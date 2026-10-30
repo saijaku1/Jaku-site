@@ -1,0 +1,253 @@
+
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<div class="like-container" data-like-container data-post-slug={slug}>
+  <button type="button" data-like-button disabled>
+    ♡ いいね
+  </button>
+
+  <span class="like-count" aria-live="polite">
+    いいね数：<strong data-like-count>--</strong>
+  </span>
+
+  <p data-like-status role="status" aria-live="polite">
+    読み込み中...
+  </p>
+
+  <a href="/login" data-login-link hidden>
+    いいねするにはログイン
+  </a>
+</div>
+
+<script>
+  import { supabase } from "../lib/supabase.js";
+
+  const containers = document.querySelectorAll("[data-like-container]");
+
+  for (const container of containers) {
+    const button = container.querySelector("[data-like-button]");
+    const status = container.querySelector("[data-like-status]");
+    const loginLink = container.querySelector("[data-login-link]");
+    const countElement = container.querySelector("[data-like-count]");
+    const slug = container.getAttribute("data-post-slug");
+
+    if (
+      !(button instanceof HTMLButtonElement) ||
+      !(status instanceof HTMLParagraphElement) ||
+      !(loginLink instanceof HTMLAnchorElement) ||
+      !(countElement instanceof HTMLElement) ||
+      !slug
+    ) {
+      continue;
+    }
+
+    let currentUserId = null;
+    let liked = false;
+    let busy = false;
+
+    function showStatus(message) {
+      status.textContent = message;
+    }
+
+    function updateButton() {
+      button.textContent = liked ? "♥ いいね済み" : "♡ いいね";
+      button.disabled = busy;
+    }
+
+    async function loadLikeCount() {
+      const { data, error } = await supabase.rpc("get_like_count", {
+        p_post_slug: slug,
+      });
+
+      if (error) {
+        console.error("いいね数の取得エラー:", error);
+        countElement.textContent = "--";
+        return;
+      }
+
+      countElement.textContent = String(data ?? 0);
+    }
+
+    async function loadLikeState(user) {
+      currentUserId = user?.id ?? null;
+      liked = false;
+      loginLink.hidden = true;
+
+      if (!user) {
+        updateButton();
+        showStatus("いいねするにはログインしてください。");
+        loginLink.hidden = false;
+        return;
+      }
+
+      button.disabled = true;
+      showStatus("いいねの状態を確認しています...");
+
+      const { data, error } = await supabase
+        .from("likes")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("post_slug", slug)
+        .maybeSingle();
+
+      if (error) {
+        console.error("いいね状態の取得エラー:", error);
+        showStatus("いいねの状態を取得できませんでした。");
+        button.disabled = false;
+        return;
+      }
+
+      liked = Boolean(data);
+      updateButton();
+      showStatus(liked ? "この記事にいいねしています。" : "この記事にいいねできます。");
+    }
+
+    button.addEventListener("click", async () => {
+      if (busy) return;
+
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+
+      if (sessionError) {
+        console.error("セッション取得エラー:", sessionError);
+        showStatus("ログイン状態を確認できませんでした。");
+        return;
+      }
+
+      const user = sessionData.session?.user;
+
+      if (!user) {
+        showStatus("いいねするにはログインしてください。");
+        loginLink.hidden = false;
+        return;
+      }
+
+      if (user.id !== currentUserId) {
+        await loadLikeState(user);
+        return;
+      }
+
+      busy = true;
+      updateButton();
+      showStatus("保存しています...");
+
+      try {
+        if (liked) {
+          const { error } = await supabase
+            .from("likes")
+            .delete()
+            .eq("user_id", user.id)
+            .eq("post_slug", slug);
+
+          if (error) throw error;
+
+          liked = false;
+          showStatus("いいねを解除しました。");
+        } else {
+          const { error } = await supabase
+            .from("likes")
+            .insert({
+              user_id: user.id,
+              post_slug: slug,
+            });
+
+          if (error) throw error;
+
+          liked = true;
+          showStatus("いいねしました！");
+        }
+
+        await loadLikeCount();
+      } catch (error) {
+        console.error("いいね保存エラー:", error);
+        showStatus("保存に失敗しました。もう一度お試しください。");
+
+        await loadLikeState(user);
+      } finally {
+        busy = false;
+        updateButton();
+      }
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setTimeout(() => {
+        void loadLikeState(session?.user ?? null);
+      }, 0);
+    });
+
+    async function initialize() {
+      await loadLikeCount();
+
+      const { data, error } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error("セッション取得エラー:", error);
+        showStatus("ログイン状態を確認できませんでした。");
+        button.disabled = false;
+        return;
+      }
+
+      await loadLikeState(data.session?.user ?? null);
+    }
+
+    void initialize();
+  }
+</script>
+
+<style>
+  .like-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+  }
+
+  .like-container button {
+    padding: 12px 20px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .like-container button:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  .like-container button:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+
+  .like-count {
+    font-size: 0.95rem;
+  }
+
+  .like-container p {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .like-container a {
+    color: var(--text);
+  }
+
+  .like-container [hidden] {
+    display: none;
+  }
+</style>

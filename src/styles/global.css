@@ -1,19 +1,22 @@
-:root {
+```css :root {
   --bg: #ffffff;
   --text: #111111;
   --accent: #0071e3;
   --border: #e5e5e5;
 }
+
 ::selection {
   background: var(--accent);
   color: white;
 }
+
 :root.dark {
   --bg: #000000;
   --text: #f5f5f7;
   --accent: #2997ff;
   --border: #333333;
 }
+
 html {
   scroll-behavior: smooth;
 }
@@ -28,11 +31,16 @@ body {
     color 0.3s ease;
 }
 
+/* =========================
+   ヘッダー
+========================= */
+
 header {
   position: sticky;
   top: 0;
   z-index: 100;
   backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   background: color-mix(in srgb, var(--bg) 70%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
 }
@@ -46,9 +54,9 @@ header {
   justify-content: space-between;
   gap: 24px;
   position: relative;
+  box-sizing: border-box;
 }
 
-/* PC用のデフォルトナビゲーション設定 */
 .header-inner nav {
   display: flex;
   flex-direction: row;
@@ -58,30 +66,40 @@ header {
   align-items: center;
 }
 
-nav a {
+.header-inner nav a {
   text-decoration: none;
   color: var(--text);
 }
 
-#theme-toggle {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  width: 42px;
-  height: 42px;
-  display: flex;
+.header-search {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   color: var(--text);
-  font-size: 1.1rem;
-  cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  text-decoration: none;
   transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-#theme-toggle:hover {
+.header-search:hover {
+  background: var(--border);
   transform: scale(1.05);
+}
+
+.header-search:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.header-search svg {
+  display: block;
 }
 
 .header-actions {
@@ -136,19 +154,6 @@ body.menu-open {
   overscroll-behavior: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .header-inner nav,
-  .menu-toggle span {
-    transition: none;
-  }
-}
-
-main {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 100px 24px;
-}
-
 h1 {
   margin: 0;
   font-size: 1.4rem;
@@ -168,11 +173,23 @@ a:hover {
   opacity: 0.8;
 }
 
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 100px 24px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   ヒーロー・見出し
+========================= */
+
 @keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -186,6 +203,7 @@ a:hover {
   overflow: hidden;
   padding: 100px 0 140px;
 }
+
 .hero::before {
   content: "";
   position: absolute;
@@ -202,6 +220,7 @@ a:hover {
 .hero .button {
   margin: 12px;
 }
+
 .hero h2 {
   font-size: clamp(2.5rem, 10vw, 4rem);
   font-weight: 700;
@@ -215,11 +234,20 @@ a:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .hero p {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
+
+.subtitle {
+  font-size: 1.5rem;
+  max-width: 650px;
+  margin: 0 auto;
+  opacity: 0.75;
+}
+
 .logo-circle {
   width: 180px;
   height: 180px;
@@ -244,19 +272,16 @@ a:hover {
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
+
   100% {
     transform: translateY(0);
   }
 }
-.subtitle {
-  font-size: 1.5rem;
-  max-width: 650px;
-  margin: 0 auto;
-  opacity: 0.75;
-}
+
 .button {
   display: inline-block;
   padding: 12px 24px;
@@ -273,22 +298,33 @@ a:hover {
   transform: translateY(-2px);
   opacity: 0.9;
 }
+
+/* =========================
+   カード一覧
+========================= */
+
 .cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
-  margin-top: 80px;
+  margin-top: 48px;
   align-items: stretch;
 }
 
+/*
+  ブログ一覧といいね一覧で共通使用するカード。
+  .card 自体には大きな上余白を設定しない。
+*/
+
 .card {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 34px;
-  margin-top: 80px;
-  align-items: stretch;
-  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 28px;
+  margin: 0;
+  border-radius: 24px;
   position: relative;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
@@ -298,6 +334,7 @@ a:hover {
     rgba(255, 255, 255, 0.01)
   );
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   transition:
     transform 0.3s ease,
@@ -306,9 +343,9 @@ a:hover {
 }
 
 .card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .card::before {
@@ -325,19 +362,41 @@ a:hover {
     transparent
   );
   transition: left 0.6s ease;
+  pointer-events: none;
 }
 
 .card:hover::before {
   left: 100%;
 }
+
 .card h3 {
-  margin-top: 0;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
+
+.card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.card small {
+  display: block;
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
 .card h3,
 .card p,
 .card a {
   overflow-wrap: anywhere;
 }
+
 .character-icon {
   width: 64px;
   height: 64px;
@@ -345,6 +404,10 @@ a:hover {
   background: var(--accent);
   margin-bottom: 16px;
 }
+
+/* =========================
+   更新情報
+========================= */
 
 .updates {
   margin-top: 100px;
@@ -420,14 +483,21 @@ a:hover {
   font-size: 0.9rem;
   opacity: 0.6;
 }
+
+/* =========================
+   記事
+========================= */
+
 article {
   max-width: 800px;
   margin: 0 auto;
   padding: 40px;
+  box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 24px;
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   line-height: 1.9;
 }
 
@@ -435,6 +505,8 @@ article h1 {
   font-size: 3rem;
   margin-bottom: 12px;
   line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 article h2 {
@@ -469,6 +541,10 @@ article li {
   opacity: 0.6;
   margin-bottom: 32px;
 }
+
+/* =========================
+   フッター
+========================= */
 
 footer {
   margin-top: 100px;
@@ -604,20 +680,190 @@ footer {
   white-space: nowrap;
 }
 
-/* ===== スマホ・タブレット用レスポンシブ設定 (768px以下) ===== */
-@media (max-width: 768px) {
-  .footer-inner {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px 24px;
+/* =========================
+   アカウントリンク
+========================= */
+
+.header-account-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.header-account-link:hover {
+  background: var(--border);
+}
+
+.header-account-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ログイン中のGoogleプロフィール画像 */
+
+.header-account-link.is-logged-in {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 50%;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.header-account-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.header-account-link.is-logged-in:hover {
+  opacity: 0.8;
+  background: transparent;
+}
+
+/* プロフィールとドロップダウンの配置 */
+
+.header-account-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-account-menu {
+  position: absolute;
+  z-index: 10000;
+  top: 100%;
+  right: 0;
+  width: 240px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 12%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: account-menu-in 160ms ease-out;
+  margin-top: 10px;
+}
+
+.header-account-menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -11px;
+  height: 11px;
+}
+
+.header-account-menu[hidden] {
+  display: none !important;
+}
+
+.header-account-menu-user {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.header-account-menu-label {
+  color: var(--text);
+  opacity: 0.6;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.header-account-menu-divider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--border);
+}
+
+.header-account-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.header-account-menu-item:hover {
+  background: var(--border);
+}
+
+.header-account-logout {
+  color: #d93025;
+}
+
+.header-account-menu-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.header-account-menu-item:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@keyframes account-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
   }
 
-  .footer-brand {
-    grid-column: 1 / -1;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   タブレット・スマートフォン
+========================= */
+
+@media (max-width: 768px) {
+  main {
+    padding: 64px 20px;
   }
 
   .cards {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
+    margin-top: 32px;
+  }
+
+  .card {
+    padding: 24px;
   }
 
   .menu-toggle {
@@ -627,7 +873,6 @@ footer {
     flex-direction: column;
   }
 
-  /* モバイル用のナビゲーション（ドロップダウンメニュー）スタイル */
   .header-inner nav {
     display: flex;
     position: absolute;
@@ -643,7 +888,6 @@ footer {
     border-radius: 16px;
     background: var(--bg);
     box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
-
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -675,9 +919,53 @@ footer {
   .header-inner nav a:hover {
     background: var(--border);
   }
+
+  .footer-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px 24px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 480px) {
+  main {
+    padding: 48px 16px;
+  }
+
+  .hero {
+    padding: 64px 0 80px;
+  }
+
+  .hero::before {
+    width: 360px;
+    height: 360px;
+  }
+
+  .subtitle {
+    font-size: 1.15rem;
+  }
+
+  .card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  article {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  article h1 {
+    font-size: 2rem;
+  }
+
+  article h2 {
+    font-size: 1.5rem;
+  }
+
   footer {
     padding: 40px 20px 20px;
   }
@@ -697,11 +985,78 @@ footer {
     flex-direction: column;
     gap: 12px;
   }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .header-search {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-account-link {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  #theme-toggle,
+  .menu-toggle {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
 }
 
+/* =========================
+   ダークモード切り替え・メニュー
+========================= */
+
+#theme-toggle {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+#theme-toggle:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   アニメーション軽減設定
+========================= */
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .header-inner nav,
+  .menu-toggle span,
+  .header-account-menu,
   .footer-social-link,
-  .footer-nav a {
+  .footer-nav a,
+  .card,
+  .button,
+  .hero {
+    animation: none;
     transition: none;
+  }
+
+  .card:hover,
+  .button:hover,
+  .footer-social-link:hover {
+    transform: none;
   }
 }

@@ -1,5 +1,7 @@
+
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import LikeButton from "../../components/LikeButton.astro";
 import posts from "../../data/blog.json";
 
 export function getStaticPaths() {
@@ -17,7 +19,6 @@ const { post } = Astro.props;
 ---
 
 <BaseLayout title={post.title}>
-
   <article>
     <h1>{post.title}</h1>
 
@@ -27,10 +28,10 @@ const { post } = Astro.props;
       <p>{paragraph}</p>
     ))}
 
+    <LikeButton slug={post.slug} />
+
     <p>
       <a href="/blog">← ブログ一覧へ戻る</a>
     </p>
-
   </article>
-
 </BaseLayout>

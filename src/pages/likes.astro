@@ -1,0 +1,309 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="いいねした記事"
+  description="自分がいいねしたブログ記事の一覧"
+>
+  <main class="likes-page">
+    <a href="/account/settings/" class="back-link">
+      ← アカウント設定に戻る
+    </a>
+
+    <p class="eyebrow">YOUR ACTIVITY</p>
+    <h1>いいねした記事</h1>
+
+    <p class="page-description">
+      気に入った記事を、ここからいつでも見返せます。
+    </p>
+
+    <div
+      id="likes-status"
+      class="status"
+      role="status"
+      aria-live="polite"
+    >
+      いいね履歴を読み込んでいます...
+    </div>
+
+    <div id="likes-list" class="likes-list"></div>
+  </main>
+
+  <script>
+    import { supabase } from "../lib/supabase.js";
+    import posts from "../data/blog.json";
+
+    const status = document.querySelector("#likes-status");
+    const list = document.querySelector("#likes-list");
+
+    function showStatus(message) {
+      if (status) {
+        status.textContent = message;
+      }
+    }
+
+    function clearList() {
+      list?.replaceChildren();
+    }
+
+    async function loadLikes() {
+      clearList();
+      showStatus("いいね履歴を読み込んでいます...");
+
+      // ログイン状態を確認
+      const {
+        data: sessionData,
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        console.error("ログイン状態の取得エラー:", sessionError);
+        showStatus(
+          "ログイン状態を確認できませんでした。ページを再読み込みしてください。"
+        );
+        return;
+      }
+
+      const user = sessionData.session?.user;
+
+      // ログインしていない場合
+      if (!user) {
+        showStatus("いいね履歴を見るにはログインしてください。");
+
+        const loginLink = document.createElement("a");
+        loginLink.href = "/login";
+        loginLink.className = "login-link";
+        loginLink.textContent = "ログインする";
+
+        list?.append(loginLink);
+        return;
+      }
+
+      // ログイン中のユーザー自身のいいね履歴を取得
+      const {
+        data: likes,
+        error,
+      } = await supabase
+        .from("likes")
+        .select("post_slug, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("いいね履歴の取得エラー:", error);
+        showStatus(
+          "履歴を取得できませんでした。時間をおいて再度お試しください。"
+        );
+        return;
+      }
+
+      // いいね履歴がない場合
+      if (!likes || likes.length === 0) {
+        showStatus("まだいいねした記事はありません。");
+        return;
+      }
+
+      // blog.json の記事を slug から検索できるようにする
+      const postsBySlug = new Map(
+        posts.map((post) => [post.slug, post])
+      );
+
+      let displayedCount = 0;
+
+      for (const like of likes) {
+        const post = postsBySlug.get(like.post_slug);
+
+        // blog.json に存在しない記事は表示しない
+        if (!post) continue;
+
+        const article = document.createElement("article");
+        article.className = "like-card";
+
+        const link = document.createElement("a");
+        link.className = "like-card-link";
+        link.href = `/blog/${encodeURIComponent(post.slug)}/`;
+
+        const title = document.createElement("h2");
+        title.textContent = post.title;
+
+        const description = document.createElement("p");
+        description.className = "like-description";
+        description.textContent = post.description || "";
+
+        const date = document.createElement("time");
+        date.dateTime = post.date;
+        date.textContent = post.date;
+
+        link.append(title, description, date);
+        article.append(link);
+        list?.append(article);
+
+        displayedCount++;
+      }
+
+      if (displayedCount > 0) {
+        showStatus(
+          `${displayedCount}件の記事にいいねしています。`
+        );
+      } else {
+        showStatus("表示できる記事がありません。");
+      }
+    }
+
+    // 初回読み込み
+    void loadLikes();
+
+    // ログイン状態が変わったら一覧を更新
+    supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        void loadLikes();
+      }
+    });
+  </script>
+
+  <style>
+
+.likes-page {
+  width: min(760px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0 88px;
+  box-sizing: border-box;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 30px;
+  color: var(--text);
+  opacity: 0.7;
+  text-decoration: none;
+  font-size: 14px;
+  transition: opacity 160ms ease;
+}
+
+.back-link:hover {
+  opacity: 1;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.likes-page h1 {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 40px);
+  letter-spacing: -0.04em;
+}
+
+.page-description {
+  margin: 12px 0 28px;
+  line-height: 1.8;
+  opacity: 0.7;
+}
+
+.status {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.75;
+}
+
+.likes-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  width: 100%;
+}
+
+.like-card {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.like-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.like-card-link {
+  display: block;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  padding: 22px;
+  color: var(--text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.like-card h2 {
+  margin: 0 0 10px;
+  font-size: 19px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.like-description {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.75;
+  overflow-wrap: anywhere;
+}
+
+.like-card time {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.login-link {
+  display: inline-block;
+  width: fit-content;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: opacity 160ms ease;
+}
+
+.login-link:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .likes-page {
+    padding-top: 36px;
+  }
+
+  .like-card-link {
+    padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .like-card,
+  .back-link,
+  .login-link {
+    transition: none;
+  }
+
+  .like-card:hover {
+    transform: none;
+  }
+}
+
+  </style>
+</BaseLayout>

@@ -1,0 +1,90 @@
+---
+import "../../styles/callback.css";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { supabase } from "../../lib/supabase.js";
+---
+
+<BaseLayout
+  title="ログイン処理中"
+  description="Googleログインを処理しています"
+>
+  <main class="callback-page">
+    <section class="callback-card">
+      <p class="eyebrow">ログイン処理</p>
+      <h1 id="callback-title">ログインを確認しています...</h1>
+      <p id="callback-status" role="status" aria-live="polite">
+        しばらくお待ちください。
+      </p>
+      <a id="callback-link" href="/" hidden>トップページへ戻る</a>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+ 
+import { supabase } from "../../lib/supabase.js";
+
+const title = document.querySelector<HTMLHeadingElement>("#callback-title");
+const status = document.querySelector<HTMLElement>("#callback-status");
+const link = document.querySelector<HTMLAnchorElement>("#callback-link");
+
+async function handleCallback() {
+  try {
+    // Googleから戻ってきたURLに認証コードがあるか確認
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    const authError =
+      url.searchParams.get("error_description") ||
+      url.searchParams.get("error");
+
+    if (authError) {
+      throw new Error(`Google認証エラー: ${authError}`);
+    }
+
+    // 認証コードがあれば、Supabaseのセッションに交換する
+    if (code) {
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+      if (error) {
+        throw error;
+      }
+    }
+
+    // セッションが確立されたか確認
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data.session) {
+      throw new Error("ログインセッションが見つかりません。");
+    }
+
+    if (title) title.textContent = "ログインしました！";
+    if (status) {
+      status.textContent = "Googleログインが正常に完了しました。";
+    }
+
+    if (link) link.hidden = false;
+
+    // ログイン成功後、トップページへ移動
+    window.setTimeout(() => {
+      window.location.replace("/");
+    }, 1200);
+  } catch (error) {
+    console.error("認証コールバックエラー:", error);
+
+    if (title) title.textContent = "ログインできませんでした";
+    if (status) {
+      status.textContent =
+        "もう一度ログインしてください。詳しい原因はブラウザの開発者ツールで確認できます。";
+    }
+
+    if (link) link.hidden = false;
+  }
+}
+
+handleCallback();
+
+</script>

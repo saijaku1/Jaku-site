@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/login.css";
+---
+
+<BaseLayout title="ログイン" description="Jakuのサイトにログイン">
+  <main class="login-page">
+    <section class="login-card">
+      <p class="eyebrow">アカウント登録</p>
+      <h1>ログイン</h1>
+      <p class="description">
+        Googleアカウントでログインして、Jakuのサイトをもっと楽しもう。
+      </p>
+
+      <button id="google-login" class="google-button" type="button">
+        <span class="google-mark" aria-hidden="true">G</span>
+        Googleでログイン
+      </button>
+
+      <p id="login-status" class="login-status" role="status" aria-live="polite"></p>
+      <a class="back-link" href="/">トップページに戻る</a>
+    </section>
+    
+<section id="account-info" hidden>
+  <p>ログイン中のアカウント</p>
+  <p id="user-email"></p>
+  <button id="logout-button" type="button">
+    ログアウト
+  </button>
+</section>
+
+  </main>
+</BaseLayout>
+
+<script>
+  import "../scripts/auth.js";
+</script>

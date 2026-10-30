@@ -1,0 +1,673 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="アカウント設定"
+  description="Jakuのサイトのアカウント設定"
+>
+  <main class="settings-page">
+    <header class="settings-heading">
+      <a href="/" class="back-link">← ホームに戻る</a>
+      <p class="eyebrow">ACCOUNT</p>
+      <h1>アカウント設定</h1>
+      <p class="settings-description">
+        プロフィールやアカウントの情報を管理できます。
+      </p>
+    </header>
+
+    <section class="settings-card" aria-labelledby="profile-title">
+      <div class="card-heading">
+        <div>
+          <h2 id="profile-title">プロフィール</h2>
+          <p>ほかの場所で表示するユーザー名を設定します。</p>
+        </div>
+      </div>
+
+      <div id="settings-loading" class="notice">
+        アカウント情報を読み込んでいます...
+      </div>
+
+      <div id="settings-logged-out" class="notice" hidden>
+        <p>設定を利用するにはログインしてください。</p>
+        <a class="primary-button" href="/login">ログインする</a>
+      </div>
+
+      <form id="profile-form" hidden>
+        <div class="profile-preview">
+          <img
+            id="profile-avatar"
+            class="profile-avatar"
+            src="/characters/Jaku.svg"
+            alt="プロフィール画像"
+          />
+          <div class="profile-identity">
+            <strong id="profile-preview-name">ユーザー</strong>
+            <span>Googleアカウント</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="username">ユーザー名</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            maxlength="24"
+            minlength="1"
+            placeholder="ユーザー名を入力"
+            autocomplete="nickname"
+            required
+          />
+          <p class="field-help">
+            1〜24文字で設定できます。ここで変更するのは表示名です。
+          </p>
+        </div>
+                <div class="form-field">
+          <label for="bio">自己紹介</label>
+
+          <textarea
+            id="bio"
+            name="bio"
+            maxlength="300"
+            rows="4"
+            placeholder="あなたについて自由に紹介してください"
+          ></textarea>
+
+          <p class="field-help">
+            300文字以内で入力できます。
+          </p>
+        </div>
+        <div class="form-field">
+          <label for="email">メールアドレス</label>
+          <input id="email" type="email" readonly disabled />
+          <p class="field-help">
+            Googleログインで使用しているメールアドレスです。
+          </p>
+        </div>
+
+        <div id="settings-message" class="settings-message" role="status" aria-live="polite" hidden></div>
+
+        <div class="form-actions">
+          <button id="save-profile" class="primary-button" type="submit">
+            変更を保存
+          </button>
+        </div>
+      </form>
+    </section>
+        <section class="settings-card account-links-card">
+      <div class="card-heading">
+        <h2>アカウント機能</h2>
+        <p>ログイン中に利用できる機能を確認できます。</p>
+      </div>
+
+      <a class="account-feature-link" href="/likes/">
+        <span>
+          <strong>いいねした記事</strong>
+          <span class="feature-description">
+            気に入ったブログ記事を一覧で確認できます。
+          </span>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
+            <a
+        id="public-profile-link"
+        class="account-feature-link"
+        href="#"
+        hidden
+      >
+        <span>
+          <strong>自分の公開プロフィール</strong>
+          <span class="feature-description">
+            ほかの人から見える自分のプロフィールを確認できます。
+          </span>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
+              <button
+          id="profile-copy-button"
+          class="account-feature-link profile-copy-button"
+          type="button"
+          hidden
+        >
+          <span>
+            <strong>プロフィールURLをコピー</strong>
+            <span class="feature-description">
+              自分のプロフィールをほかの人に共有できます。
+            </span>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </button>
+    </section>
+  </main>
+
+  <script>
+    import { supabase } from "../../lib/supabase.js";
+
+    const loading = document.querySelector("#settings-loading");
+    const loggedOut = document.querySelector("#settings-logged-out");
+    const form = document.querySelector("#profile-form");
+    const usernameInput = document.querySelector("#username");
+    const bioInput = document.querySelector("#bio");
+    const emailInput = document.querySelector("#email");
+    const avatar = document.querySelector("#profile-avatar");
+    const previewName = document.querySelector("#profile-preview-name");
+    const message = document.querySelector("#settings-message");
+    const saveButton = document.querySelector("#save-profile");
+    const publicProfileLink = document.querySelector("#public-profile-link");
+    const profileCopyButton = document.querySelector("#profile-copy-button");
+
+    let currentUser = null;
+
+    function getDisplayName(user) {
+      const metadata = user.user_metadata ?? {};
+
+      return (
+        metadata.display_name ??
+        metadata.full_name ??
+        metadata.name ??
+        user.email?.split("@")[0] ??
+        "ユーザー"
+      );
+    }
+
+    function showMessage(text, type = "success") {
+      message.textContent = text;
+      message.dataset.type = type;
+      message.hidden = false;
+    }
+
+    function hideMessage() {
+      message.hidden = true;
+      message.textContent = "";
+    }
+
+    function showLoggedOut() {
+      loading.hidden = true;
+      form.hidden = true;
+      loggedOut.hidden = false;
+    }
+    publicProfileLink.hidden = true;
+    profileCopyButton.hidden = true;
+
+
+    function showProfile(user) {
+      currentUser = user;
+      // 自分の公開プロフィールへのリンクを設定
+      publicProfileLink.href =
+      `/profile/?id=${encodeURIComponent(user.id)}`;
+      publicProfileLink.hidden = false;
+      profileCopyButton.hidden = false;
+
+      const metadata = user.user_metadata ?? {};
+      const avatarUrl = metadata.avatar_url ?? metadata.picture;
+
+      usernameInput.value = getDisplayName(user);
+      emailInput.value = user.email ?? "";
+      bioInput.value = metadata.bio ?? "";
+      previewName.textContent = usernameInput.value;
+
+      if (avatarUrl) {
+        avatar.src = avatarUrl;
+      } else {
+        avatar.src = "/characters/Jaku.svg";
+      }
+
+      loading.hidden = true;
+      loggedOut.hidden = true;
+      form.hidden = false;
+    }
+
+    usernameInput.addEventListener("input", () => {
+      previewName.textContent = usernameInput.value || "ユーザー";
+      hideMessage();
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      hideMessage();
+
+      if (!currentUser) {
+        showLoggedOut();
+        return;
+      }
+
+      const username = usernameInput.value.trim();
+      const bio = bioInput.value.trim();
+
+      if (!username || username.length > 24) {
+        showMessage("ユーザー名は1〜24文字で入力してください。", "error");
+        return;
+      }
+
+      saveButton.disabled = true;
+      saveButton.textContent = "保存中...";
+
+      try {
+        const { data, error } = await supabase.auth.updateUser({
+          data: {
+            display_name: username,
+            full_name: username,
+            name: username,
+            bio: bio,
+          },
+        });
+
+        if (error) {
+          throw error;
+        }
+        if (data.user) {
+          // 画面の表示を更新
+          showProfile(data.user);
+
+          // 公開プロフィール用テーブルにも保存
+          const { error: profileError } = await supabase
+            .from("profiles")
+            .upsert(
+              {
+                id: data.user.id,
+                username,
+                bio,
+                avatar_url:
+                  data.user.user_metadata?.avatar_url ??
+                  data.user.user_metadata?.picture ??
+                  null,
+                updated_at: new Date().toISOString(),
+              },
+              {
+                onConflict: "id",
+              }
+            );
+
+          if (profileError) {
+            console.error("公開プロフィール保存エラー:", profileError);
+            showMessage(
+              "アカウント情報は保存されましたが、公開プロフィールの保存に失敗しました。もう一度お試しください。",
+              "error"
+            );
+            return;
+          }
+        }
+
+        showMessage("変更を保存しました。");
+      } catch (error) {
+        console.error("プロフィール更新エラー:", error);
+        showMessage(
+          "保存できませんでした。通信状況を確認して、もう一度お試しください。",
+          "error"
+        );
+      } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "変更を保存";
+      }
+    });
+
+    async function initializeSettings() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) {
+          throw error;
+        }
+
+        if (!data.session?.user) {
+          showLoggedOut();
+          return;
+        }
+
+        showProfile(data.session.user);
+      } catch (error) {
+        console.error("アカウント情報の取得エラー:", error);
+        loading.textContent =
+          "アカウント情報を読み込めませんでした。ページを再読み込みしてください。";
+      }
+    }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session?.user) {
+        showLoggedOut();
+        return;
+      }
+
+      if (event === "USER_UPDATED") {
+        showProfile(session.user);
+      }
+    });
+
+    void initializeSettings();
+    // 公開プロフィールURLをコピー
+profileCopyButton.addEventListener("click", async () => {
+  if (!currentUser) return;
+
+  const profileUrl = new URL(
+    `/profile/?id=${encodeURIComponent(currentUser.id)}`,
+    window.location.origin
+  ).toString();
+
+  try {
+    await navigator.clipboard.writeText(profileUrl);
+
+    const title = profileCopyButton.querySelector("strong");
+    title.textContent = "コピーしました！";
+
+    setTimeout(() => {
+      title.textContent = "プロフィールURLをコピー";
+    }, 2000);
+
+  } catch (error) {
+    console.error("URLコピーエラー:", error);
+    showMessage(
+      "コピーできませんでした。ブラウザの権限を確認してください。",
+      "error"
+    );
+  }
+});
+  </script>
+
+  <style>
+    .settings-page {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 88px;
+    }
+
+    .settings-heading {
+      margin-bottom: 32px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: var(--text);
+      opacity: 0.7;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      opacity: 1;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+    }
+
+    .settings-heading h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 40px);
+      letter-spacing: -0.04em;
+    }
+
+    .settings-description {
+      margin: 12px 0 0;
+      color: var(--text);
+      opacity: 0.7;
+      line-height: 1.8;
+    }
+
+    .settings-card {
+      padding: clamp(20px, 4vw, 32px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--bg);
+      box-shadow: 0 12px 36px rgb(0 0 0 / 5%);
+    }
+
+    .card-heading {
+      margin-bottom: 26px;
+    }
+
+    .card-heading h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .card-heading p {
+      margin: 8px 0 0;
+      color: var(--text);
+      opacity: 0.7;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .profile-preview {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      background: var(--bg);
+    }
+
+    .profile-identity {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .profile-identity strong {
+      overflow-wrap: anywhere;
+      font-size: 17px;
+    }
+
+    .profile-identity span {
+      font-size: 13px;
+      opacity: 0.65;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 24px;
+    }
+
+    .form-field label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .form-field input {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .form-field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+    }
+
+    .form-field input:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+.form-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.form-field textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+    .field-help {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.7;
+      opacity: 0.65;
+    }
+
+    .settings-message {
+      margin: 4px 0 18px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .settings-message[data-type="success"] {
+      background: color-mix(in srgb, var(--accent) 9%, var(--bg));
+    }
+
+    .settings-message[data-type="error"] {
+      border-color: #d93025;
+      color: #d93025;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .primary-button:hover {
+      opacity: 0.88;
+    }
+
+    .primary-button:active {
+      transform: scale(0.98);
+    }
+
+    .primary-button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .notice {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .notice[hidden],
+    #profile-form[hidden] {
+      display: none !important;
+    }
+    .account-links-card {
+      margin-top: 20px;
+    }
+
+    .account-feature-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color 160ms ease, transform 160ms ease;
+    }
+
+    .account-feature-link:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .account-feature-link > span:first-child {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .feature-description {
+      font-size: 13px;
+      line-height: 1.7;
+      opacity: 0.7;
+    }
+    .profile-copy-button {
+      width: 100%;
+      margin-top: 12px;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .account-feature-link {
+        transition: none;
+      }
+    }
+    @media (max-width: 600px) {
+      .settings-page {
+        padding-top: 36px;
+      }
+
+      .settings-card {
+        border-radius: 18px;
+      }
+
+      .form-actions,
+      .form-actions .primary-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .form-field input,
+      .form-field input,
+      .form-field textarea,
+      .primary-button {
+        transition: none;
+      }
+    }
+  </style>
+</BaseLayout>
