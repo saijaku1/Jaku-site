@@ -1,4 +1,290 @@
+
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/farce.css';
+
+const characters = {
+  jaku: {
+    image: '/characters/Jaku.svg',
+    name: 'Jaku',
+  },
+  kokotu: {
+    image: '/characters/kokotu.svg',
+    name: 'ココツ',
+  },
+  usa: {
+    image: '/characters/usa.svg',
+    name: 'ウサ',
+  },
+  upunushi: {
+    image: '/characters/upunushi.svg',
+    name: 'うp主',
+  },
+};
+
+
+
+const scenes = [
+  // --- 放課後・現在 ---
+  { note: '放課後。Jakuの部屋。机の上にはノートパソコン、ポテチ、飲みかけのジュース。そして、なぜか積み上げられた大量の技術書。' },
+  { note: 'パソコンの画面には、編集中の茶番のページが表示されている。' },
+
+  { speaker: 'jaku', text: '……。' },
+  { speaker: 'jaku', text: 'うーん……。' },
+  { speaker: 'jaku', text: '……はぁ。' },
+  { speaker: 'jaku', text: 'サイトの第二話を更新しようと思ったんだけど、全然編集が進まないんだよなぁ……。' },
+  { speaker: 'jaku', text: 'セリフを考えるのも大変だし、画像を用意するのも面倒だし……。' },
+  { speaker: 'jaku', text: 'そもそも、なんで僕はこんなに頑張っているんだろう……。' },
+
+  { speaker: 'kokotu', text: '……じゃくくん？' },
+  { speaker: 'jaku', text: 'ん？' },
+  { speaker: 'kokotu', text: 'さっきからずっとパソコンとにらめっこしてるけど、何してるの？' },
+  { speaker: 'jaku', text: '見ての通り、第二話の編集中なんだよ。' },
+  { speaker: 'kokotu', text: 'ああ、茶番の編集か！ もうそんなところまで進んでいたんだね。' },
+  { speaker: 'jaku', text: '進んでいたというより、進めないといけないんだよ……。' },
+  { speaker: 'kokotu', text: 'あれ？ なんだか元気がないね。' },
+  { speaker: 'jaku', text: 'そりゃそうだよ。編集って思ったより大変なんだから。' },
+
+  { speaker: 'usa', text: 'おや？ 何やらお困りのようですね。' },
+  { speaker: 'jaku', text: 'あ、ウサ。ちょうどいいところに。' },
+  { speaker: 'usa', text: 'こんにちは！ それで、何をしているんですか？' },
+  { speaker: 'jaku', text: '第二話を作っているところ。だけど、全然終わらないんだよね。' },
+  { speaker: 'usa', text: 'なるほど……。ふむふむ。' },
+  { speaker: 'usa', text: '確かに、これはなかなか大変そうですね。' },
+  { speaker: 'kokotu', text: 'でしょ？ じゃくくん、さっきからずっとこんな感じなんだよ。' },
+  { speaker: 'jaku', text: 'はぁ……。こうなった原因を今から見せてやるよ。' },
+
+    { heading: '二日前' },
+    { note: 'その頃、うp主は第二話の制作を進めていた。' },
+    { speaker: 'upunushi', text: 'ふう……よし。ここはこうしてっと。' },
+    { speaker: 'upunushi', text: '……あ。そういえば、急に用事が入ったんだった。' },
+    { speaker: 'upunushi', text: 'まずいな……。公開期限まであと3日しかないのに。' },
+    { speaker: 'upunushi', text: 'このままじゃ間に合わない。誰かに代わってもらうしかないか……。' },
+    { note: 'うp主はスマホを手に取った。' },
+    { note: 'そして……' },
+    { image: 'call.jpg', alt: '二日前、うp主からJakuに電話がかかってきた場面' },
+
+  { note: '急なうｐ主の依頼とじゃくの意見を無視して電話を切られる。突然の依頼に、しばらく呆然としていた。' },
+  { speaker: 'jaku', text: '…………。' },
+  { speaker: 'jaku', text: '……え？' },
+  { speaker: 'jaku', text: 'いやいやいや、ちょっと待てよ！！' },
+  { speaker: 'jaku', text: 'なんで僕が第二話を作ることになってるんだ！？' },
+  { speaker: 'jaku', text: 'あいつ……本当に勝手なことを言ってくれるな……。' },
+  { speaker: 'jaku', text: '……はぁ。仕方ない。あいつ普通に体調悪そうな感じだったし...引き受けたからにはやるしかないか。' },
+
+  { note: 'こうして、Jakuは突然第二話の制作を任されることになった。' },
+  { note: '公開期限まで残り1日。' },
+  { note: 'そして、現在に至る' },
+  { speaker: 'jaku', text: 'よし……。とりあえず、第二話を公開できる状態にしないと。' },
+  { speaker: 'jaku', text: 'セリフも考えないといけないし、画像も整理しないといけないし……。' },
+  { speaker: 'jaku', text: 'うーん……これは普通に大変そうだぞ。' },
+  { speaker: 'jaku', text: 'まずはセリフを並べて……。' },
+{ note: 'Jakuはパソコンの画面を見つめる。' },
+{ speaker: 'jaku', text: '……いや、これだと会話の流れがおかしいな。' },
+{ speaker: 'jaku', text: 'ここのセリフを直して……。あ、今度は前後がつながらなくなった。' },
+{ speaker: 'jaku', text: 'ちょっと待て。画像の配置も考えないといけないのか……。' },
+{ speaker: 'jaku', text: 'セリフ、画像、文章の配置……。これ全部一人でやるの？' },
+{ speaker: 'jaku', text: 'うp主、いつもこんなことやってたのか……。' },
+{ speaker: 'jaku', text: '……あいつ、意外と頑張ってたんだな。' },
+  { speaker: 'kokotu', text: 'じゃくくん、大丈夫？ なんだか忙しそうだけど。' },
+  { speaker: 'jaku', text: 'ああ、ココツ。ちょっとね。第二話の編集が終わらなくてさ。' },
+  { speaker: 'kokotu', text: 'へぇ、そうなんだ。そんなに大変なの？' },
+  { speaker: 'jaku', text: '大変だよ！ 思っていた以上に作業が多いんだから！' },
+  { speaker: 'kokotu', text: 'ふーん……。' },
+  { speaker: 'kokotu', text: 'それなら、手伝ってあげようか？' },
+  { speaker: 'jaku', text: '……え？' },
+  { speaker: 'jaku', text: 'いいの！？ 本当に！？' },
+  { speaker: 'kokotu', text: 'うん。そんなに驚かなくてもいいじゃないか。' },
+  { speaker: 'jaku', text: 'いやいや、まさかココツからそんな言葉が出てくるとは……。' },
+  { speaker: 'kokotu', text: 'それ、どういう意味なの！？' },
+
+  { speaker: 'usa', text: 'あ、私も手伝いますよ。ちょうど暇でしたし。' },
+  { speaker: 'jaku', text: 'ウサまで！？' },
+  { speaker: 'usa', text: 'もちろんです。困っているときはお互い様ですからね。' },
+  { speaker: 'kokotu', text: 'そうそう！ みんなでやれば、きっとすぐ終わるよ！' },
+  { speaker: 'jaku', text: 'ありがとう！ みんな！ 本当に助かるよ！' },
+  { speaker: 'jaku', text: 'いやぁ、持つべきものは友達だね！' },
+
+  { speaker: 'kokotu', text: '……え？' },
+  { speaker: 'jaku', text: 'ん？ どうしたの？' },
+  { speaker: 'kokotu', text: '僕たち、友達だよね？' },
+  { speaker: 'jaku', text: '……。' },
+  { speaker: 'jaku', text: 'へ？ 僕らは赤の他人じゃないの？' },
+  { speaker: 'kokotu', text: '…………。' },
+  { speaker: 'usa', text: '……（じゃく。やりましたね）' },
+  { speaker: 'jaku', text: 'え、何？ なんで二人とも黙ってるの？' },
+  { speaker: 'kokotu', text: '……じゃくくん。ちょっとこっちに来てくれる？' },
+
+  { note: 'その後どうなったのかは、ご想像にお任せします。' },
+
+  // --- 再び現在 ---
+  { note: 'そして現在。あの出来事のせいで、作業はさらに遅れてしまったようだ。' },
+
+  { speaker: 'kokotu', text: 'ふー。' },
+  { speaker: 'jaku', text: '……ああ、もう。' },
+  { speaker: 'jaku', text: 'ココツのせいで時間がつぶれた！！' },
+  { speaker: 'kokotu', text: 'えー？ 僕のせいなの？' },
+  { speaker: 'jaku', text: 'どう考えてもそうだろ！！ こっちは時間がないんだよ！！' },
+  { speaker: 'kokotu', text: 'まあまあ、そんなに怒らないでよ。' },
+  { speaker: 'jaku', text: '怒りたくもなるわ！！' },
+
+  // --- ポテチ消失事件 ---
+  { speaker: 'jaku', text: '……。' },
+  { speaker: 'jaku', text: '……あれ？' },
+  { speaker: 'jaku', text: 'ちょっと待って。' },
+  { speaker: 'jaku', text: '僕のポテチ、どこ行った？' },
+  { speaker: 'jaku', text: 'さっきまでここに置いてあったはずなんだけど……。' },
+  { speaker: 'jaku', text: '……まさか。' },
+  { speaker: 'jaku', text: '誰だよ！！ ポテチ全部食べたの！！' },
+
+  { speaker: 'kokotu', text: 'えっ！？ 何のこと？' },
+  { speaker: 'jaku', text: '何のことじゃないよ！ 机の上にあったポテチだよ！' },
+  { speaker: 'kokotu', text: 'ああ、それね。え、僕じゃないよ！？ ……たぶんね？' },
+  { speaker: 'jaku', text: '最後の「たぶんね？」がめちゃくちゃ怪しいんだけど！！' },
+
+  { speaker: 'usa', text: 'いや、私も食べてませんよ！' },
+  { speaker: 'jaku', text: '本当に？' },
+  { speaker: 'usa', text: 'もちろんです！ ……（嘘だけど、今は見逃して）' },
+  { speaker: 'jaku', text: '今、何か言わなかった？' },
+  { speaker: 'usa', text: 'いえ！ 何も言っていませんよ！' },
+
+  { speaker: 'jaku', text: '……って、誰が食べたか分からないじゃないか！！' },
+  { speaker: 'kokotu', text: 'うーん……。' },
+  { speaker: 'kokotu', text: 'もしかして、幽霊の仕業……？' },
+  { speaker: 'jaku', text: '幽霊！？ いや、いたら怖すぎるだろ！！！' },
+  { speaker: 'kokotu', text: 'だって、誰も食べたって言わないんでしょ？' },
+  { speaker: 'jaku', text: 'だからって幽霊のせいにするなよ！！' },
+  { speaker: 'usa', text: 'でも、幽霊だったら「ポテチを食べる幽霊」ってなかなかレアですね……。' },
+  { speaker: 'jaku', text: 'そんなレアな幽霊いらないわ！！' },
+  { speaker: 'kokotu', text: 'もしかしたら、ポテチが好きすぎて成仏できなかったのかも……。' },
+  { speaker: 'jaku', text: '勝手に設定を追加するな！！' },
+
+  // --- タイピング合戦 ---
+  { speaker: 'jaku', text: '……はぁ。もういい。ポテチのことは一旦忘れよう。' },
+  { speaker: 'jaku', text: '今はとにかく第二話を完成させるのが先だ。' },
+  { speaker: 'kokotu', text: 'そうだね！ じゃあ、気分転換に何かしようか！' },
+  { speaker: 'jaku', text: 'いや、気分転換している時間なんてないんだけど……。' },
+  { speaker: 'kokotu', text: 'よし！ みんなでタイピング合戦だ！' },
+  { speaker: 'jaku', text: '……は？' },
+  { speaker: 'kokotu', text: '制限時間は……30秒！' },
+  { speaker: 'jaku', text: 'いや、今それどころじゃねぇわ！！！' },
+  { speaker: 'jaku', text: 'マジで第二話を完成させないといけないんだよ！！！' },
+  { speaker: 'kokotu', text: 'えー、いいじゃん！ ちょっとくらい！' },
+  { speaker: 'usa', text: 'そうですよ！ たまには息抜きも大切です！' },
+  { speaker: 'jaku', text: 'いやいや、二人とも状況を理解してる！？' },
+  { speaker: 'usa', text: 'ちなみに、負けた人はポテチを買ってくる罰ゲーム！ なんてどうでしょうか？' },
+  { speaker: 'kokotu', text: 'おお！ それはいいね！' },
+  { speaker: 'jaku', text: '……。' },
+  { speaker: 'jaku', text: 'お前ら、ポテチを食べたいだけだろ！！' },
+  { speaker: 'kokotu', text: 'そ、そんなことないよ！？' },
+  { speaker: 'usa', text: 'わ、私も純粋にゲームを楽しみたいだけです！' },
+  { speaker: 'jaku', text: '絶対嘘だろ！！' },
+  { speaker: 'kokotu', text: 'ほらほら！ 早くパソコンを開いて！' },
+  { speaker: 'jaku', text: 'いや、もう開いてるわ！！' },
+  { speaker: 'usa', text: 'それでは、準備はいいですか？' },
+  { speaker: 'jaku', text: 'よくない！！ 全然よくない！！' },
+  { note: 'こうして、Jakuの意思とは関係なくタイピング合戦が始まった。' },
+  { speaker: 'jaku', text: 'お前ら……あとで覚えてろよ……！！' },
+  { note: '30秒後。' },
+  { speaker: 'kokotu', text: 'いやー！ なかなか楽しかったね！' },
+  { speaker: 'usa', text: 'ふふっ。思ったより白熱しましたね。' },
+  { speaker: 'jaku', text: '……僕の作業時間を返してくれ。' },
+
+  // --- エンディング ---
+{ note: 'こうしてJakuは、急に頭がおかしくなったココツたちに強制的にタイピングをさせられたのでした。' },
+{ note: '第二話の編集が無事に終わったのかどうかは、また別のお話……。おしまい。' },
+
+{ note: 'そして、数日後。' },
+{ note: 'ようやく用事を終えたうp主が、完成した第二話を確認していた。' },
+
+{ speaker: 'upunushi', text: '…………。' },
+{ speaker: 'upunushi', text: '何だ。このクソ茶番。しょうもねぇ……。' },
+{ speaker: 'upunushi', text: '全体的にテンポもクソだし。なんだよこれ。' },
+{ speaker: 'upunushi', text: 'セリフも無駄に多いし、同じような会話を何回繰り返すんだよ……。' },
+{ speaker: 'upunushi', text: 'しかも、タイピング合戦って何？ 第二話と何の関係があるんだよ。' },
+
+{ note: 'うp主はさらにページをスクロールする。' },
+
+{ speaker: 'upunushi', text: '画像の配置もなんか適当だし……。' },
+{ speaker: 'upunushi', text: 'そもそも、これ編集大変っていうより、編集をサボって遊んでただけじゃないのか？' },
+{ speaker: 'upunushi', text: 'まぁ、僕が依頼したのはそうだけど……さすがにこれはないわ。' },
+
+{ note: 'その頃、Jakuたちは……。' },
+
+{ speaker: 'jaku', text: '……なんか今、誰かに悪口を言われた気がする。' },
+{ speaker: 'kokotu', text: '気のせいじゃない？' },
+{ speaker: 'usa', text: 'いえ、たぶん気のせいではないと思いますよ。' },
+
+{ note: '一方、うp主はまだ何か言いたそうだった。' },
+
+{ speaker: 'upunushi', text: 'ていうか、そもそもこの茶番を読んでいる人はいるのか？' },
+{ speaker: 'upunushi', text: 'こんな内容に時間をかけている僕も僕だけどさ……。' },
+{ speaker: 'upunushi', text: '……もういい。次回からは自分で作る。' },
+{ speaker: 'upunushi', text: 'というわけで、次回は第三話「独りぼっち...?」です。' },
+{ speaker: 'upunushi', text: '……頼むから次はまともな内容にしてくれよ。' },
+];
 ---
+
+<BaseLayout title="【第二話】 編集大変！！" description="Jakuたちの茶番、第2話！">
+
+  <main class="episode">
+
+    <header class="episode-header">
+      <p class="episode-label">JAKU'S FARCE / EPISODE 02</p>
+      <h1>【第二話】 編集大変！！</h1>
+      <p class="episode-description">
+        ※これは二代目の公式サイトの茶番を新編集した茶番です。
+      </p>
+      <h2 class="episode-description">
+        編集に追われるJakuたちの、ちょっとおかしな物語。
+      </h2>
+    </header>
+
+    <section class="story" aria-label="第二話の本編">
+
+      {scenes.map((scene) => (
+        scene.image ? (
+          <figure class="scene-image">
+            <img
+              src={`/farce/episode-2/${scene.image}`}
+              alt={scene.alt ?? ''}
+              loading="lazy"
+            />
+          </figure>
+        ) : scene.heading ? (
+          <h2 class="scene-heading">{scene.heading}</h2>
+        ) : scene.note ? (
+          <p class="scene-note">{scene.note}</p>
+        ) : (
+          <article class:list={['talk', scene.speaker]}>
+            <img
+              class="avatar"
+              src={characters[scene.speaker].image}
+              alt={characters[scene.speaker].name}
+              loading="lazy"
+            />
+            <p class="speech">{scene.text}</p>
+          </article>
+        )
+      ))}
+
+    </section>
+
+    <section class="next-preview">
+      <p class="preview-label">NEXT EPISODE</p>
+      <h2>次回！</h2>
+      <p>第三話「独りぼっち...？」</p>
+    </section>
+
+    <nav class="episode-navigation" aria-label="エピソード移動">
+      <a href="/farce/">茶番一覧へ戻る</a>
+      <a href="/farce/episode-3">次の話を見る →</a>
+    </nav>
+
+  </main>
+
+  <script>
+    import '../../scripts/farce.js';
+  </script>
+
+</BaseLayout>

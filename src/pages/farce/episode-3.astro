@@ -1,0 +1,329 @@
+
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/farce.css';
+
+const characters = {
+  jaku: {
+    image: '/characters/Jaku.svg',
+    name: 'Jaku',
+  },
+  kokotu: {
+    image: '/characters/kokotu.svg',
+    name: 'ココツ',
+  },
+  usa: {
+    image: '/characters/usa.svg',
+    name: 'ウサ',
+  },
+  upunushi: {
+    image: '/characters/upunushi.svg',
+    name: 'うp主',
+  },
+  aoi: {
+    image: '/characters/aoi.svg',
+    name: '葵',
+  },
+};
+
+const scenes = [
+  // =====================================
+  // オープニング
+  // =====================================
+
+  { speaker: 'upunushi', text: 'ごめんなさい。めっちゃタイトル詐欺です。すいません。' },
+
+  { note: '今回の茶番は、少しだけ時間をさかのぼったところから始まる。' },
+
+  { note: 'この日、Jakuは自分のプログラミング用ロゴを作ろうとしていた。' },
+
+  // =====================================
+  // ロゴ制作
+  // =====================================
+
+  { speaker: 'jaku', text: 'はぁ……。なかなかいいものが見つからねぇぜ。' },
+
+  { note: 'パソコンの画面には、AIで生成されたロゴの候補がいくつも並んでいる。' },
+   { image: 'searchjaku.jpg', alt: 'ロゴを探しまくるじゃく' },
+  { speaker: 'jaku', text: 'うーん……。なんか違うんだよなぁ。' },
+
+  { speaker: 'jaku', text: 'もう少しシンプルで、それでいてかっこいいやつが欲しいんだよ。' },
+
+  { note: 'Jakuは検索条件を変え、何度も画像を生成し直した。' },
+
+  { speaker: 'jaku', text: 'おっ！ これはいいんじゃないか！？' },
+
+  { note: '数秒後。' },
+
+  { speaker: 'jaku', text: '……いや、やっぱり違うわ。' },
+
+  { speaker: 'jaku', text: 'なんでだよ！！ さっきは良いと思ったのに！！' },
+
+  { speaker: 'jaku', text: 'AIに頼んでも、なんか惜しいんだよ！！ なんか違うんだよ！！' },
+
+  { note: '気づけば、画面には似たようなロゴが大量に並んでいた。' },
+
+  { speaker: 'jaku', text: 'もう何個生成したんだよ……。そろそろパソコンがかわいそうだろ。' },
+  { note: 'しばらくして...' },
+   { image: 'ikariJaku.jpg', alt: '怒り狂うじゃく' },
+  { speaker: 'jaku', text: 'うぎゃぁぁぁぁぁ！！！ 全然いいのが見つからない！！！！' },
+
+  { note: 'Jakuは椅子にもたれかかり、天井を見上げた。' },
+
+  { speaker: 'jaku', text: '誰か助けてくれぇ……。' },
+
+  // =====================================
+  // 突然の来訪者
+  // =====================================
+
+  { note: '……っと、そのときだった。' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: '私を呼んだ……？' },
+
+  { image: 'aoi.png', alt: '突然Jakuの部屋に現れた葵' },
+
+  { speaker: 'jaku', text: 'は……？' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: 'こ、こんにちは……。' },
+
+  { speaker: 'jaku', text: 'ぎゃあ！！！ 不法侵入者！！！ ココツ！！ 警察！！！！！' },
+
+  { speaker: 'aoi', expression: 'okoruaoi.png', text: '違うから！！！！' },
+
+  { speaker: 'jaku', text: 'じゃあ誰だよ！！！！ なんでアニメにいそうなキャラクターがこんな現実の世界に来てるのさ！！' },
+
+  { speaker: 'aoi', expression: 'okoruaoi.png', text: 'だってあなたが呼んだじゃん！！！' },
+
+  { speaker: 'jaku', text: '待て待て。意味が分からない。僕がいつ君を呼んだっていう証拠があるんだよ……。' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: 'えっ……。だって、さっきからずっと呼んでたじゃん。' },
+
+  { speaker: 'jaku', text: 'いや、僕が呼んでたのは「誰か助けてくれぇ」っていう心の叫びであって……。' },
+
+  { speaker: 'jaku', text: 'まさか本当に誰か来るとは思わないだろ！！！' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'えっ……。じゃあ、私じゃなかったの……？' },
+
+  { speaker: 'jaku', text: 'そこを落ち込まれても困るんだけど！？' },
+
+  // =====================================
+  // 状況確認
+  // =====================================
+
+  { note: 'Jakuは頭を抱えながら、部屋の中を見回した。' },
+
+  { note: '部屋には散らかったポテチの袋、空のエナジードリンクの缶、積み上がった技術書……。' },
+
+  { note: 'どう見ても「異世界からの来訪者を招き入れる」ような部屋ではない。' },
+
+  { speaker: 'jaku', text: 'お、おいココツ！ これは夢か！？ それとも僕のAIがバグって新しい生命体でも作っちまったのか！？' },
+
+  { note: 'しかし、ココツはここにはいなかった。' },
+
+  { speaker: 'jaku', text: '……あれ？ ココツ？' },
+
+  { speaker: 'jaku', text: 'そうだった！ 今ココツってウサと買い物中だったんだ！！！' },
+
+  { speaker: 'jaku', text: 'なんでこういうときに限っていないんだよ……。' },
+
+  { note: '頼れる相手がいないことに気づき、Jakuはさらに焦り始めた。' },
+
+  { speaker: 'jaku', text: 'こういうときこそ、あいつの知識が必要なのに……。' },
+
+  { speaker: 'jaku', text: 'いや、待てよ。そもそもココツに聞いたところで解決するのか？' },
+
+  { speaker: 'jaku', text: 'あいつなら「興味深い現象ですね」とか言って観察し始めそうだな……。' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'あの……。' },
+
+  { speaker: 'jaku', text: 'ん？' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: '私、そんなに怪しい人じゃないよ……？' },
+
+  { speaker: 'jaku', text: 'いや、突然人の部屋に現れた時点で十分怪しいんだけど。' },
+
+  // =====================================
+  // 葵の正体？
+  // =====================================
+
+  { note: 'そして訪問者――白と銀髪の少女は、真っ赤な顔をしながら叫んだ。' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: '私はAIじゃない！ 人間！ ……たぶん！ ……いや、多分じゃなくて絶対！' },
+
+  { speaker: 'jaku', text: '「たぶん」って言ったぁぁぁぁ！！！ おしまいだ！！ 僕は消される！！！！' },
+
+  { image: 'zetuboujaku.png', alt: '絶望するJaku' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: 'ええ！！ 見た目変わった！？！？' },
+
+  { speaker: 'jaku', text: 'あ、すいません。嘘です。気にしないでください。' },
+
+  { speaker: 'aoi', expression: 'egaoaoi.png', text: '……。' },
+
+  { speaker: 'jaku', text: '……何その目。' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'いや……なんか、思っていた人と違うなって……。' },
+
+  { speaker: 'jaku', text: '初対面でそんなこと言われる！？' },
+
+  { speaker: 'jaku', text: '……はぁ。結局、君ってどこから来たんだよ……。' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'えっとですね……その、システム的な副作用で……えっと……。' },
+
+  { speaker: 'jaku', text: '何言ってんだこいつ。' },
+
+  { speaker: 'aoi', expression: 'okoruaoi.png', text: 'ちょっと！！ ちゃんと説明しようとしてるんだから！！' },
+
+  { speaker: 'jaku', text: 'いや、説明になってないんだけど……。' },
+
+  { speaker: 'jaku', text: 'そもそもシステムって何？ パソコンの話？' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'うーん……。そういう意味でもあるし、そうじゃない意味でもあるというか……。' },
+
+  { speaker: 'jaku', text: '余計に分からなくなったんだけど。' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: '私だって全部分かってるわけじゃないんだもん……。' },
+
+  { speaker: 'jaku', text: '自分のことなのに！？' },
+
+  // =====================================
+  // 自己紹介
+  // =====================================
+
+  { speaker: 'aoi', expression: 'okoruaoi.png', text: 'えっと……私は葵（あおい）。覚えてよね！' },
+
+  { speaker: 'jaku', text: '葵……ね。' },
+
+  { speaker: 'jaku', text: 'とりあえず名前は分かった。' },
+
+  { speaker: 'jaku', text: 'じゃあ、次はどうしてここに来たのか説明してもらおうか。' },
+
+  { speaker: 'aoi', expression: 'tereruaoi.png', text: 'その……ごめんなさい。勝手にここに来ちゃって……！！' },
+
+  { speaker: 'jaku', text: 'うん！ じゃあとりあえず、警察署に行こうか！' },
+
+  { speaker: 'aoi', expression: 'okoruaoi.png', text: 'やめて！！！！！！！！！！！ 本当にそれだけはやめて！！！！！！' },
+
+  { speaker: 'jaku', text: 'いや、勝手に人の部屋に来たんだから仕方ないだろ！！' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: 'だから、ちゃんと事情があるんだってば！！' },
+
+  { speaker: 'jaku', text: 'その事情をまだ聞いてないんだけど！？' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: '……本当に、うまく説明できないの。' },
+
+  { speaker: 'jaku', text: 'うーん……。' },
+
+  { speaker: 'jaku', text: 'まあ、今すぐどうこうするつもりはないけどさ。' },
+
+  { speaker: 'jaku', text: '少なくとも、僕の部屋を勝手に歩き回るのはやめてくれよ。' },
+
+  { speaker: 'aoi', expression: 'aseriaoi.png', text: 'う、うん。分かった……。' },
+
+  { speaker: 'jaku', text: 'あと、その辺のポテチは食べてもいいけど、パソコンには触らないでね。' },
+
+  { speaker: 'aoi', expression: 'egaoaoi.png', text: 'ポテチ食べていいの！？' },
+
+  { speaker: 'jaku', text: 'そこに食いつくんだ……。' },
+
+  // =====================================
+  // エンディング
+  // =====================================
+
+  { note: 'こうして、Jakuの部屋には謎の少女・葵が居座ることになった。' },
+
+  { speaker: 'jaku', text: '……で、これからどうすればいいんだよ。' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'それは……私にもよく分からなくて……。' },
+
+  { speaker: 'jaku', text: 'おい！！！！' },
+
+  { speaker: 'aoi', expression: 'tereruaoi.png', text: 'でも……少なくとも、ここに来たかったのは本当だよ。' },
+
+  { speaker: 'jaku', text: '……え？' },
+
+  { speaker: 'aoi', expression: 'nayamiaoi.png', text: 'ううん。なんでもない。' },
+
+  { note: '葵がどこから来たのか。そして、なぜJakuのもとに現れたのか。' },
+
+  { note: 'その答えは、まだ誰にも分からない……。' },
+
+  { note: 'ただ一つ確かなことは、Jakuの平穏な日常が少しずつ変わり始めているということだった。' },
+
+  { speaker: 'jaku', text: '……なんか、面倒なことになりそうだなぁ。' },
+
+  { speaker: 'aoi', expression: 'egaoaoi.png', text: 'よろしくね、じゃく！' },
+
+  { speaker: 'jaku', text: 'いや、まだよろしくするとは言ってないんだけど？' },
+
+  { note: '第三話、おしまい。' },
+];
+---
+
+<BaseLayout title="【第三話】 独りぼっち...?" description="Jakuたちの茶番、第三話！ 突然現れた謎の少女・葵との出会い。">
+
+  <main class="episode">
+
+    <header class="episode-header">
+      <p class="episode-label">JAKU'S FARCE / EPISODE 03</p>
+      <h1>【第三話】 独りぼっち...?</h1>
+      <p class="episode-description">
+        ※タイトル詐欺の可能性があります。
+      </p>
+      <h2 class="episode-description">
+        Jakuの部屋に、突然現れた謎の少女。
+      </h2>
+    </header>
+
+    <section class="story" aria-label="第三話の本編">
+
+      {scenes.map((scene) => (
+        scene.heading ? (
+          <h2 class="system-message">{scene.heading}</h2>
+        ) : scene.image ? (
+          <figure class="scene-image">
+            <img
+              src={`/farce/episode-3/${scene.image}`}
+              alt={scene.alt ?? ''}
+              loading="lazy"
+            />
+          </figure>
+        ) : scene.note ? (
+          <p class="scene-note">{scene.note}</p>
+        ) : (
+          <article class:list={['talk', scene.speaker]}>
+            <img
+              class="avatar"
+              src={
+                scene.expression
+                  ? `/farce/episode-3/${scene.expression}`
+                  : characters[scene.speaker]?.image ?? '/characters/Jaku.svg'
+              }
+              alt={characters[scene.speaker]?.name ?? 'キャラクター'}
+              loading="lazy"
+            />
+            <p class="speech">{scene.text}</p>
+          </article>
+        )
+      ))}
+
+    </section>
+
+    <section class="next-preview">
+      <p class="preview-label">NEXT EPISODE</p>
+      <h2>次回！</h2>
+      <p>第四話「秘密の関係...？」</p>
+    </section>
+
+    <nav class="episode-navigation" aria-label="エピソード移動">
+      <a href="/farce/">茶番一覧へ戻る</a>
+      <a href="/farce/episode-4">次の話を見る →</a>
+    </nav>
+
+  </main>
+
+  <script>
+    import '../../scripts/farce.js';
+  </script>
+
+</BaseLayout>

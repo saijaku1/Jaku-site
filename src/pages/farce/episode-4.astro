@@ -1,0 +1,333 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/farce.css";
+
+const characters = {
+  jaku: { image: "/characters/Jaku.svg", name: "Jaku" },
+  kokotu: { image: "/characters/kokotu.svg", name: "ココツ" },
+  usa: { image: "/characters/usa.svg", name: "ウサ" },
+  upunushi: { image: "/characters/upunushi.svg", name: "うp主" },
+  aoi: { image: "/characters/aoi.svg", name: "葵" },
+};
+const scenes = [
+  // --------------------------------------------------
+  // 冒頭：葵の自己紹介
+  // --------------------------------------------------
+
+  { note: "第4話。Jakuの部屋にて。", },
+  { speaker: "jaku", text: "……で、結局どういう状況なんだよ。", },
+  { speaker: "aoi", text: "どういう状況って？", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "いや、君が普通にここにいる状況。", },
+  { speaker: "aoi", text: "ああ！ それなら問題ないよ！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "いや、問題しかないんだけど。", },
+  { speaker: "kokotu", text: "じゃく君～、ただいま。買い物から戻ったよ。", },
+  { speaker: "usa", text: "ただいまです！", },
+  { speaker: "jaku", text: "お、ちょうどいいところに。", },
+  { speaker: "kokotu", text: "……ん？ その子は？", },
+  { speaker: "usa", text: "あれ？ 新しいお客さんですか？", },
+  { speaker: "aoi", text: "あっ……えっと。", expression: "tereruaoi.png", },
+  { speaker: "jaku", text: "そういえば、ちゃんと紹介してなかったな。", },
+  { speaker: "jaku", text: "この子、葵。昨日突然僕の部屋に現れた。", },
+  { speaker: "aoi", text: "昨日じゃないよ！ もっと前から……いや、昨日だったかな？", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "本人もよく分かってないらしい。", },
+  { speaker: "kokotu", text: "突然現れた……？", },
+  { speaker: "usa", text: "それって、どういうことなんでしょう……？", },
+  { speaker: "jaku", text: "僕が聞きたい。", },
+  { speaker: "aoi", text: "えっと、じゃあ改めて……。", expression: "tereruaoi.png", },
+  { speaker: "aoi", text: "葵です。よろしくお願いします！", expression: "egaoaoi.png", },
+  { speaker: "kokotu", text: "僕はココツ。よろしくね。", },
+  { speaker: "usa", text: "私はウサです！ よろしくお願いします！", },
+  { speaker: "aoi", text: "ココツにウサだね！ よろしく！", expression: "egaoaoi.png", },
+  { speaker: "kokotu", text: "ココツ....", },
+  { speaker: "usa", text: "ウサ……", },
+  { speaker: "kokotu", text: "ま...まぁ....ずいぶん仲良くなるのが早いね。", },
+  { speaker: "jaku", text: "僕はまだ仲良くなった覚えないけどな。", },
+  { speaker: "aoi", text: "えー！ ひどい！", expression: "aseriaoi.png", },
+  { speaker: "jaku", text: "事実を言っただけです。", },
+  { speaker: "kokotu", text: "ところで、葵さんはどうしてじゃく君の家に？", },
+  { speaker: "jaku", text: "それが分かれば苦労しない。", },
+  { speaker: "aoi", text: "ちょっとした事情があってね。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "その『ちょっとした事情』を説明してほしいんだけど。", },
+  { speaker: "aoi", text: "うーん……それはまた今度！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "便利な言葉だな、おい。", },
+  { speaker: "usa", text: "でも、これでみんな知り合いですね！", },
+  { speaker: "jaku", text: "いや、まだ何も解決してないからね？", },
+  { speaker: "kokotu", text: "まあまあ。せっかくだし、仲良くしようよ。", },
+  { speaker: "aoi", text: "うん！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "……僕の意見は？", },
+
+  // --------------------------------------------------
+  // うp主登場
+  // --------------------------------------------------
+
+  { note: "そのとき。", },
+  { speaker: "upunushi", text: "あらららら～～～。", },
+  { speaker: "jaku", text: "いや、棒読みやめろ。何してんの。", },
+  { speaker: "upunushi", text: "いやぁ、今日の僕、主人公っぽくね？", },
+  { speaker: "jaku", text: "どこがだよ。", },
+  { speaker: "upunushi", text: "ほら、こう……物語の中心にいる感じ。", },
+  { speaker: "jaku", text: "自分で言うな。", },
+  { speaker: "upunushi", text: "まあ、ここ僕ん家だけど。", },
+  { speaker: "jaku", text: "急に現実に戻すな。", },
+  { speaker: "upunushi", text: "お、そちらの方は？", },
+  { speaker: "jaku", text: "今さらかよ。葵だよ。", },
+  { speaker: "aoi", text: "葵です！ よろしくお願いします！", expression: "egaoaoi.png", },
+  { speaker: "upunushi", text: "ああ、君が例の突然現れた子か。", },
+  { speaker: "jaku", text: "例のって何だよ。", },
+  { speaker: "upunushi", text: "いや、話は聞いてるから。", },
+  { speaker: "jaku", text: "誰からだよ。", },
+  { speaker: "upunushi", text: "作者から。", },
+  { speaker: "jaku", text: "お前だろうが。", },
+  { speaker: "upunushi", text: "細かいことは気にするな。", },
+  { speaker: "aoi", text: "ふふっ、面白い人だね。", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "面白いというか、うるさいというか。", },
+  { speaker: "upunushi", text: "お前、僕に対して当たり強くない？", },
+  { speaker: "jaku", text: "日頃の行いです。", },
+  { speaker: "upunushi", text: "はいはい。", },
+
+  // --------------------------------------------------
+  // 葵とJakuの言い合い
+  // --------------------------------------------------
+
+  { note: "しばらくして、雑談が続いていた。", },
+  { speaker: "kokotu", text: "それで葵さん、普段は何をしているの？", },
+  { speaker: "aoi", text: "うーん、特に決まってないかな。", expression: "nayamiaoi.png", },
+  { speaker: "usa", text: "好きなこととかはありますか？", },
+  { speaker: "aoi", text: "みんなと話すこと！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "……そうですか。", },
+  { speaker: "aoi", text: "じゃくは？", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "僕は今、作業中なんですけど。", },
+  { speaker: "aoi", text: "えー、少しくらいいいじゃん！", expression: "aseriaoi.png", },
+  { speaker: "jaku", text: "少しと言いながら、いつも長いんだよ。", },
+  { speaker: "aoi", text: "そんなことないもん！", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "いや、ある。", },
+  { speaker: "aoi", text: "じゃくのけち。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "はいはい。", },
+  { speaker: "aoi", text: "……。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "……何？", },
+  { speaker: "aoi", text: "別に。", expression: "otikomuaoi.png" },
+  { speaker: "jaku", text: "いや、絶対何かあるだろ。", },
+  { speaker: "aoi", text: "じゃくって、私が話しかけるとすぐ面倒くさそうにするよね。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "実際、作業中だからな。", },
+  { speaker: "aoi", text: "そっか……。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "……。", },
+  { speaker: "kokotu", text: "じゃく君、もう少し優しくしてあげてもいいんじゃない？", },
+  { speaker: "jaku", text: "いや、僕は普通にしてるだけなんだけど。", },
+  { speaker: "usa", text: "葵さん、ちょっと寂しそうですよ？", },
+  { speaker: "jaku", text: "えっ。", },
+  { speaker: "aoi", text: "別に寂しくないよ。", expression: "otikomuaoi.png", },
+  { speaker: "jaku", text: "いや、そういう顔されるとこっちが困るんだけど。", },
+  { speaker: "aoi", text: "じゃあ、こっち向いてよ。", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "なんでだよ。", },
+  { speaker: "aoi", text: "今、私怒っているから。", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "自分で言うなよ。", },
+  { speaker: "aoi", text: "いいから、こっち来て。", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "嫌です。", },
+  { speaker: "aoi", text: "……じゃく。", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "何ですか。", },
+  { speaker: "aoi", text: "こっち来て。", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "だから嫌だって！", },
+  { speaker: "jaku", text: "おい、うp主！ ちょっと助けろ！", },
+  { speaker: "upunushi", text: "お前が始めた物語だろうが。", },
+  { speaker: "jaku", text: "いや、何も始めてねぇよ！", },
+  { speaker: "aoi", text: "私、怒ってないよ？", expression: "aseriaoi.png", },
+  { speaker: "jaku", text: "いや、さっき怒ってるって言ったじゃん！", },
+  { speaker: "aoi", text: "じゃくがひどいこと言うから……。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "知らねえよカス。", },
+  { speaker: "jaku", text: "……そんな僕、酷いこと言ったのか？", },
+  { speaker: "aoi", text: "カッチーーーーーン！！！！！！", expression: "okoruaoi.png", },
+  { speaker: "jaku", text: "ほらぁ！！ だから助けろって言っただろ！！", },
+
+  // --------------------------------------------------
+  // うp主の傍観・昼ドラ展開
+  // --------------------------------------------------
+
+  { image: "Jakutubusu.png", },
+  { note: "一方そのころ、うp主は。", },
+  { speaker: "upunushi", text: "……。", },
+  { speaker: "upunushi", text: "（ポテチを食べながらスマホを操作している）", },
+  { speaker: "jaku", text: "おい！！！！", },
+  { speaker: "upunushi", text: "ん？", },
+  { speaker: "jaku", text: "何くつろいでんだよ！！", },
+  { speaker: "upunushi", text: "いや、なんか昼ドラみたいなやり取りしてるから。", },
+  { speaker: "jaku", text: "昼ドラじゃねぇよ！！", },
+  { speaker: "aoi", text: "じゃく、こっち見て。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "今それどころじゃないんだよ！！", },
+  { speaker: "upunushi", text: "いやぁ、青春だねぇ。", },
+  { speaker: "jaku", text: "どこがだよ！！", },
+  { speaker: "kokotu", text: "うp主さん、止めなくていいんですか？", },
+  { speaker: "upunushi", text: "え？ 僕が？", },
+  { speaker: "usa", text: "このままだと大変なことになりそうです……。", },
+  { speaker: "upunushi", text: "まあまあ。若い二人の問題だから。", },
+  { speaker: "jaku", text: "お前も十分若いだろ！！", },
+  { speaker: "upunushi", text: "僕は観客席だから。", },
+  { speaker: "jaku", text: "勝手に観客席を作るな！！", },
+  { speaker: "aoi", text: "……じゃくは、私のこと嫌いなの？", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "……は？", },
+  { speaker: "aoi", text: "私、じゃくに冷たくされると、ちょっと悲しいんだけど。", expression: "otikomuaoi.png", },
+  { speaker: "jaku", text: "いや、別に嫌いとは言ってないだろ。", },
+  { speaker: "aoi", text: "本当に？", expression: "otikomuaoi.png", },
+  { speaker: "jaku", text: "本当だよ。", },
+  { speaker: "aoi", text: "……そっか。", expression: "tereruaoi.png", },
+  { speaker: "upunushi", text: "…………。", },
+  { speaker: "upunushi", text: "いや、これもう完全に昼ドラじゃん。", },
+  { speaker: "jaku", text: "お前は黙ってろ。", },
+  { speaker: "upunushi", text: "ここで感動的な音楽を流せば完璧だな。", },
+  { speaker: "upunushi", text: "（キーボードで壮大な悲恋の曲を弾き始める）", },
+  { speaker: "jaku", text: "やめろ！！ 余計に雰囲気が重くなるだろ！！", },
+  { speaker: "kokotu", text: "なんだか本当にそれっぽくなってきたね。", },
+  { speaker: "usa", text: "感動的……なんでしょうか？", },
+  { speaker: "jaku", text: "お前らも乗るな！！", },
+  { speaker: "jaku", text: "というか、うp主が始めたんだから責任取れよ！！", },
+  { speaker: "upunushi", text: "いや、僕は音楽を担当しただけだし。", },
+  { speaker: "jaku", text: "余計な仕事を増やすな！！", },
+
+  // --------------------------------------------------
+  // 葵の冗談
+  // --------------------------------------------------
+
+  { speaker: "aoi", text: "……ふっ。", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "……ん？", },
+  { speaker: "aoi", text: "冗談だよ。", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "は？", },
+  { speaker: "aoi", text: "ちょっと驚かせてみただけ！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "お前、切り替え早すぎだろ！！", },
+  { speaker: "jaku", text: "というか、さっきの涙は何だったんだよ！", },
+  { speaker: "aoi", text: "演技です。", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "演技力を変な方向に磨くな！！", },
+  { speaker: "kokotu", text: "でも、ちょっと本気に見えたよ。", },
+  { speaker: "usa", text: "私もです……。", },
+  { speaker: "aoi", text: "えへへ。成功かな？", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "成功じゃない。心臓に悪い。", },
+  { speaker: "upunushi", text: "じゃあ、仲直りのハグでもしたら？", },
+  { speaker: "jaku", text: "誰がするか！！", },
+  { speaker: "aoi", text: "誰がするか！！", expression: "okoruaoi.png", },
+  { speaker: "upunushi", text: "息ぴったりじゃん。", },
+  { speaker: "jaku", text: "うるさい！！", },
+  { speaker: "aoi", text: "うるさい！！", expression: "okoruaoi.png", },
+  { speaker: "upunushi", text: "えっ、僕だけ悪者？", },
+
+  // --------------------------------------------------
+  // うp主撃沈
+  // --------------------------------------------------
+
+  { image: "zetubouupunushi.jpg", },
+  { note: "その後、うp主は四方八方からクッションを投げつけられた。", },
+  { speaker: "upunushi", text: "ちょっ、待て！！ 僕は何もしてな……ぐはっ！！", },
+  { speaker: "jaku", text: "少しは反省しろ。", },
+  { speaker: "aoi", text: "まったくもう。", expression: "okoruaoi.png", },
+  { speaker: "kokotu", text: "うp主さん、大丈夫？", },
+  { speaker: "upunushi", text: "……僕の出番、これだけ？", },
+  { speaker: "jaku", text: "十分だろ。", },
+  { speaker: "upunushi", text: "ひどいなぁ……。", },
+{ speaker: "aoi", text: "自業自得だよ！！もう！！", expression: "okoruaoi.png", },
+
+  // --------------------------------------------------
+  // 終盤：葵がJakuを外へ連れ出す
+  // --------------------------------------------------
+
+  { note: "少し落ち着いたころ。", },
+  { speaker: "jaku", text: "……。", },
+  { speaker: "jaku", text: "（さっきの、あれ。本当に冗談だったのか……？）", },
+  { speaker: "aoi", text: "じゃく？", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "うわっ！！", },
+  { speaker: "aoi", text: "何考えてたの？", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "いや、別に。", },
+  { speaker: "aoi", text: "本当に？", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "……お前、エスパーか何かなの？", },
+  { speaker: "aoi", text: "さあ、どうでしょう？", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "否定しろよ。", },
+  { speaker: "aoi", text: "ねえ、じゃく。", expression: "tereruaoi.png", },
+  { speaker: "jaku", text: "今度は何？", },
+  { speaker: "aoi", text: "ちょっと外に行かない？", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "……は？", },
+  { speaker: "aoi", text: "行きたいところがあるんだ。", expression: "nayamiaoi.png", },
+  { speaker: "jaku", text: "いや、急だな。", },
+  { speaker: "aoi", text: "お願い！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "……うーん。", },
+  { speaker: "jaku", text: "おい、うp主も一緒に来いよ。", },
+  { speaker: "upunushi", text: "えー、僕はいいよ。", },
+  { speaker: "jaku", text: "なんでだよ！！", },
+  { speaker: "upunushi", text: "だって、二人で行った方が面白そうだし。", },
+  { speaker: "jaku", text: "何が面白そうなんだよ……。", },
+  { speaker: "kokotu", text: "気をつけて行ってきてね。", },
+  { speaker: "usa", text: "いってらっしゃいです！", },
+  { speaker: "jaku", text: "いや、まだ行くって決めてないんだけど。", },
+  { speaker: "aoi", text: "じゃあ、決まり！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "人の話を聞け！！", },
+  { speaker: "aoi", text: "ほら、早く！", expression: "egaoaoi.png", },
+  { speaker: "jaku", text: "ちょ、引っ張るなって！！", },
+  { speaker: "jaku", text: "ありがとうMy life……またその時までに。", },
+  { note: "こうして、じゃくは葵に連れられて外へ出ることになった。", },
+  { note: "その行き先を、じゃくはまだ知らない。", },
+
+  // --------------------------------------------------
+  // 次回予告
+  // --------------------------------------------------
+
+  { heading: "次回予告", },
+  { note: "第五話「じゃく、パワーアップする」", },
+  { speaker: "upunushi", text: "……第五話、たぶん『パワーアップ』ってより『生還』の話だな。", },
+  { speaker: "jaku", text: "おい、何を知ってるんだよ！！", },
+];
+---
+
+<BaseLayout title="【第四話】秘密の関係？">
+
+  <main class="episode">
+
+    <header class="episode-header">
+      <p class="episode-label">JAKU'S FARCE / EPISODE 04</p>
+      <h1>【第四話】秘密の関係？</h1>
+ <p class="episode-subtitle">少しずつ変わっていく、いつもの日常。</p>
+
+    </header>
+
+  <section class="story" aria-label="第四話の本編">
+
+  {scenes.map((scene) => (
+    scene.image ? (
+      <figure class="scene-image">
+        <img
+          src={`/farce/episode-4/${scene.image}`}
+          alt=""
+          loading="lazy"
+        />
+      </figure>
+    ) : scene.heading ? (
+      <h2 class="scene-heading">{scene.heading}</h2>
+    ) : scene.note ? (
+      <p class="scene-note">{scene.note}</p>
+    ) : (
+      <article class:list={['talk', scene.speaker]}>
+        <img
+          class="avatar"
+          src={scene.expression ? `/farce/episode-4/${scene.expression}` : characters[scene.speaker].image}
+          alt={characters[scene.speaker].name}
+          loading="lazy"
+        />
+        <p class="speech">{scene.text}</p>
+      </article>
+    )
+  ))}
+
+</section>
+
+    <section class="next-preview">
+      <p class="preview-label">NEXT EPISODE</p>
+      <h2>次回！</h2>
+      <p>第五話「秘密の関係...？」</p>
+    </section>
+
+    <nav class="episode-navigation" aria-label="エピソード移動">
+      <a href="/farce/">茶番一覧へ戻る</a>
+      <a href="/farce/episode-5">次の話を見る →</a>
+    </nav>
+
+  </main>
+
+  <script>
+    import '../../scripts/farce.js';
+  </script>
+
+</BaseLayout>
