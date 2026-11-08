@@ -3,7 +3,7 @@
     "date": "2026-11-05",
     "category": "お知らせ",
     "title": "新しいドメインの取得申請について",
-    "description": "サイトの新しいドメインとして「jaku.is-a.dev」の取得申請を行いました。",
+    "description": "サイトの新しいドメインとして「jaku.runs-at.dev」の取得申請を行いました。",
     "details": [
       "現在、is-a.devの管理者による審査を受けています。",
       "審査が完了した後、Vercelへの接続やDNS設定を進める予定です。",
