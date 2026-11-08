@@ -1,0 +1,93 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import posts from "../data/blogs.json";
+---
+
+<BaseLayout title="日常ブログ" description="Jakuの日常や学校生活についてのブログ">
+
+  <section class="hero">
+    <h2>日常ブログ</h2>
+    <p class="subtitle">
+      学校生活や日常で感じたことなどを書いていきます。
+    </p>
+  </section>
+
+  <section class="cards">
+    {posts.map((post) => (
+      <a href={`/blogs/${post.slug}`} class="card">
+
+        {post.thumbnail ? (
+          <img
+            class="blog-thumbnail"
+            src={post.thumbnail}
+            alt={post.thumbnailAlt || post.title}
+            loading="lazy"
+            width="800"
+            height="450"
+          />
+        ) : (
+          <div class="blog-thumbnail blog-no-image">
+            <span>Jaku Blog</span>
+          </div>
+        )}
+
+        <div class="blog-card-content">
+          <small>{post.category || "日常"}</small>
+          <h3>{post.title}</h3>
+          <p>{post.description}</p>
+          <small>{post.date}</small>
+
+          {post.tags?.length > 0 && (
+            <div class="blog-tags">
+              {post.tags.map((tag) => (
+                <span>#{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+
+      </a>
+    ))}
+  </section>
+
+</BaseLayout>
+
+<style>
+  .blog-thumbnail {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .blog-no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    opacity: 0.65;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .blog-card-content {
+    padding-top: 12px;
+  }
+
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .blog-tags span {
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+</style>

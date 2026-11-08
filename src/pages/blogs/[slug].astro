@@ -1,0 +1,37 @@
+
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LikeButton from "../../components/LikeButton.astro";
+import posts from "../../data/blogs.json";
+
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: {
+      slug: post.slug,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<BaseLayout title={post.title}>
+  <article>
+    <h1>{post.title}</h1>
+
+    <p>{post.date}</p>
+
+    {post.content.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+
+    <LikeButton slug={`daily-${post.slug}`} />
+
+    <p>
+      <a href="/blogs">← ブログ一覧へ戻る</a>
+    </p>
+  </article>
+</BaseLayout>
