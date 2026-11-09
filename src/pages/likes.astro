@@ -8,16 +8,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="自分がいいねしたブログ記事の一覧"
 >
   <main class="likes-page">
+
     <a href="/account/settings/" class="back-link">
       ← アカウント設定に戻る
     </a>
 
-    <p class="eyebrow">YOUR ACTIVITY</p>
-    <h1>いいねした記事</h1>
-
-    <p class="page-description">
-      気に入った記事を、ここからいつでも見返せます。
-    </p>
+    <section class="hero">
+      <h2>いいねした記事</h2>
+      <p class="subtitle">
+        気に入った記事を、ここからいつでも見返せます。
+      </p>
+    </section>
 
     <div
       id="likes-status"
@@ -28,12 +29,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       いいね履歴を読み込んでいます...
     </div>
 
-    <div id="likes-list" class="likes-list"></div>
+    <section id="likes-list" class="cards"></section>
+
   </main>
 
   <script>
     import { supabase } from "../lib/supabase.js";
-    import posts from "../data/blog.json";
+    import developmentPosts from "../data/blog.json";
+    import dailyPosts from "../data/blogs.json";
 
     const status = document.querySelector("#likes-status");
     const list = document.querySelector("#likes-list");
@@ -47,134 +50,192 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     function clearList() {
       list?.replaceChildren();
     }
-    // 読み込み処理の重複・競合を防止するID
+
+    // 2種類の記事を統合
+    const allPosts = [
+      ...developmentPosts.map((post) => ({
+        ...post,
+        likeSlug: post.slug,
+        href: `/blog/${encodeURIComponent(post.slug)}/`,
+        category: post.category || "開発日記",
+      })),
+
+      ...dailyPosts.map((post) => ({
+        ...post,
+        likeSlug: `daily-${post.slug}`,
+        href: `/blogs/${encodeURIComponent(post.slug)}/`,
+        category: post.category || "日常",
+      })),
+    ];
+
+    // いいね識別子から記事を検索できるようにする
+    const postsBySlug = new Map(
+      allPosts.map((post) => [post.likeSlug, post])
+    );
+
+    // 読み込みの重複・競合を防止
     let loadRequestId = 0;
 
-   async function loadLikes() {
-  // 今回の読み込みを識別
-  const currentRequestId = ++loadRequestId;
+    async function loadLikes() {
+      const currentRequestId = ++loadRequestId;
 
-  clearList();
-  showStatus("いいね履歴を読み込んでいます...");
+      clearList();
+      showStatus("いいね履歴を読み込んでいます...");
 
-  // ログイン状態を確認
-  const {
-    data: sessionData,
-    error: sessionError,
-  } = await supabase.auth.getSession();
+      // ログイン状態を確認
+      const {
+        data: sessionData,
+        error: sessionError,
+      } = await supabase.auth.getSession();
 
-  // 古い読み込みなら終了
-  if (currentRequestId !== loadRequestId) return;
+      if (currentRequestId !== loadRequestId) return;
 
-  if (sessionError) {
-    console.error("ログイン状態の取得エラー:", sessionError);
+      if (sessionError) {
+        console.error(sessionError);
+        showStatus("ログイン状態を確認できませんでした。");
+        return;
+      }
 
-    showStatus(
-      "ログイン状態を確認できませんでした。ページを再読み込みしてください。"
-    );
+      const user = sessionData.session?.user;
 
-    return;
-  }
+      // 未ログインの場合
+      if (!user) {
+        showStatus("いいね履歴を見るにはログインしてください。");
 
-  const user = sessionData.session?.user;
+        const loginLink = document.createElement("a");
+        loginLink.href = "/login";
+        loginLink.className = "login-link";
+        loginLink.textContent = "ログインする";
 
-  // ログインしていない場合
-  if (!user) {
-    showStatus("いいね履歴を見るにはログインしてください。");
+        list?.append(loginLink);
+        return;
+      }
 
-    const loginLink = document.createElement("a");
-    loginLink.href = "/login";
-    loginLink.className = "login-link";
-    loginLink.textContent = "ログインする";
+      // Supabaseからいいね履歴を取得
+      const {
+        data: likes,
+        error,
+      } = await supabase
+        .from("likes")
+        .select("post_slug, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
 
-    list?.append(loginLink);
-    return;
-  }
+      if (currentRequestId !== loadRequestId) return;
 
-  // いいね履歴を取得
-  const {
-    data: likes,
-    error,
-  } = await supabase
-    .from("likes")
-    .select("post_slug, created_at")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+      if (error) {
+        console.error(error);
+        showStatus("履歴を取得できませんでした。");
+        return;
+      }
 
-  // 古い読み込みなら終了
-  if (currentRequestId !== loadRequestId) return;
+      // 同じ記事の重複を除去
+      const uniqueLikes = [
+        ...new Map(
+          (likes ?? []).map((like) => [like.post_slug, like])
+        ).values(),
+      ];
 
-  if (error) {
-    console.error("いいね履歴の取得エラー:", error);
+      if (uniqueLikes.length === 0) {
+        showStatus("まだいいねした記事はありません。");
+        return;
+      }
 
-    showStatus(
-      "履歴を取得できませんでした。時間をおいて再度お試しください。"
-    );
+      let displayedCount = 0;
 
-    return;
-  }
+      for (const like of uniqueLikes) {
+        const post = postsBySlug.get(like.post_slug);
 
-  // 同じ記事の重複データを除去
-  const uniqueLikes = [
-    ...new Map(
-      (likes ?? []).map((like) => [like.post_slug, like])
-    ).values(),
-  ];
+        // 対応する記事がない場合はスキップ
+        if (!post) continue;
 
-  // いいね履歴がない場合
-  if (uniqueLikes.length === 0) {
-    showStatus("まだいいねした記事はありません。");
-    return;
-  }
+        // ブログ一覧と同じカードを作成
+        const card = document.createElement("a");
+        card.href = post.href;
+        card.className = "card";
 
-  // blog.json の記事を slug から検索できるようにする
-  const postsBySlug = new Map(
-    posts.map((post) => [post.slug, post])
-  );
+        // サムネイル
+        if (post.thumbnail) {
+          const image = document.createElement("img");
 
-  let displayedCount = 0;
+          image.className = "blog-thumbnail";
+          image.src = post.thumbnail;
+          image.alt = post.thumbnailAlt || post.title;
+          image.loading = "lazy";
+          image.width = 800;
+          image.height = 450;
 
-  for (const like of uniqueLikes) {
-    const post = postsBySlug.get(like.post_slug);
+          card.append(image);
+        } else {
+          const placeholder = document.createElement("div");
 
-    // blog.json に存在しない記事は表示しない
-    if (!post) continue;
+          placeholder.className = "blog-thumbnail blog-no-image";
 
-    const article = document.createElement("article");
-    article.className = "like-card";
+          const placeholderText = document.createElement("span");
+          placeholderText.textContent = "Jaku Blog";
 
-    const link = document.createElement("a");
-    link.className = "like-card-link";
-    link.href = `/blog/${encodeURIComponent(post.slug)}/`;
+          placeholder.append(placeholderText);
+          card.append(placeholder);
+        }
 
-    const title = document.createElement("h2");
-    title.textContent = post.title;
+        // カードの内容
+        const content = document.createElement("div");
+        content.className = "blog-card-content";
 
-    const description = document.createElement("p");
-    description.className = "like-description";
-    description.textContent = post.description || "";
+        // カテゴリー
+        const category = document.createElement("small");
+        category.textContent = post.category;
 
-    const date = document.createElement("time");
-    date.dateTime = post.date;
-    date.textContent = post.date;
+        // タイトル
+        const title = document.createElement("h3");
+        title.textContent = post.title;
 
-    link.append(title, description, date);
-    article.append(link);
-    list?.append(article);
+        // 説明文
+        const description = document.createElement("p");
+        description.textContent = post.description || "";
 
-    displayedCount++;
-  }
+        // 投稿日
+        const date = document.createElement("small");
+        date.textContent = post.date;
 
-  if (displayedCount > 0) {
-    showStatus(`${displayedCount}件の記事にいいねしています。`);
-  } else {
-    showStatus("表示できる記事がありません。");
-  }
-}
+        content.append(
+          category,
+          title,
+          description,
+          date
+        );
+
+        // タグ
+        if (post.tags?.length > 0) {
+          const tags = document.createElement("div");
+          tags.className = "blog-tags";
+
+          for (const tag of post.tags) {
+            const tagElement = document.createElement("span");
+            tagElement.textContent = `#${tag}`;
+            tags.append(tagElement);
+          }
+
+          content.append(tags);
+        }
+
+        card.append(content);
+        list?.append(card);
+
+        displayedCount++;
+      }
+
+      if (displayedCount > 0) {
+        showStatus(`${displayedCount}件の記事にいいねしています。`);
+      } else {
+        showStatus("表示できる記事がありません。");
+      }
+    }
+
     // 初回読み込み
     void loadLikes();
 
-    // ログイン状態が変わったら一覧を更新
+    // ログイン状態の変化を監視
     supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
         void loadLikes();
@@ -183,146 +244,98 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </script>
 
   <style>
+    .likes-page {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 36px 0 88px;
+      box-sizing: border-box;
+    }
 
-.likes-page {
-  width: min(760px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 56px 0 88px;
-  box-sizing: border-box;
-}
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: var(--text);
+      opacity: 0.7;
+      text-decoration: none;
+      font-size: 14px;
+      transition: opacity 160ms ease;
+    }
 
-.back-link {
-  display: inline-block;
-  margin-bottom: 30px;
-  color: var(--text);
-  opacity: 0.7;
-  text-decoration: none;
-  font-size: 14px;
-  transition: opacity 160ms ease;
-}
+    .back-link:hover {
+      opacity: 1;
+    }
 
-.back-link:hover {
-  opacity: 1;
-}
+    .status {
+      margin: 0 0 20px;
+      font-size: 14px;
+      line-height: 1.8;
+      opacity: 0.75;
+    }
 
-.eyebrow {
-  margin: 0 0 10px;
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-}
+    .blog-thumbnail {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+    }
 
-.likes-page h1 {
-  margin: 0;
-  font-size: clamp(28px, 5vw, 40px);
-  letter-spacing: -0.04em;
-}
+    .blog-no-image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      opacity: 0.65;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
 
-.page-description {
-  margin: 12px 0 28px;
-  line-height: 1.8;
-  opacity: 0.7;
-}
+    .blog-card-content {
+      padding-top: 12px;
+    }
 
-.status {
-  margin-bottom: 20px;
-  font-size: 14px;
-  line-height: 1.8;
-  opacity: 0.75;
-}
+    .blog-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
 
-.likes-list {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
-  width: 100%;
-}
+    .blog-tags span {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
 
-.like-card {
-  box-sizing: border-box;
-  min-width: 0;
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--bg);
-  transition: border-color 160ms ease, transform 160ms ease;
-}
+    .login-link {
+      display: inline-block;
+      width: fit-content;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      transition: opacity 160ms ease;
+    }
 
-.like-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
+    .login-link:hover {
+      opacity: 0.8;
+    }
 
-.like-card-link {
-  display: block;
-  box-sizing: border-box;
-  min-width: 0;
-  width: 100%;
-  padding: 22px;
-  color: var(--text);
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
+    @media (max-width: 600px) {
+      .likes-page {
+        padding-top: 24px;
+      }
+    }
 
-.like-card h2 {
-  margin: 0 0 10px;
-  font-size: 19px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.like-description {
-  margin: 0 0 14px;
-  font-size: 14px;
-  line-height: 1.8;
-  opacity: 0.75;
-  overflow-wrap: anywhere;
-}
-
-.like-card time {
-  font-size: 12px;
-  opacity: 0.6;
-}
-
-.login-link {
-  display: inline-block;
-  width: fit-content;
-  padding: 12px 18px;
-  border-radius: 12px;
-  background: var(--accent);
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  transition: opacity 160ms ease;
-}
-
-.login-link:hover {
-  opacity: 0.8;
-}
-
-@media (max-width: 600px) {
-  .likes-page {
-    padding-top: 36px;
-  }
-
-  .like-card-link {
-    padding: 18px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .like-card,
-  .back-link,
-  .login-link {
-    transition: none;
-  }
-
-  .like-card:hover {
-    transform: none;
-  }
-}
-
+    @media (prefers-reduced-motion: reduce) {
+      .back-link,
+      .login-link {
+        transition: none;
+      }
+    }
   </style>
 </BaseLayout>
