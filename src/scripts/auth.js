@@ -24,6 +24,34 @@ const accountInfo = document.querySelector("#account-info");
 const userEmail = document.querySelector("#user-email");
 const logoutButton = document.querySelector("#logout-button");
 
+// ========================================
+// 共通エラー出力
+// ========================================
+
+function logAuthError(context, error) {
+  const details = {
+    context,
+    name: error?.name ?? "UnknownError",
+    message: error?.message ?? String(error),
+    status: error?.status ?? null,
+    code: error?.code ?? null,
+    timestamp: new Date().toISOString(),
+  };
+
+  console.groupCollapsed(
+    `%c[AUTH ERROR] ${context}`,
+    "color: #ff4d4f; font-weight: bold;",
+  );
+
+  console.error(details);
+
+  console.groupEnd();
+}
+
+// ========================================
+// 共通UI処理
+// ========================================
+
 function setStatus(text) {
   if (status) status.textContent = text;
 }
@@ -52,7 +80,10 @@ function setFormMode(mode) {
   setStatus("");
 }
 
-// ログイン・新規登録フォームの切り替え
+// ========================================
+// フォーム切り替え
+// ========================================
+
 showSignupButton?.addEventListener("click", () => {
   setFormMode("signup");
 });
@@ -61,7 +92,10 @@ showLoginButton?.addEventListener("click", () => {
   setFormMode("login");
 });
 
+// ========================================
 // Googleログイン
+// ========================================
+
 googleButton?.addEventListener("click", async () => {
   googleButton.disabled = true;
   setStatus("Googleログインへ移動しています...");
@@ -76,13 +110,17 @@ googleButton?.addEventListener("click", async () => {
 
     if (error) throw error;
   } catch (error) {
-    console.error("Googleログインエラー:", error);
+    logAuthError("Google Login", error);
+
     setStatus("Googleログインを開始できませんでした。");
     googleButton.disabled = false;
   }
 });
 
-// メールアドレス・パスワードでログイン
+// ========================================
+// メールログイン
+// ========================================
+
 loginForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -104,7 +142,8 @@ loginForm?.addEventListener("submit", async (event) => {
 
     setStatus("ログインしました。");
   } catch (error) {
-    console.error("メールログインエラー:", error);
+    logAuthError("Email Login", error);
+
     setStatus(
       "ログインできませんでした。メールアドレスとパスワードを確認してください。",
     );
@@ -113,7 +152,10 @@ loginForm?.addEventListener("submit", async (event) => {
   }
 });
 
-// メールアドレスで新規登録
+// ========================================
+// メール新規登録
+// ========================================
+
 signupForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -151,11 +193,12 @@ signupForm?.addEventListener("submit", async (event) => {
       setStatus("アカウントを登録しました。");
     } else {
       setStatus(
-        "確認メールを送信しました。メール内のリンクから登録を完了してください。",
+        "確認メールを送信しました。迷惑メールフォルダもご確認ください。メール内のリンクから登録を完了してください。",
       );
     }
   } catch (error) {
-    console.error("新規登録エラー:", error);
+    logAuthError("Email Signup", error);
+
     setStatus(
       "登録できませんでした。入力内容やメールアドレスを確認してください。",
     );
@@ -164,7 +207,10 @@ signupForm?.addEventListener("submit", async (event) => {
   }
 });
 
-// パスワード再設定メール
+// ========================================
+// パスワード再設定
+// ========================================
+
 forgotPasswordButton?.addEventListener("click", async () => {
   const email = loginEmail.value.trim();
 
@@ -186,14 +232,18 @@ forgotPasswordButton?.addEventListener("click", async () => {
 
     setStatus("パスワード再設定メールを送信しました。メールをご確認ください。");
   } catch (error) {
-    console.error("パスワード再設定エラー:", error);
+    logAuthError("Password Reset", error);
+
     setStatus("メールを送信できませんでした。入力内容を確認してください。");
   } finally {
     forgotPasswordButton.disabled = false;
   }
 });
 
+// ========================================
 // ログアウト
+// ========================================
+
 logoutButton?.addEventListener("click", async () => {
   logoutButton.disabled = true;
   setStatus("ログアウトしています...");
@@ -206,32 +256,41 @@ logoutButton?.addEventListener("click", async () => {
     showLoggedOut();
     setStatus("ログアウトしました。");
   } catch (error) {
-    console.error("ログアウトエラー:", error);
+    logAuthError("Logout", error);
+
     setStatus("ログアウトに失敗しました。");
   } finally {
     logoutButton.disabled = false;
   }
 });
 
+// ========================================
 // 初期ログイン状態の確認
+// ========================================
+
 async function checkLogin() {
-  const { data, error } = await supabase.auth.getSession();
+  try {
+    const { data, error } = await supabase.auth.getSession();
 
-  if (error) {
-    console.error("セッション確認エラー:", error);
+    if (error) throw error;
+
+    if (data.session?.user) {
+      showLoggedIn(data.session.user);
+    } else {
+      showLoggedOut();
+      setStatus("ログインしていません。");
+    }
+  } catch (error) {
+    logAuthError("Session Check", error);
+
     setStatus("ログイン状態を確認できませんでした。");
-    return;
-  }
-
-  if (data.session?.user) {
-    showLoggedIn(data.session.user);
-  } else {
-    showLoggedOut();
-    setStatus("ログインしていません。");
   }
 }
 
-// ログイン状態の変化を監視
+// ========================================
+// ログイン状態の監視
+// ========================================
+
 supabase.auth.onAuthStateChange((_event, session) => {
   if (session?.user) {
     showLoggedIn(session.user);
