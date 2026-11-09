@@ -11,7 +11,8 @@ const categories = [
   { id: "likes", name: "いいね", icon: "♡", description: "記事へのいいね・履歴" },
   { id: "site", name: "サイト機能", icon: "⚙", description: "テーマ・検索・操作方法" },
   { id: "security", name: "セキュリティ", icon: "◇", description: "アカウント・個人情報の保護" },
-  { id: "trouble", name: "トラブル", icon: "!", description: "エラー・不具合への対処" },
+  { id: "trouble", name: "トラブル", icon: "!", description: "不具合への対処" },
+  {id: "error" , name: "エラーコード" , icon: "!", description: "認証エラーコードと対処方法"},
 ];
 
 const faqs = [
@@ -160,6 +161,94 @@ const faqs = [
     question: "操作中にエラーが発生しました。",
     answer: "エラーが発生したページと操作内容を確認してください。何度も同じ操作を繰り返さず、時間を置いてから再度お試しください。"
   },
+    // 認証エラーコード
+  {
+    category: "error",
+    question: "エラーコードとは何ですか？",
+    answer: "エラーが発生した原因を識別するための番号です。AUTH-001などの形式で表示されます。エラーコードに対応する対処方法を確認することで、問題を解決できる場合があります。"
+  },
+  {
+    category: "error",
+    question: "エラーIDとは何ですか？",
+    answer: "エラーが発生するたびに発行される個別の識別番号です。お問い合わせの際にエラーIDを伝えていただくと、問題の確認に役立ちます。"
+  },
+  {
+    category: "error",
+    question: "AUTH-001：ログインに失敗しました。",
+    answer: "メールアドレスまたはパスワードが正しくない可能性があります。入力内容を確認し、もう一度ログインしてください。パスワードを忘れた場合は、パスワード再設定をお試しください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-002：メールアドレスが未確認です。",
+    answer: "メールアドレスの認証が完了していません。受信した確認メールを開き、認証リンクから手続きを完了してください。メールが届かない場合は迷惑メールフォルダも確認してください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-003：アカウントを登録できません。",
+    answer: "このメールアドレスでは登録を完了できない可能性があります。すでにアカウントをお持ちの場合はログインをお試しください。解決しない場合はお問い合わせください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-004：パスワードが弱すぎます。",
+    answer: "設定したパスワードがセキュリティ要件を満たしていません。別のパスワードを設定してください。英大文字・英小文字・数字などを組み合わせた、推測されにくいパスワードをおすすめします。"
+  },
+  {
+    category: "error",
+    question: "AUTH-005：メール送信回数の上限です。",
+    answer: "短時間にメールを送りすぎた可能性があります。しばらく時間をおいてから、もう一度メールを送信してください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-006：メールアドレスが正しくありません。",
+    answer: "入力したメールアドレスの形式が正しくない可能性があります。入力ミスや不要な空白がないか確認してください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-007：新規登録を利用できません。",
+    answer: "現在、新規アカウント登録が無効になっている可能性があります。時間をおいて再度お試しください。改善しない場合はお問い合わせください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-008：認証リンクの有効期限が切れています。",
+    answer: "認証リンクの有効期限が切れています。ログインページから新しい確認メールを送信し、最新のリンクを開いてください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-009：ログイン状態を確認できません。",
+    answer: "現在のログインセッションを確認できません。ログインページからもう一度ログインしてください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-010：ログイン情報を更新できません。",
+    answer: "ログイン情報の更新に失敗しました。一度ログアウトし、再度ログインしてください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-011：Googleログインを利用できません。",
+    answer: "現在、Googleログインが無効になっている可能性があります。時間をおいて再度お試しください。改善しない場合はお問い合わせください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-012：認証が拒否されました。",
+    answer: "認証処理が拒否された可能性があります。認証画面からもう一度手続きを行ってください。解決しない場合はお問い合わせください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-998：ネットワークエラーが発生しました。",
+    answer: "インターネット接続が不安定な可能性があります。通信環境を確認し、ページを再読み込みしてください。改善しない場合は時間をおいて再度お試しください。"
+  },
+  {
+    category: "error",
+    question: "AUTH-999：不明なエラーが発生しました。",
+    answer: "予期しないエラーが発生しました。ページを再読み込みし、もう一度操作してください。何度も発生する場合は、エラーIDと発生日時を添えてお問い合わせください。"
+  },
+  {
+    category: "error",
+    question: "エラーコードが表示された場合、何を伝えればいいですか？",
+    answer: "お問い合わせの際は、エラーコード・エラーID・発生日時・エラーが発生したページ・実行していた操作をお知らせください。パスワードや認証トークン、確認メールのリンクなどの機密情報は絶対に送らないでください。",
+    link: "/contact/",
+    linkText: "お問い合わせはこちら"
+  },
 ];
 
 const categoryName = Object.fromEntries(
@@ -198,7 +287,7 @@ const categoryName = Object.fromEntries(
           <span class="help-eyebrow">CATEGORIES</span>
           <h2 id="category-heading">カテゴリーから探す</h2>
         </div>
-        <span class="help-muted">8カテゴリー</span>
+        <span class="help-muted">{categories.length}カテゴリー</span>
       </div>
 
       <div class="help-category-grid">
@@ -295,6 +384,7 @@ const categoryName = Object.fromEntries(
     site: "サイト機能",
     security: "セキュリティ",
     trouble: "トラブル",
+    error: "エラーコード",
   };
 
   function updateFaq() {

@@ -1,3 +1,4 @@
+
 ---
 import "../../styles/callback.css";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -17,6 +18,30 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         しばらくお待ちください。
       </p>
 
+      <!-- 認証エラー表示 -->
+      <section
+        id="auth-error-details"
+        class="auth-error"
+        role="alert"
+        aria-live="assertive"
+        hidden
+      >
+        <strong id="auth-error-title">認証エラー</strong>
+
+        <p id="auth-error-reason"></p>
+
+        <div class="auth-error-meta">
+          <p>エラーコード：<code id="auth-error-code"></code></p>
+          <p>エラーID：<code id="auth-error-id"></code></p>
+          <p>発生日時：<time id="auth-error-time"></time></p>
+        </div>
+
+        <p class="auth-error-help">
+          問題が解決しない場合は、エラーIDを添えてお問い合わせください。
+        </p>
+      </section>
+
+      <!-- パスワード再設定フォーム -->
       <form id="recovery-form" hidden>
         <label for="new-password">新しいパスワード</label>
         <input
@@ -53,6 +78,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 <script>
   import { supabase } from "../../lib/supabase.js";
 
+  // HTML要素
   const title = document.querySelector("#callback-title");
   const status = document.querySelector("#callback-status");
   const link = document.querySelector("#callback-link");
@@ -62,11 +88,136 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const confirmPassword = document.querySelector("#confirm-password");
   const recoverySubmit = document.querySelector("#recovery-submit");
 
+  // エラー表示用HTML
+  const authErrorElement = document.querySelector("#auth-error-details");
+  const authErrorTitle = document.querySelector("#auth-error-title");
+  const authErrorReason = document.querySelector("#auth-error-reason");
+  const authErrorCode = document.querySelector("#auth-error-code");
+  const authErrorId = document.querySelector("#auth-error-id");
+  const authErrorTime = document.querySelector("#auth-error-time");
+
+  // 独自エラーコード
+  const AUTH_ERRORS = {
+    otp_expired: {
+      code: "AUTH-008",
+      title: "認証リンクの有効期限が切れています",
+      reason: "新しい確認メールを送信して、もう一度お試しください。",
+    },
+
+    weak_password: {
+      code: "AUTH-004",
+      title: "パスワードが弱すぎます",
+      reason: "別のパスワードを設定してください。",
+    },
+
+    session_not_found: {
+      code: "AUTH-009",
+      title: "ログイン状態を確認できません",
+      reason: "もう一度ログインしてください。",
+    },
+
+    refresh_token_not_found: {
+      code: "AUTH-010",
+      title: "ログイン情報を更新できません",
+      reason: "もう一度ログインしてください。",
+    },
+
+    provider_disabled: {
+      code: "AUTH-011",
+      title: "ログイン方法を利用できません",
+      reason: "現在、このログイン方法は無効になっています。",
+    },
+
+    access_denied: {
+      code: "AUTH-012",
+      title: "認証が拒否されました",
+      reason: "認証を完了できませんでした。もう一度お試しください。",
+    },
+  };
+
+  // エラーIDを生成
+  function createAuthErrorId() {
+    const bytes = crypto.getRandomValues(new Uint8Array(4));
+
+    const hex = Array.from(bytes)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("")
+      .toUpperCase();
+
+    return `ERR-${hex}`;
+  }
+
+  // 認証エラーを表示
+  function showAuthError(error) {
+    // HTML要素の存在確認
+    if (
+      !authErrorElement ||
+      !authErrorTitle ||
+      !authErrorReason ||
+      !authErrorCode ||
+      !authErrorId ||
+      !authErrorTime
+    ) {
+      console.error("認証エラー表示用HTMLが見つかりません。");
+      return;
+    }
+
+    const supabaseCode = error?.code ?? "";
+
+    let errorInfo = AUTH_ERRORS[supabaseCode];
+
+    // エラーコードが一致しない場合、メッセージから判定
+    const message = String(
+      error?.message ?? error ?? ""
+    ).toLowerCase();
+
+    if (!errorInfo && message.includes("expired")) {
+      errorInfo = AUTH_ERRORS.otp_expired;
+    }
+
+    if (!errorInfo && message.includes("access_denied")) {
+      errorInfo = AUTH_ERRORS.access_denied;
+    }
+
+    // 対応するエラーがない場合
+    if (!errorInfo) {
+      errorInfo = {
+        code: "AUTH-999",
+        title: "認証に失敗しました",
+        reason:
+          "予期しないエラーが発生しました。時間をおいて再度お試しください。",
+      };
+    }
+
+    const errorId = createAuthErrorId();
+    const timestamp = new Date();
+
+    // HTMLに表示
+    authErrorTitle.textContent = errorInfo.title;
+    authErrorReason.textContent = errorInfo.reason;
+    authErrorCode.textContent = errorInfo.code;
+    authErrorId.textContent = errorId;
+    authErrorTime.textContent = timestamp.toLocaleString("ja-JP");
+
+    authErrorElement.hidden = false;
+
+    // 開発者向けログ
+    console.error("[AUTH ERROR]", {
+      customCode: errorInfo.code,
+      errorId,
+      supabaseCode,
+      message: error?.message ?? String(error),
+      timestamp: timestamp.toISOString(),
+    });
+  }
+
+  // 認証コールバック処理
   async function handleCallback() {
     try {
       const url = new URL(window.location.href);
 
       const code = url.searchParams.get("code");
+
       const authError =
         url.searchParams.get("error_description") ||
         url.searchParams.get("error");
@@ -110,18 +261,20 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       window.setTimeout(() => {
         window.location.replace("/");
       }, 1200);
-    } catch (error) {
-      console.error("認証コールバックエラー:", error);
 
+    } catch (error) {
       title.textContent = "認証に失敗しました";
 
       status.textContent =
-        "もう一度お試しください。リンクの有効期限が切れている可能性もあります。";
+        "認証を完了できませんでした。詳細は以下をご確認ください。";
+
+      showAuthError(error);
 
       link.hidden = false;
     }
   }
 
+  // パスワード再設定
   recoveryForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -149,22 +302,28 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       if (error) throw error;
 
       title.textContent = "変更が完了しました！";
+
       status.textContent =
         "パスワードを変更しました。新しいパスワードでログインできます。";
 
       recoveryForm.hidden = true;
+
       link.href = "/login";
       link.textContent = "ログインページへ";
       link.hidden = false;
+
     } catch (error) {
-      console.error("パスワード変更エラー:", error);
       status.textContent =
-        "パスワードを変更できませんでした。もう一度お試しください。";
+        "パスワードを変更できませんでした。詳細は以下をご確認ください。";
+
+      showAuthError(error);
+
     } finally {
       recoverySubmit.disabled = false;
     }
   });
 
+  // コールバック開始
   void handleCallback();
 </script>
 
@@ -217,5 +376,48 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   #callback-link[hidden] {
     display: none;
+  }
+
+  /* 認証エラー表示 */
+  .auth-error {
+    margin-top: 20px;
+    padding: 18px;
+    text-align: left;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .auth-error[hidden] {
+    display: none;
+  }
+
+  .auth-error > strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #dc5555;
+    font-size: 16px;
+  }
+
+  .auth-error p {
+    overflow-wrap: anywhere;
+  }
+
+  .auth-error-meta {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .auth-error-meta code {
+    overflow-wrap: anywhere;
+  }
+
+  .auth-error-help {
+    margin-top: 12px;
+    color: var(--text);
+    opacity: 0.7;
+    font-size: 12px;
   }
 </style>
