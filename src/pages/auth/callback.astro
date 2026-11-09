@@ -1,90 +1,221 @@
 ---
 import "../../styles/callback.css";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { supabase } from "../../lib/supabase.js";
 ---
 
 <BaseLayout
-  title="ログイン処理中"
-  description="Googleログインを処理しています"
+  title="認証処理"
+  description="Jakuのサイトの認証処理を行っています"
 >
   <main class="callback-page">
     <section class="callback-card">
-      <p class="eyebrow">ログイン処理</p>
-      <h1 id="callback-title">ログインを確認しています...</h1>
+      <p class="eyebrow">ACCOUNT</p>
+
+      <h1 id="callback-title">認証を確認しています...</h1>
+
       <p id="callback-status" role="status" aria-live="polite">
         しばらくお待ちください。
       </p>
-      <a id="callback-link" href="/" hidden>トップページへ戻る</a>
+
+      <form id="recovery-form" hidden>
+        <label for="new-password">新しいパスワード</label>
+        <input
+          id="new-password"
+          type="password"
+          minlength="8"
+          autocomplete="new-password"
+          placeholder="8文字以上"
+          required
+        />
+
+        <label for="confirm-password">パスワード（確認）</label>
+        <input
+          id="confirm-password"
+          type="password"
+          minlength="8"
+          autocomplete="new-password"
+          placeholder="もう一度入力"
+          required
+        />
+
+        <button id="recovery-submit" type="submit">
+          パスワードを変更する
+        </button>
+      </form>
+
+      <a id="callback-link" href="/" hidden>
+        トップページへ戻る
+      </a>
     </section>
   </main>
 </BaseLayout>
 
 <script>
- 
-import { supabase } from "../../lib/supabase.js";
+  import { supabase } from "../../lib/supabase.js";
 
-const title = document.querySelector<HTMLHeadingElement>("#callback-title");
-const status = document.querySelector<HTMLElement>("#callback-status");
-const link = document.querySelector<HTMLAnchorElement>("#callback-link");
+  const title = document.querySelector("#callback-title");
+  const status = document.querySelector("#callback-status");
+  const link = document.querySelector("#callback-link");
 
-async function handleCallback() {
-  try {
-    // Googleから戻ってきたURLに認証コードがあるか確認
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
-    const authError =
-      url.searchParams.get("error_description") ||
-      url.searchParams.get("error");
+  const recoveryForm = document.querySelector("#recovery-form");
+  const newPassword = document.querySelector("#new-password");
+  const confirmPassword = document.querySelector("#confirm-password");
+  const recoverySubmit = document.querySelector("#recovery-submit");
 
-    if (authError) {
-      throw new Error(`Google認証エラー: ${authError}`);
-    }
+  async function handleCallback() {
+    try {
+      const url = new URL(window.location.href);
 
-    // 認証コードがあれば、Supabaseのセッションに交換する
-    if (code) {
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      const code = url.searchParams.get("code");
+      const authError =
+        url.searchParams.get("error_description") ||
+        url.searchParams.get("error");
 
-      if (error) {
-        throw error;
+      if (authError) {
+        throw new Error(authError);
       }
-    }
 
-    // セッションが確立されたか確認
-    const { data, error } = await supabase.auth.getSession();
+      if (code) {
+        const { error } =
+          await supabase.auth.exchangeCodeForSession(code);
 
-    if (error) {
-      throw error;
-    }
+        if (error) throw error;
+      }
 
-    if (!data.session) {
-      throw new Error("ログインセッションが見つかりません。");
-    }
+      const { data, error } = await supabase.auth.getSession();
 
-    if (title) title.textContent = "ログインしました！";
-    if (status) {
-      status.textContent = "Googleログインが正常に完了しました。";
-    }
+      if (error) throw error;
 
-    if (link) link.hidden = false;
+      if (!data.session) {
+        throw new Error("ログインセッションが見つかりません。");
+      }
 
-    // ログイン成功後、トップページへ移動
-    window.setTimeout(() => {
-      window.location.replace("/");
-    }, 1200);
-  } catch (error) {
-    console.error("認証コールバックエラー:", error);
+      // パスワード再設定の場合
+      if (url.searchParams.get("type") === "recovery") {
+        title.textContent = "新しいパスワードを設定";
 
-    if (title) title.textContent = "ログインできませんでした";
-    if (status) {
+        status.textContent =
+          "新しく使用するパスワードを入力してください。";
+
+        recoveryForm.hidden = false;
+        return;
+      }
+
+      // 通常のGoogleログイン・メール確認
+      title.textContent = "認証が完了しました！";
+      status.textContent = "認証が正常に完了しました。";
+
+      link.hidden = false;
+
+      window.setTimeout(() => {
+        window.location.replace("/");
+      }, 1200);
+    } catch (error) {
+      console.error("認証コールバックエラー:", error);
+
+      title.textContent = "認証に失敗しました";
+
       status.textContent =
-        "もう一度ログインしてください。詳しい原因はブラウザの開発者ツールで確認できます。";
+        "もう一度お試しください。リンクの有効期限が切れている可能性もあります。";
+
+      link.hidden = false;
+    }
+  }
+
+  recoveryForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const password = newPassword.value;
+    const confirm = confirmPassword.value;
+
+    if (password.length < 8) {
+      status.textContent = "パスワードは8文字以上にしてください。";
+      return;
     }
 
-    if (link) link.hidden = false;
-  }
-}
+    if (password !== confirm) {
+      status.textContent = "パスワードが一致しません。";
+      return;
+    }
 
-handleCallback();
+    recoverySubmit.disabled = true;
+    status.textContent = "パスワードを変更しています...";
 
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password,
+      });
+
+      if (error) throw error;
+
+      title.textContent = "変更が完了しました！";
+      status.textContent =
+        "パスワードを変更しました。新しいパスワードでログインできます。";
+
+      recoveryForm.hidden = true;
+      link.href = "/login";
+      link.textContent = "ログインページへ";
+      link.hidden = false;
+    } catch (error) {
+      console.error("パスワード変更エラー:", error);
+      status.textContent =
+        "パスワードを変更できませんでした。もう一度お試しください。";
+    } finally {
+      recoverySubmit.disabled = false;
+    }
+  });
+
+  void handleCallback();
 </script>
+
+<style>
+  #recovery-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+    text-align: left;
+  }
+
+  #recovery-form[hidden] {
+    display: none;
+  }
+
+  #recovery-form label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  #recovery-form input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font: inherit;
+  }
+
+  #recovery-form button {
+    min-height: 46px;
+    margin-top: 8px;
+    color: white;
+    background: var(--accent);
+    border: 0;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  #recovery-form button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  #callback-link[hidden] {
+    display: none;
+  }
+</style>

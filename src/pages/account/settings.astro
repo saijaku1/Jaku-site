@@ -43,7 +43,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           />
           <div class="profile-identity">
             <strong id="profile-preview-name">ユーザー</strong>
-            <span>Googleアカウント</span>
+              <span>アカウント情報</span>
           </div>
         </div>
 
@@ -81,9 +81,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <div class="form-field">
           <label for="email">メールアドレス</label>
           <input id="email" type="email" readonly disabled />
-          <p class="field-help">
-            Googleログインで使用しているメールアドレスです。
-          </p>
+            <p class="field-help">
+              現在、このアカウントに登録されているメールアドレスです。
+            </p>
         </div>
 
         <div id="settings-message" class="settings-message" role="status" aria-live="polite" hidden></div>
@@ -94,6 +94,77 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </button>
         </div>
       </form>
+    </section>
+        <section id="security-card" class="settings-card security-card" hidden>
+      <div class="card-heading">
+        <h2>ログイン・セキュリティ</h2>
+        <p>パスワードやメールアドレスを管理できます。</p>
+      </div>
+
+      <form id="password-form">
+        <h3>パスワード設定・変更</h3>
+
+        <div class="form-field">
+          <label for="new-account-password">新しいパスワード</label>
+          <input
+            id="new-account-password"
+            type="password"
+            minlength="8"
+            autocomplete="new-password"
+            placeholder="8文字以上"
+            required
+          />
+          <p class="field-help">8文字以上で設定してください。</p>
+        </div>
+
+        <div class="form-field">
+          <label for="confirm-account-password">パスワード（確認）</label>
+          <input
+            id="confirm-account-password"
+            type="password"
+            minlength="8"
+            autocomplete="new-password"
+            placeholder="もう一度入力"
+            required
+          />
+        </div>
+
+        <button id="save-password" class="primary-button" type="submit">
+          パスワードを設定・変更
+        </button>
+      </form>
+
+      <div class="security-divider"></div>
+
+      <form id="email-form">
+        <h3>メールアドレス変更</h3>
+
+        <div class="form-field">
+          <label for="new-account-email">新しいメールアドレス</label>
+          <input
+            id="new-account-email"
+            type="email"
+            autocomplete="email"
+            placeholder="new@example.com"
+            required
+          />
+          <p class="field-help">
+            変更を確定するための確認メールを送信します。
+          </p>
+        </div>
+
+        <button id="save-email" class="primary-button" type="submit">
+          確認メールを送信
+        </button>
+      </form>
+
+      <div
+        id="security-message"
+        class="settings-message"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
     </section>
         <section class="settings-card account-links-card">
       <div class="card-heading">
@@ -139,6 +210,51 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <span aria-hidden="true">↗</span>
         </button>
     </section>
+    <!-- アカウント削除 -->
+<section
+  id="account-delete-card"
+  class="settings-card account-delete-card"
+  hidden
+>
+  <div class="card-heading">
+    <h2>アカウント削除</h2>
+    <p>
+      Jakuのサイトからアカウントを削除します。
+      この操作は取り消せません。
+    </p>
+  </div>
+
+  <div class="delete-warning">
+    <strong>削除される情報・保持される情報</strong>
+    <ul>
+      <li>ログイン用アカウントは削除されます。</li>
+      <li>公開プロフィールは「退会したユーザー」に変更されます。</li>
+      <li>自己紹介は非表示になります。</li>
+      <li>過去のいいねデータは保持されます。</li>
+      <li>退会後、同じメールアドレスで新しくアカウントを作成した場合、新しいアカウントとして利用できます。</li>
+    </ul>
+  </div>
+
+  <p class="delete-description">
+    退会する場合は、下のボタンから手続きを進めてください。
+  </p>
+
+  <div
+    id="delete-message"
+    class="settings-message"
+    role="status"
+    aria-live="polite"
+    hidden
+  ></div>
+
+  <button
+    id="delete-account-button"
+    class="delete-account-button"
+    type="button"
+  >
+    アカウントを削除する
+  </button>
+</section>
   </main>
 
   <script>
@@ -156,7 +272,41 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const saveButton = document.querySelector("#save-profile");
     const publicProfileLink = document.querySelector("#public-profile-link");
     const profileCopyButton = document.querySelector("#profile-copy-button");
+        // セキュリティ設定用の要素
+    const securityCard = document.querySelector("#security-card");
 
+    const passwordForm = document.querySelector("#password-form");
+    const newAccountPassword = document.querySelector("#new-account-password");
+    const confirmAccountPassword = document.querySelector(
+      "#confirm-account-password"
+    );
+    const savePasswordButton = document.querySelector("#save-password");
+
+    const emailForm = document.querySelector("#email-form");
+    const newAccountEmail = document.querySelector("#new-account-email");
+    const saveEmailButton = document.querySelector("#save-email");
+    const securityMessage = document.querySelector("#security-message");
+    // アカウント削除用
+    const deleteCard = document.querySelector("#account-delete-card");
+    const deleteButton = document.querySelector("#delete-account-button");
+    const deleteMessage = document.querySelector("#delete-message");
+
+    function showDeleteMessage(text, type = "error") {
+      deleteMessage.textContent = text;
+      deleteMessage.dataset.type = type;
+      deleteMessage.hidden = false;
+    }
+
+    function showSecurityMessage(text, type = "success") {
+      securityMessage.textContent = text;
+      securityMessage.dataset.type = type;
+      securityMessage.hidden = false;
+    }
+
+    function hideSecurityMessage() {
+      securityMessage.hidden = true;
+      securityMessage.textContent = "";
+    }
     let currentUser = null;
 
     function getDisplayName(user) {
@@ -186,6 +336,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       loading.hidden = true;
       form.hidden = true;
       loggedOut.hidden = false;
+      securityCard.hidden = true;
+      deleteCard.hidden = true;
     }
     publicProfileLink.hidden = true;
     profileCopyButton.hidden = true;
@@ -198,6 +350,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       `/profile/?id=${encodeURIComponent(user.id)}`;
       publicProfileLink.hidden = false;
       profileCopyButton.hidden = false;
+      securityCard.hidden = false;
+      hideSecurityMessage();
+      deleteCard.hidden = false;
 
       const metadata = user.user_metadata ?? {};
       const avatarUrl = metadata.avatar_url ?? metadata.picture;
@@ -245,6 +400,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
       try {
         const { data, error } = await supabase.auth.updateUser({
+
+
           data: {
             display_name: username,
             full_name: username,
@@ -301,6 +458,202 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         saveButton.textContent = "変更を保存";
       }
     });
+    
+    // パスワード設定・変更
+passwordForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  hideSecurityMessage();
+
+  if (!currentUser) {
+    showSecurityMessage("ログインしてください。", "error");
+    return;
+  }
+
+  const password = newAccountPassword.value;
+  const confirmPassword = confirmAccountPassword.value;
+
+  if (password.length < 8) {
+    showSecurityMessage(
+      "パスワードは8文字以上で入力してください。",
+      "error"
+    );
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showSecurityMessage(
+      "パスワードが一致しません。",
+      "error"
+    );
+    return;
+  }
+
+  savePasswordButton.disabled = true;
+  savePasswordButton.textContent = "変更中...";
+
+  try {
+    const { data, error } = await supabase.auth.updateUser({
+      password,
+    });
+
+    if (error) throw error;
+
+    if (data.user) {
+      currentUser = data.user;
+    }
+
+    passwordForm.reset();
+
+    showSecurityMessage(
+      "パスワードを設定・変更しました。次回からメールアドレスとパスワードでもログインできます。"
+    );
+  } catch (error) {
+    console.error("パスワード更新エラー:", error);
+
+    showSecurityMessage(
+      error.message ||
+        "パスワードを変更できませんでした。もう一度お試しください。",
+      "error"
+    );
+  } finally {
+    savePasswordButton.disabled = false;
+    savePasswordButton.textContent = "パスワードを設定・変更";
+  }
+});
+// メールアドレス変更
+emailForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  hideSecurityMessage();
+
+  if (!currentUser) {
+    showSecurityMessage("ログインしてください。", "error");
+    return;
+  }
+
+  const newEmail = newAccountEmail.value.trim();
+
+  if (!newEmail) {
+    showSecurityMessage(
+      "新しいメールアドレスを入力してください。",
+      "error"
+    );
+    return;
+  }
+
+  if (newEmail.toLowerCase() === currentUser.email?.toLowerCase()) {
+    showSecurityMessage(
+      "現在と同じメールアドレスです。",
+      "error"
+    );
+    return;
+  }
+
+  saveEmailButton.disabled = true;
+  saveEmailButton.textContent = "送信中...";
+
+  try {
+    const { error } = await supabase.auth.updateUser(
+      {
+        email: newEmail,
+      },
+      {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      }
+    );
+
+    if (error) throw error;
+
+    emailForm.reset();
+
+    showSecurityMessage(
+      "確認メールを送信しました。メール内のリンクから変更を完了してください。"
+    );
+  } catch (error) {
+    console.error("メールアドレス変更エラー:", error);
+
+    showSecurityMessage(
+      error.message ||
+        "確認メールを送信できませんでした。入力内容を確認してください。",
+      "error"
+    );
+  } finally {
+    saveEmailButton.disabled = false;
+    saveEmailButton.textContent = "確認メールを送信";
+  }
+});
+
+
+// アカウント削除
+deleteButton.addEventListener("click", async () => {
+  if (!currentUser) {
+    showDeleteMessage("ログインしてください。");
+    return;
+  }
+
+  // 第1段階：確認
+  const confirmed = window.confirm(
+    "本当にアカウントを削除しますか？\n\n" +
+    "ログイン用アカウントは削除されます。\n" +
+    "この操作は取り消せません。"
+  );
+
+  if (!confirmed) return;
+
+  // 第2段階：文字入力による最終確認
+  const confirmation = window.prompt(
+    "本当に削除する場合は「退会する」と入力してください。"
+  );
+
+  if (confirmation !== "退会する") {
+    showDeleteMessage("入力が一致しないため、削除をキャンセルしました。");
+    return;
+  }
+
+  deleteButton.disabled = true;
+  deleteButton.textContent = "削除処理中...";
+
+  deleteMessage.hidden = true;
+
+  try {
+    // Edge Functionを呼び出す
+    const { data, error } = await supabase.functions.invoke(
+      "delete-account",
+      {
+        method: "POST",
+      }
+    );
+
+    if (error) {
+      console.error("Edge Functionエラー:", error);
+      throw new Error(
+        "アカウントを削除できませんでした。時間をおいて再度お試しください。"
+      );
+    }
+
+    if (!data?.success) {
+      throw new Error(
+        data?.error || "アカウントの削除に失敗しました。"
+      );
+    }
+
+    // 削除成功後、ローカルのログイン状態を解除
+    await supabase.auth.signOut();
+
+    // トップページへ移動
+    window.location.replace("/");
+
+  } catch (error) {
+    console.error("アカウント削除エラー:", error);
+
+    showDeleteMessage(
+      error.message || "削除処理中にエラーが発生しました。"
+    );
+
+    deleteButton.disabled = false;
+    deleteButton.textContent = "アカウントを削除する";
+  }
+});
+
 
     async function initializeSettings() {
       try {
@@ -363,9 +716,8 @@ profileCopyButton.addEventListener("click", async () => {
   }
 });
   </script>
-
   <style>
-    .settings-page {
+        .settings-page {
       width: min(760px, calc(100% - 32px));
       margin: 0 auto;
       padding: 56px 0 88px;
@@ -640,6 +992,90 @@ profileCopyButton.addEventListener("click", async () => {
       text-align: left;
       cursor: pointer;
     }
+    .security-card {
+  margin-top: 20px;
+}
+
+.security-card h3 {
+  margin: 0 0 18px;
+  font-size: 16px;
+}
+
+.security-card form {
+  margin-top: 20px;
+}
+
+.security-divider {
+  height: 1px;
+  margin: 30px 0;
+  background: var(--border);
+}
+
+#security-card[hidden] {
+  display: none !important;
+}
+
+.security-card button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+/* アカウント削除 */
+.account-delete-card {
+  margin-top: 20px;
+  border-color: #d93025;
+}
+
+.delete-warning {
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, #d93025 35%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #d93025 6%, var(--bg));
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.delete-warning strong {
+  color: #d93025;
+}
+
+.delete-warning ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.delete-description {
+  margin: 20px 0;
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.8;
+}
+
+.delete-account-button {
+  min-height: 46px;
+  padding: 12px 20px;
+  border: 1px solid #d93025;
+  border-radius: 12px;
+  background: #d93025;
+  color: white;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 160ms ease;
+}
+
+.delete-account-button:hover {
+  opacity: 0.85;
+}
+
+.delete-account-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+#account-delete-card[hidden] {
+  display: none !important;
+}
 
     @media (prefers-reduced-motion: reduce) {
       .account-feature-link {

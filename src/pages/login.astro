@@ -6,29 +6,131 @@ import "../styles/login.css";
 <BaseLayout title="ログイン" description="Jakuのサイトにログイン">
   <main class="login-page">
     <section class="login-card">
-      <p class="eyebrow">アカウント登録</p>
+      <p class="eyebrow">ACCOUNT</p>
       <h1>ログイン</h1>
+
       <p class="description">
-        Googleアカウントでログインして、Jakuのサイトをもっと楽しもう。
+        Jakuのサイトにログインして、アカウント機能を利用できます。
       </p>
 
-      <button id="google-login" class="google-button" type="button">
-        <span class="google-mark" aria-hidden="true">G</span>
-        Googleでログイン
-      </button>
+      <div id="auth-forms">
+        <form id="login-form" class="auth-form">
+          <div class="auth-field">
+            <label for="login-email">メールアドレス</label>
+            <input
+              id="login-email"
+              type="email"
+              autocomplete="email"
+              placeholder="example@example.com"
+              required
+            />
+          </div>
 
-      <p id="login-status" class="login-status" role="status" aria-live="polite"></p>
+          <div class="auth-field">
+            <label for="login-password">パスワード</label>
+            <input
+              id="login-password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="パスワード"
+              required
+            />
+          </div>
+
+          <button class="primary-button" type="submit">
+            ログイン
+          </button>
+
+          <button id="forgot-password" class="text-button" type="button">
+            パスワードを忘れた場合
+          </button>
+
+          <p class="switch-text">
+            アカウントをお持ちでない方は
+            <button id="show-signup" class="text-button" type="button">
+              新規登録
+            </button>
+          </p>
+        </form>
+
+        <form id="signup-form" class="auth-form" hidden>
+          <div class="auth-field">
+            <label for="signup-email">メールアドレス</label>
+            <input
+              id="signup-email"
+              type="email"
+              autocomplete="email"
+              placeholder="example@example.com"
+              required
+            />
+          </div>
+
+          <div class="auth-field">
+            <label for="signup-password">パスワード</label>
+            <input
+              id="signup-password"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              placeholder="8文字以上"
+              required
+            />
+          </div>
+
+          <div class="auth-field">
+            <label for="signup-password-confirm">パスワード（確認）</label>
+            <input
+              id="signup-password-confirm"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              placeholder="もう一度入力"
+              required
+            />
+          </div>
+
+          <button class="primary-button" type="submit">
+            アカウントを登録
+          </button>
+
+          <p class="switch-text">
+            すでにアカウントをお持ちの方は
+            <button id="show-login" class="text-button" type="button">
+              ログイン
+            </button>
+          </p>
+        </form>
+
+        <div class="separator">
+          <span>または</span>
+        </div>
+
+        <button id="google-login" class="google-button" type="button">
+          <span class="google-mark" aria-hidden="true">G</span>
+          Googleでログイン
+        </button>
+      </div>
+
+      <p
+        id="login-status"
+        class="login-status"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+      <section id="account-info" hidden>
+        <p>ログイン中のアカウント</p>
+        <p id="user-email"></p>
+        <a href="/account/settings/" class="primary-button">
+          アカウント設定
+        </a>
+        <button id="logout-button" type="button">
+          ログアウト
+        </button>
+      </section>
+
       <a class="back-link" href="/">トップページに戻る</a>
     </section>
-    
-<section id="account-info" hidden>
-  <p>ログイン中のアカウント</p>
-  <p id="user-email"></p>
-  <button id="logout-button" type="button">
-    ログアウト
-  </button>
-</section>
-
   </main>
 </BaseLayout>
 

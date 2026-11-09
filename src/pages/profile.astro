@@ -61,6 +61,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const avatar = document.querySelector("#profile-avatar");
     const username = document.querySelector("#profile-username");
     const bio = document.querySelector("#profile-bio");
+    const profileSection = document.querySelector("#profile-section");
+
 
     function showError(message) {
       loading.hidden = true;
@@ -90,7 +92,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       try {
         const { data, error } = await supabase
           .from("profiles")
-          .select("username, bio, avatar_url")
+          .select("username, bio, avatar_url, is_deleted")
           .eq("id", userId)
           .maybeSingle();
 
@@ -103,15 +105,29 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           return;
         }
 
-        username.textContent = data.username || "ユーザー";
+if (data.is_deleted) {
+  // 退会済みユーザー
+  username.textContent = "退会したユーザー";
 
-        const introduction = data.bio?.trim() ?? "";
-        bio.textContent =
-          introduction || "自己紹介はまだ設定されていません。";
+  // 自己紹介を非表示
+  profileSection.hidden = true;
 
-        const avatarUrl = data.avatar_url?.trim();
+  // 専用のシルエット画像
+  avatar.src = "/characters/deleted-user.svg";
+  avatar.alt = "退会したユーザーのプロフィール画像";
+} else {
+  // 通常ユーザー
+  username.textContent = data.username || "ユーザー";
 
-        avatar.src = avatarUrl || "/characters/Jaku.svg";
+  const introduction = data.bio?.trim() ?? "";
+  bio.textContent =
+    introduction || "自己紹介はまだ設定されていません。";
+
+  profileSection.hidden = false;
+
+  const avatarUrl = data.avatar_url?.trim();
+  avatar.src = avatarUrl || "/characters/Jaku.svg";
+}
 
         loading.hidden = true;
         errorBox.hidden = true;

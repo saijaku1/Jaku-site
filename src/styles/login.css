@@ -34,6 +34,105 @@
   opacity: 0.75;
 }
 
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+
+.auth-form[hidden] {
+  display: none;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-field label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-field input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: var(--text);
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+}
+
+.auth-field input:focus {
+  border-color: var(--accent);
+}
+
+.primary-button {
+  display: inline-flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--accent);
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.text-button {
+  padding: 0;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
+.switch-text {
+  margin: 0;
+  font-size: 13px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.separator::before,
+.separator::after {
+  flex: 1;
+  height: 1px;
+  content: "";
+  background: var(--border);
+}
+
 .google-button {
   display: flex;
   width: 100%;
@@ -72,13 +171,14 @@
 
 .login-status {
   min-height: 1.5em;
-  margin: 16px 0;
+  margin: 18px 0;
   font-size: 0.9rem;
+  line-height: 1.7;
 }
 
 .back-link {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 24px;
   color: var(--text);
   opacity: 0.7;
   text-decoration: none;
@@ -97,7 +197,7 @@
 }
 
 #account-info[hidden],
-#google-login[hidden] {
+#auth-forms[hidden] {
   display: none;
 }
 
@@ -107,11 +207,13 @@
 }
 
 #logout-button {
+  display: block;
+  margin: 16px auto 0;
   padding: 10px 18px;
+  color: var(--text);
+  background: transparent;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: transparent;
-  color: var(--text);
   cursor: pointer;
 }
 
