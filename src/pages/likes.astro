@@ -47,111 +47,130 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     function clearList() {
       list?.replaceChildren();
     }
+    // 読み込み処理の重複・競合を防止するID
+    let loadRequestId = 0;
 
-    async function loadLikes() {
-      clearList();
-      showStatus("いいね履歴を読み込んでいます...");
+   async function loadLikes() {
+  // 今回の読み込みを識別
+  const currentRequestId = ++loadRequestId;
 
-      // ログイン状態を確認
-      const {
-        data: sessionData,
-        error: sessionError,
-      } = await supabase.auth.getSession();
+  clearList();
+  showStatus("いいね履歴を読み込んでいます...");
 
-      if (sessionError) {
-        console.error("ログイン状態の取得エラー:", sessionError);
-        showStatus(
-          "ログイン状態を確認できませんでした。ページを再読み込みしてください。"
-        );
-        return;
-      }
+  // ログイン状態を確認
+  const {
+    data: sessionData,
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
-      const user = sessionData.session?.user;
+  // 古い読み込みなら終了
+  if (currentRequestId !== loadRequestId) return;
 
-      // ログインしていない場合
-      if (!user) {
-        showStatus("いいね履歴を見るにはログインしてください。");
+  if (sessionError) {
+    console.error("ログイン状態の取得エラー:", sessionError);
 
-        const loginLink = document.createElement("a");
-        loginLink.href = "/login";
-        loginLink.className = "login-link";
-        loginLink.textContent = "ログインする";
+    showStatus(
+      "ログイン状態を確認できませんでした。ページを再読み込みしてください。"
+    );
 
-        list?.append(loginLink);
-        return;
-      }
+    return;
+  }
 
-      // ログイン中のユーザー自身のいいね履歴を取得
-      const {
-        data: likes,
-        error,
-      } = await supabase
-        .from("likes")
-        .select("post_slug, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
+  const user = sessionData.session?.user;
 
-      if (error) {
-        console.error("いいね履歴の取得エラー:", error);
-        showStatus(
-          "履歴を取得できませんでした。時間をおいて再度お試しください。"
-        );
-        return;
-      }
+  // ログインしていない場合
+  if (!user) {
+    showStatus("いいね履歴を見るにはログインしてください。");
 
-      // いいね履歴がない場合
-      if (!likes || likes.length === 0) {
-        showStatus("まだいいねした記事はありません。");
-        return;
-      }
+    const loginLink = document.createElement("a");
+    loginLink.href = "/login";
+    loginLink.className = "login-link";
+    loginLink.textContent = "ログインする";
 
-      // blog.json の記事を slug から検索できるようにする
-      const postsBySlug = new Map(
-        posts.map((post) => [post.slug, post])
-      );
+    list?.append(loginLink);
+    return;
+  }
 
-      let displayedCount = 0;
+  // いいね履歴を取得
+  const {
+    data: likes,
+    error,
+  } = await supabase
+    .from("likes")
+    .select("post_slug, created_at")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
 
-      for (const like of likes) {
-        const post = postsBySlug.get(like.post_slug);
+  // 古い読み込みなら終了
+  if (currentRequestId !== loadRequestId) return;
 
-        // blog.json に存在しない記事は表示しない
-        if (!post) continue;
+  if (error) {
+    console.error("いいね履歴の取得エラー:", error);
 
-        const article = document.createElement("article");
-        article.className = "like-card";
+    showStatus(
+      "履歴を取得できませんでした。時間をおいて再度お試しください。"
+    );
 
-        const link = document.createElement("a");
-        link.className = "like-card-link";
-        link.href = `/blog/${encodeURIComponent(post.slug)}/`;
+    return;
+  }
 
-        const title = document.createElement("h2");
-        title.textContent = post.title;
+  // 同じ記事の重複データを除去
+  const uniqueLikes = [
+    ...new Map(
+      (likes ?? []).map((like) => [like.post_slug, like])
+    ).values(),
+  ];
 
-        const description = document.createElement("p");
-        description.className = "like-description";
-        description.textContent = post.description || "";
+  // いいね履歴がない場合
+  if (uniqueLikes.length === 0) {
+    showStatus("まだいいねした記事はありません。");
+    return;
+  }
 
-        const date = document.createElement("time");
-        date.dateTime = post.date;
-        date.textContent = post.date;
+  // blog.json の記事を slug から検索できるようにする
+  const postsBySlug = new Map(
+    posts.map((post) => [post.slug, post])
+  );
 
-        link.append(title, description, date);
-        article.append(link);
-        list?.append(article);
+  let displayedCount = 0;
 
-        displayedCount++;
-      }
+  for (const like of uniqueLikes) {
+    const post = postsBySlug.get(like.post_slug);
 
-      if (displayedCount > 0) {
-        showStatus(
-          `${displayedCount}件の記事にいいねしています。`
-        );
-      } else {
-        showStatus("表示できる記事がありません。");
-      }
-    }
+    // blog.json に存在しない記事は表示しない
+    if (!post) continue;
 
+    const article = document.createElement("article");
+    article.className = "like-card";
+
+    const link = document.createElement("a");
+    link.className = "like-card-link";
+    link.href = `/blog/${encodeURIComponent(post.slug)}/`;
+
+    const title = document.createElement("h2");
+    title.textContent = post.title;
+
+    const description = document.createElement("p");
+    description.className = "like-description";
+    description.textContent = post.description || "";
+
+    const date = document.createElement("time");
+    date.dateTime = post.date;
+    date.textContent = post.date;
+
+    link.append(title, description, date);
+    article.append(link);
+    list?.append(article);
+
+    displayedCount++;
+  }
+
+  if (displayedCount > 0) {
+    showStatus(`${displayedCount}件の記事にいいねしています。`);
+  } else {
+    showStatus("表示できる記事がありません。");
+  }
+}
     // 初回読み込み
     void loadLikes();
 
