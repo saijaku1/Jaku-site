@@ -129,6 +129,42 @@ import "../styles/login.css";
         aria-live="polite"
       ></p>
 
+      
+<section
+  id="auth-error-details"
+  class="auth-error"
+  role="alert"
+  aria-live="polite"
+  hidden
+>
+  <div class="auth-error-heading">
+    <strong id="auth-error-title">認証エラー</strong>
+  </div>
+
+  <p id="auth-error-reason"></p>
+
+  <div class="auth-error-meta">
+    <p>
+      エラーコード：
+      <code id="auth-error-code"></code>
+    </p>
+
+    <p>
+      エラーID：
+      <code id="auth-error-id"></code>
+    </p>
+
+    <p>
+      発生日時：
+      <time id="auth-error-time"></time>
+    </p>
+  </div>
+
+  <p class="auth-error-help">
+    問題が解決しない場合は、エラーIDを添えて<a href="/contact/" target="_blank" rel="noopener noreferrer">こちら</a>からお問い合わせください。
+  </p>
+</section>
+
       <section id="account-info" hidden>
         <p>ログイン中のアカウント</p>
         <p id="user-email"></p>

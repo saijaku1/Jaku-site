@@ -25,30 +25,6 @@ const userEmail = document.querySelector("#user-email");
 const logoutButton = document.querySelector("#logout-button");
 
 // ========================================
-// 共通エラー出力
-// ========================================
-
-function logAuthError(context, error) {
-  const details = {
-    context,
-    name: error?.name ?? "UnknownError",
-    message: error?.message ?? String(error),
-    status: error?.status ?? null,
-    code: error?.code ?? null,
-    timestamp: new Date().toISOString(),
-  };
-
-  console.groupCollapsed(
-    `%c[AUTH ERROR] ${context}`,
-    "color: #ff4d4f; font-weight: bold;",
-  );
-
-  console.error(details);
-
-  console.groupEnd();
-}
-
-// ========================================
 // 共通UI処理
 // ========================================
 
@@ -300,3 +276,170 @@ supabase.auth.onAuthStateChange((_event, session) => {
 });
 
 void checkLogin();
+
+// ========================================
+// 認証エラー管理
+// ========================================
+
+const authErrorElement = document.querySelector("#auth-error-details");
+const authErrorTitle = document.querySelector("#auth-error-title");
+const authErrorReason = document.querySelector("#auth-error-reason");
+const authErrorCode = document.querySelector("#auth-error-code");
+const authErrorId = document.querySelector("#auth-error-id");
+const authErrorTime = document.querySelector("#auth-error-time");
+
+// Supabaseのエラーコードを独自コードに変換
+const AUTH_ERRORS = {
+  invalid_credentials: {
+    code: "AUTH-001",
+    title: "ログインに失敗しました",
+    reason: "メールアドレスまたはパスワードが正しくありません。",
+  },
+  email_not_confirmed: {
+    code: "AUTH-002",
+    title: "メールアドレスが未確認です",
+    reason: "確認メール内のリンクからメールアドレスの認証を完了してください。",
+  },
+  user_already_exists: {
+    code: "AUTH-003",
+    title: "アカウントを登録できません",
+    reason:
+      "このメールアドレスでは登録を完了できません。ログインやパスワード再設定もお試しください。",
+  },
+  email_exists: {
+    code: "AUTH-003",
+    title: "アカウントを登録できません",
+    reason:
+      "このメールアドレスでは登録を完了できません。ログインやパスワード再設定もお試しください。",
+  },
+  weak_password: {
+    code: "AUTH-004",
+    title: "パスワードが弱すぎます",
+    reason: "別のパスワードを設定してください。",
+  },
+  over_email_send_rate_limit: {
+    code: "AUTH-005",
+    title: "メール送信回数の上限です",
+    reason:
+      "短時間にメールを送りすぎています。時間をおいてから再度お試しください。",
+  },
+  email_address_invalid: {
+    code: "AUTH-006",
+    title: "メールアドレスが正しくありません",
+    reason: "有効なメールアドレスを入力してください。",
+  },
+  signup_disabled: {
+    code: "AUTH-007",
+    title: "新規登録を利用できません",
+    reason: "現在、新規アカウント登録が無効になっています。",
+  },
+  otp_expired: {
+    code: "AUTH-008",
+    title: "認証リンクの有効期限が切れています",
+    reason: "新しい確認メールを送信して、もう一度お試しください。",
+  },
+  session_not_found: {
+    code: "AUTH-009",
+    title: "ログイン状態を確認できません",
+    reason: "もう一度ログインしてください。",
+  },
+  refresh_token_not_found: {
+    code: "AUTH-010",
+    title: "ログイン情報を更新できません",
+    reason: "もう一度ログインしてください。",
+  },
+  provider_disabled: {
+    code: "AUTH-011",
+    title: "Googleログインを利用できません",
+    reason: "現在、このログイン方法が無効になっています。",
+  },
+};
+
+// エラーIDを生成
+function createAuthErrorId() {
+  const bytes = new Uint8Array(4);
+  crypto.getRandomValues(bytes);
+
+  const id = Array.from(bytes)
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
+
+  return `ERR-${id}`;
+}
+
+// エラー表示を消す
+function clearAuthError() {
+  if (authErrorElement) {
+    authErrorElement.hidden = true;
+  }
+}
+
+// エラーを画面とコンソールに出力
+function logAuthError(context, error) {
+  const supabaseCode = error?.code;
+  const errorMessage = error?.message ?? String(error);
+
+  let errorInfo = AUTH_ERRORS[supabaseCode];
+
+  // ネットワークエラーの判定
+  if (
+    !errorInfo &&
+    /fetch failed|failed to fetch|networkerror|network request failed/i.test(
+      errorMessage,
+    )
+  ) {
+    errorInfo = {
+      code: "AUTH-998",
+      title: "通信に失敗しました",
+      reason: "ネットワーク接続を確認して、もう一度お試しください。",
+    };
+  }
+
+  // 未登録のエラー
+  if (!errorInfo) {
+    errorInfo = {
+      code: "AUTH-999",
+      title: "予期しないエラーが発生しました",
+      reason:
+        "時間をおいて再度お試しください。解決しない場合はお問い合わせください。",
+    };
+  }
+
+  const errorId = createAuthErrorId();
+  const occurredAt = new Date();
+
+  // HTMLに表示
+  if (
+    authErrorElement &&
+    authErrorTitle &&
+    authErrorReason &&
+    authErrorCode &&
+    authErrorId &&
+    authErrorTime
+  ) {
+    authErrorTitle.textContent = errorInfo.title;
+    authErrorReason.textContent = errorInfo.reason;
+    authErrorCode.textContent = errorInfo.code;
+    authErrorId.textContent = errorId;
+    authErrorTime.textContent = occurredAt.toLocaleString("ja-JP");
+
+    authErrorElement.hidden = false;
+  }
+
+  // 開発者向けログ
+  console.groupCollapsed(`[AUTH ERROR] ${errorInfo.code} / ${errorId}`);
+
+  console.error({
+    context,
+    customCode: errorInfo.code,
+    errorId,
+    supabaseCode: supabaseCode ?? null,
+    name: error?.name ?? null,
+    message: errorMessage,
+    status: error?.status ?? null,
+    timestamp: occurredAt.toISOString(),
+  });
+
+  console.groupEnd();
+}

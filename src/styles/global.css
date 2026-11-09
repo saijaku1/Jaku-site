@@ -1495,6 +1495,56 @@ article li {
   transform: scale(1.05);
 }
 
+.auth-error {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid #dc6464;
+  border-radius: 12px;
+  background: color-mix(in srgb, #dc6464 7%, var(--bg));
+  color: var(--text);
+}
+
+.auth-error-heading {
+  color: #dc6464;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#auth-error-reason {
+  margin: 8px 0 14px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.auth-error-meta {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--border);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.auth-error-meta p {
+  margin: 5px 0;
+}
+
+.auth-error-meta code {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.auth-error-help {
+  margin: 12px 0 0;
+  color: var(--text);
+  opacity: 0.7;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.auth-error[hidden] {
+  display: none;
+}
+
 /* =========================
    アニメーション軽減設定
 ========================= */
