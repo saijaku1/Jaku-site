@@ -1,0 +1,393 @@
+.help-page {
+  width: min(100% - 40px, 960px);
+  margin: 0 auto;
+  padding: 64px 0 100px;
+  color: var(--text, #222);
+}
+
+.help-hero {
+  text-align: center;
+  padding: 55px 20px 75px;
+}
+
+.help-eyebrow {
+  display: block;
+  color: var(--accent, #777);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.help-hero h1 {
+  font-size: clamp(32px, 6vw, 52px);
+  letter-spacing: -1.5px;
+  margin: 0 0 18px;
+}
+
+.help-hero > p {
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--text);
+  opacity: 0.7;
+  line-height: 1.9;
+  font-size: 14px;
+}
+
+.help-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 580px;
+  margin: 35px auto 0;
+  padding: 0 18px;
+  height: 58px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--bg);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.035);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.help-search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(120, 120, 120, 0.1);
+}
+
+.help-search > span {
+  font-size: 25px;
+  opacity: 0.6;
+}
+
+.help-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.help-search input::placeholder {
+  color: var(--text);
+  opacity: 0.45;
+}
+
+.help-search kbd {
+  font-size: 11px;
+  color: var(--text);
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.help-categories,
+.help-faq {
+  margin-top: 65px;
+}
+
+.help-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 24px;
+}
+
+.help-section-heading .help-eyebrow {
+  margin-bottom: 8px;
+}
+
+.help-section-heading h2,
+.help-contact h2 {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.help-muted {
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+.help-category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.help-category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  min-width: 0;
+  padding: 20px 17px;
+  color: var(--text);
+  text-align: left;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.help-category-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.help-category-card.is-active {
+  border-color: var(--accent);
+  background: var(--border);
+}
+
+.help-category-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--border);
+  font-size: 18px;
+}
+
+.help-category-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.help-category-description {
+  font-size: 11px;
+  line-height: 1.6;
+  opacity: 0.6;
+}
+
+.help-active-filter {
+  margin: -10px 0 15px;
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+.help-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.help-faq-item {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--bg);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.help-faq-item[hidden] {
+  display: none !important;
+}
+
+.help-faq-item[open] {
+  border-color: var(--accent);
+}
+
+.help-faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  list-style: none;
+}
+
+.help-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.help-faq-chevron {
+  flex-shrink: 0;
+  font-size: 20px;
+  font-weight: 400;
+  opacity: 0.55;
+  transition: transform 0.2s;
+}
+
+.help-faq-item[open] .help-faq-chevron {
+  transform: rotate(45deg);
+}
+
+.help-faq-answer {
+  padding: 0 20px 20px;
+  animation: help-fade-in 0.2s ease;
+}
+
+.help-faq-answer p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.9;
+  opacity: 0.75;
+}
+
+.help-answer-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.help-answer-link:hover {
+  text-decoration: underline;
+}
+
+.help-answer-category {
+  display: block;
+  margin-top: 15px;
+  font-size: 10px;
+  opacity: 0.45;
+}
+
+.help-reset {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.help-no-results {
+  padding: 40px 15px;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.help-no-results[hidden] {
+  display: none;
+}
+
+.help-result-count {
+  margin-top: 20px;
+  text-align: right;
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.help-contact {
+  margin-top: 85px;
+  padding: 45px 25px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--border);
+}
+
+.help-contact h2 {
+  margin-bottom: 15px;
+}
+
+.help-contact p {
+  max-width: 500px;
+  margin: 0 auto;
+  font-size: 13px;
+  line-height: 1.9;
+  opacity: 0.7;
+}
+
+.help-contact-link {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 12px 22px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.help-contact-link:hover {
+  opacity: 0.75;
+  transform: translateY(-2px);
+}
+
+@keyframes help-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .help-page {
+    width: min(100% - 30px, 960px);
+    padding-top: 30px;
+  }
+
+  .help-hero {
+    padding: 45px 5px 55px;
+  }
+
+  .help-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .help-category-card {
+    padding: 16px 13px;
+  }
+
+  .help-categories,
+  .help-faq {
+    margin-top: 45px;
+  }
+
+  .help-section-heading h2,
+  .help-contact h2 {
+    font-size: 21px;
+  }
+
+  .help-faq-item summary {
+    padding: 17px 15px;
+    font-size: 13px;
+  }
+
+  .help-faq-answer {
+    padding: 0 15px 17px;
+  }
+
+  .help-contact {
+    margin-top: 60px;
+    padding: 35px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .help-page *,
+  .help-page *::before,
+  .help-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,204 @@
+
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/contact.css";
+---
+
+<BaseLayout
+  title="お問い合わせ"
+  description="Jakuのサイトに関するお問い合わせはこちらからお送りください。"
+>
+  <main class="contact-page">
+    <section class="contact-hero">
+      <span class="contact-eyebrow">JAKU SUPPORT</span>
+      <h1>お問い合わせ</h1>
+      <p>
+        Jakuのサイトに関するご質問、ご意見、ご要望などがございましたら、
+        こちらのフォームからお気軽にお問い合わせください。
+      </p>
+    </section>
+
+    <section class="contact-container">
+      <div class="contact-info">
+        <h2>お問い合わせの前に</h2>
+        <p>
+          お問い合わせの内容によっては、回答までにお時間をいただく場合があります。
+          あらかじめご了承ください。
+        </p>
+        <a href="/help/" class="contact-help-link">
+          <span>ヘルプセンターもご確認ください</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <form id="contact-form" class="contact-form">
+        <div class="contact-form-heading">
+          <h2>お問い合わせフォーム</h2>
+          <p><span class="required-mark">*</span> は必須項目です。</p>
+        </div>
+
+        <div class="contact-field">
+          <label for="contact-name">
+            お名前 <span class="optional-mark">任意</span>
+          </label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            placeholder="お名前"
+            maxlength="50"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="contact-field">
+          <label for="contact-email">
+            メールアドレス <span class="required-mark">*</span>
+          </label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            placeholder="example@example.com"
+            autocomplete="email"
+            maxlength="254"
+            required
+          />
+        </div>
+
+        <div class="contact-field">
+          <label for="contact-category">
+            お問い合わせ種別 <span class="required-mark">*</span>
+          </label>
+          <select id="contact-category" name="category" required>
+            <option value="" disabled selected>選択してください</option>
+            <option value="サイトについて">サイトについて</option>
+            <option value="アカウント・ログインについて">アカウント・ログインについて</option>
+            <option value="機能について">機能について</option>
+            <option value="不具合について">不具合について</option>
+            <option value="ご意見・ご要望">ご意見・ご要望</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+
+        <div class="contact-field">
+          <label for="contact-subject">
+            件名 <span class="required-mark">*</span>
+          </label>
+          <input
+            id="contact-subject"
+            name="subject"
+            type="text"
+            placeholder="お問い合わせの件名"
+            maxlength="100"
+            required
+          />
+        </div>
+
+        <div class="contact-field">
+          <label for="contact-message">
+            お問い合わせ内容 <span class="required-mark">*</span>
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            rows="7"
+            maxlength="5000"
+            placeholder="お問い合わせ内容をご入力ください。"
+            required
+          ></textarea>
+          <span class="contact-field-note">最大5,000文字</span>
+        </div>
+
+        <!-- スパム対策用の入力欄。通常の利用者には表示しません -->
+        <div class="contact-honeypot" aria-hidden="true">
+          <label for="contact-website">Website</label>
+          <input
+            id="contact-website"
+            name="_gotcha"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <p class="contact-privacy">
+          送信された情報は、お問い合わせへの対応に使用します。
+          パスワードなどの重要な情報は入力しないでください。
+        </p>
+
+        <button id="contact-submit" type="submit" class="contact-submit">
+          お問い合わせを送信する
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <p id="contact-status" class="contact-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#contact-form");
+  const submitButton = document.querySelector<HTMLButtonElement>("#contact-submit");
+  const status = document.querySelector<HTMLParagraphElement>("#contact-status");
+
+  // Formspreeで作成したお問い合わせ専用URLに変更してください
+  const FORM_ENDPOINT = "https://formspree.io/f/xqppvrdy";
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.reportValidity()) return;
+
+    if (!submitButton || !status) return;
+
+    if (FORM_ENDPOINT.includes("YOUR_FORM_ID")) {
+      status.textContent = "お問い合わせフォームの設定がまだ完了していません。";
+      status.dataset.type = "error";
+      return;
+    }
+
+    const formData = new FormData(form);
+
+    if (formData.get("_gotcha")) {
+      status.textContent = "送信できませんでした。";
+      status.dataset.type = "error";
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "送信しています...";
+    status.textContent = "";
+    status.dataset.type = "";
+
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("送信に失敗しました");
+      }
+
+      form.reset();
+
+      status.textContent = "お問い合わせを送信しました。ありがとうございます！";
+      status.dataset.type = "success";
+    } catch (error) {
+      console.error("Contact form error:", error);
+
+      status.textContent =
+        "送信に失敗しました。通信環境を確認して、もう一度お試しください。";
+      status.dataset.type = "error";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML =
+        'お問い合わせを送信する <span aria-hidden="true">→</span>';
+    }
+  });
+</script>

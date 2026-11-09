@@ -1,0 +1,359 @@
+
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/help.css";
+
+const categories = [
+  { id: "account", name: "アカウント", icon: "◉", description: "登録・ログイン・ログアウト" },
+  { id: "email", name: "メール認証", icon: "✉", description: "認証メール・メールが届かない場合" },
+  { id: "profile", name: "プロフィール", icon: "♙", description: "ユーザー名・プロフィール設定" },
+  { id: "blog", name: "ブログ", icon: "▤", description: "記事の閲覧・検索" },
+  { id: "likes", name: "いいね", icon: "♡", description: "記事へのいいね・履歴" },
+  { id: "site", name: "サイト機能", icon: "⚙", description: "テーマ・検索・操作方法" },
+  { id: "security", name: "セキュリティ", icon: "◇", description: "アカウント・個人情報の保護" },
+  { id: "trouble", name: "トラブル", icon: "!", description: "エラー・不具合への対処" },
+];
+
+const faqs = [
+
+{
+  category: "account",
+  question: "メールアドレスでアカウントを登録するには？",
+  answer: "ログインページでメールアドレスを入力し、認証メールを送信してください。届いたメールに記載されている認証リンクを開くとログインできます。初回利用時はアカウントが作成されます。"
+},
+{
+  category: "account",
+  question: "メールアドレスでログインする際にパスワードは必要ですか？",
+  answer: "いいえ。メールアドレスログインはメール認証方式を採用しているため、パスワードは必要ありません。メールに届く認証リンクからログインできます。"
+},
+{
+  category: "email",
+  question: "認証メールを再送信するには？",
+  answer: "ログインページからメールアドレスを再入力し、認証メールの送信操作を行ってください。短時間に何度も送信すると制限される場合があります。"
+},
+{
+  category: "email",
+  question: "認証リンクの有効期限が切れた場合は？",
+  answer: "認証リンクが期限切れになった場合は、ログインページから認証メールを再送信してください。新しく届いたメールのリンクをご利用ください。"
+},
+{
+  category: "account",
+  question: "Googleログインとメールアドレスログインの違いは？",
+  answer: "GoogleログインはGoogleアカウントを利用する方法です。メールアドレスログインは、メールに届く認証リンクを利用する方法です。どちらもJakuのサイトにログインするために利用できます。"
+},
+
+  {
+    category: "account",
+    question: "アカウントを作成するには？",
+    answer: "ログインページからGoogleアカウントを利用してログインしてください。初回ログイン時にアカウントが作成されます。"
+  },
+  {
+    category: "account",
+    question: "ログインするにはどうすればいいですか？",
+    answer: "サイトのログインページを開き、Googleでログインするボタンを押してください。Googleの認証画面が表示されたら、利用するアカウントを選択してください。"
+  },
+  {
+    category: "account",
+    question: "ログアウトするには？",
+    answer: "ログイン状態でアカウントメニューを開き、ログアウトを選択してください。"
+  },
+  {
+    category: "account",
+    question: "ログインできません。",
+    answer: "通信環境を確認し、ページを再読み込みしてください。Googleアカウントの選択画面が表示されない場合は、ブラウザのポップアップ設定やCookieの設定も確認してください。"
+  },
+  {
+    category: "email",
+    question: "認証メールが届きません。",
+    answer: "まず迷惑メールフォルダをご確認ください。メールサービスによっては、認証メールが迷惑メールとして分類されることがあります。見つからない場合は、登録したメールアドレスに間違いがないか確認してください。"
+  },
+  {
+    category: "email",
+    question: "迷惑メールに認証メールが入っていました。",
+    answer: "メールの送信元とリンク先が正しいことを確認してから、認証リンクを開いてください。不審なメールや心当たりのないリンクは開かないでください。"
+  },
+  {
+    category: "email",
+    question: "認証リンクを開いてもログインできません。",
+    answer: "認証リンクの有効期限が切れている可能性があります。ログイン画面からもう一度認証手続きを行ってください。"
+  },
+  {
+    category: "profile",
+    question: "ユーザー名を変更できますか？",
+    answer: "アカウント設定ページからユーザー名を変更できます。設定できる文字数などの条件は、入力欄の案内に従ってください。",
+    link: "/account/settings/",
+    linkText: "アカウント設定を開く"
+  },
+  {
+    category: "profile",
+    question: "プロフィール画像は変更できますか？",
+    answer: "プロフィール画像の設定に対応している場合は、アカウント設定ページから変更できます。"
+  },
+  {
+    category: "profile",
+    question: "メールアドレスを変更できますか？",
+    answer: "現在、メールアドレスはアカウント設定画面で確認できます。変更機能が利用できない場合は、無理に変更操作を行わないでください。"
+  },
+  {
+    category: "blog",
+    question: "ブログ記事はどこから読めますか？",
+    answer: "サイトのナビゲーションにある「ブログ」から記事一覧を確認できます。記事のタイトルを選択すると本文を読めます。",
+    link: "/blog/",
+    linkText: "ブログを見る"
+  },
+  {
+    category: "blog",
+    question: "読みたい記事が見つかりません。",
+    answer: "サイト内検索を利用して記事を探してみてください。タイトルや関連するキーワードで検索できます。",
+    link: "/search/",
+    linkText: "サイト内検索を開く"
+  },
+  {
+    category: "likes",
+    question: "記事の「いいね」とは何ですか？",
+    answer: "気に入ったブログ記事に反応を残せる機能です。利用にはログインが必要です。"
+  },
+  {
+    category: "likes",
+    question: "いいねした記事はどこで確認できますか？",
+    answer: "ログイン後、アカウントの「いいねした記事」から確認できます。",
+    link: "/account/likes/",
+    linkText: "いいねした記事を見る"
+  },
+  {
+    category: "likes",
+    question: "いいねを取り消すことはできますか？",
+    answer: "いいねの取り消しについては、現在のサイト上の仕様に従ってください。"
+  },
+  {
+    category: "site",
+    question: "ダークモードに切り替えるには？",
+    answer: "サイトのテーマ切り替えボタンからライトモード・ダークモードを変更できます。"
+  },
+  {
+    category: "site",
+    question: "スマートフォンでも利用できますか？",
+    answer: "はい。スマートフォンやタブレットからも利用できます。画面幅に応じてレイアウトが調整されます。"
+  },
+  {
+    category: "site",
+    question: "サイト内検索は何を検索できますか？",
+    answer: "サイト内検索では、検索対象として登録されているページや記事を探せます。"
+  },
+  {
+    category: "security",
+    question: "パスワードをJakuのサイトに登録する必要はありますか？",
+    answer: "Googleログインを利用する場合、JakuのサイトにGoogleアカウントのパスワードを入力する必要はありません。Google公式の認証画面でログインしてください。"
+  },
+  {
+    category: "security",
+    question: "個人情報は公開されますか？",
+    answer: "プロフィールの公開範囲や表示内容に注意してください。パスワードや認証情報などの重要な情報を、他人に教えないでください。"
+  },
+  {
+    category: "trouble",
+    question: "ページが正しく表示されません。",
+    answer: "ブラウザを再読み込みし、通信環境を確認してください。改善しない場合は、別のブラウザでも同じ問題が発生するか確認してください。"
+  },
+  {
+    category: "trouble",
+    question: "操作中にエラーが発生しました。",
+    answer: "エラーが発生したページと操作内容を確認してください。何度も同じ操作を繰り返さず、時間を置いてから再度お試しください。"
+  },
+];
+
+const categoryName = Object.fromEntries(
+  categories.map((category) => [category.id, category.name])
+);
+---
+
+<BaseLayout
+  title="ヘルプセンター"
+  description="Jakuのサイトの使い方や、よくある質問、トラブルの解決方法をご案内します。"
+>
+  <main class="help-page">
+    <section class="help-hero">
+      <span class="help-eyebrow">JAKU SUPPORT CENTER</span>
+      <h1>ヘルプセンター</h1>
+      <p>
+        Jakuのサイトの使い方や、困ったときの解決方法をご案内します。
+        お探しの内容を検索するか、カテゴリーからお選びください。
+      </p>
+
+      <div class="help-search">
+        <span aria-hidden="true">⌕</span>
+        <input
+          id="help-search-input"
+          type="search"
+          placeholder="困っていることを検索..."
+          aria-label="ヘルプの質問を検索"
+        />
+        <kbd>検索</kbd>
+      </div>
+    </section>
+
+    <section class="help-categories" aria-labelledby="category-heading">
+      <div class="help-section-heading">
+        <div>
+          <span class="help-eyebrow">CATEGORIES</span>
+          <h2 id="category-heading">カテゴリーから探す</h2>
+        </div>
+        <span class="help-muted">8カテゴリー</span>
+      </div>
+
+      <div class="help-category-grid">
+        {categories.map((category) => (
+          <button
+            class="help-category-card"
+            type="button"
+            data-category-button={category.id}
+          >
+            <span class="help-category-icon" aria-hidden="true">{category.icon}</span>
+            <span class="help-category-name">{category.name}</span>
+            <span class="help-category-description">{category.description}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <section class="help-faq" id="help-faq" aria-labelledby="faq-heading">
+      <div class="help-section-heading">
+        <div>
+          <span class="help-eyebrow">FREQUENTLY ASKED QUESTIONS</span>
+          <h2 id="faq-heading">よくある質問</h2>
+        </div>
+        <button id="help-reset" class="help-reset" type="button">
+          すべて表示
+        </button>
+      </div>
+
+      <div class="help-active-filter" id="help-active-filter">
+        すべてのカテゴリー
+      </div>
+
+      <div class="help-faq-list" id="help-faq-list">
+        {faqs.map((faq) => (
+          <details class="help-faq-item" data-category={faq.category}>
+            <summary>
+              <span>{faq.question}</span>
+              <span class="help-faq-chevron" aria-hidden="true">＋</span>
+            </summary>
+            <div class="help-faq-answer">
+              <p>{faq.answer}</p>
+              {faq.link && (
+                <a href={faq.link} class="help-answer-link">
+                  {faq.linkText} →
+                </a>
+              )}
+              <span class="help-answer-category">
+                {categoryName[faq.category]}
+              </span>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <p id="help-no-results" class="help-no-results" hidden>
+        該当する質問が見つかりませんでした。別のキーワードで検索してください。
+      </p>
+      <p class="help-result-count" id="help-result-count">
+        全{faqs.length}件の質問
+      </p>
+    </section>
+
+    <section class="help-contact">
+      <span class="help-eyebrow">NEED MORE HELP?</span>
+      <h2>解決しませんでしたか？</h2>
+      <p>
+        こちらのヘルプで解決できない場合は、サイト内のお問い合わせ窓口をご利用ください。
+      </p>
+      <a href="/contact/" class="help-contact-link">
+        お問い合わせはこちらから →
+      </a>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const searchInput = document.querySelector("#help-search-input");
+  const faqItems = [...document.querySelectorAll(".help-faq-item")];
+  const categoryButtons = [...document.querySelectorAll("[data-category-button]")];
+  const resetButton = document.querySelector("#help-reset");
+  const activeFilter = document.querySelector("#help-active-filter");
+  const noResults = document.querySelector("#help-no-results");
+  const resultCount = document.querySelector("#help-result-count");
+
+  let selectedCategory = "all";
+
+  const categoryLabels = {
+    all: "すべてのカテゴリー",
+    account: "アカウント",
+    email: "メール認証",
+    profile: "プロフィール",
+    blog: "ブログ",
+    likes: "いいね",
+    site: "サイト機能",
+    security: "セキュリティ",
+    trouble: "トラブル",
+  };
+
+  function updateFaq() {
+    const keyword = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    faqItems.forEach((item) => {
+      const matchesCategory =
+        selectedCategory === "all" ||
+        item.dataset.category === selectedCategory;
+
+      const matchesKeyword =
+        item.textContent.toLowerCase().includes(keyword);
+
+      const visible = matchesCategory && matchesKeyword;
+
+      item.hidden = !visible;
+
+      if (visible) {
+        visibleCount++;
+      }
+    });
+
+    activeFilter.textContent = categoryLabels[selectedCategory];
+    noResults.hidden = visibleCount !== 0;
+    resultCount.textContent = `${visibleCount}件の質問`;
+  }
+
+  searchInput.addEventListener("input", updateFaq);
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedCategory = button.dataset.categoryButton;
+
+      categoryButtons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+
+      updateFaq();
+      document.querySelector("#help-faq").scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  });
+
+  resetButton.addEventListener("click", () => {
+    selectedCategory = "all";
+    searchInput.value = "";
+
+    categoryButtons.forEach((button) => {
+      button.classList.remove("is-active");
+      button.setAttribute("aria-pressed", "false");
+    });
+
+    updateFaq();
+  });
+
+  updateFaq();
+</script>
