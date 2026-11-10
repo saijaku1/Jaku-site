@@ -271,7 +271,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       link.hidden = false;
 
       window.setTimeout(() => {
-        window.location.replace("/");
+        const next = url.searchParams.get("next");
+
+const safeNext =
+  next && next.startsWith("/") && !next.startsWith("//")
+    ? next
+    : "/";
+
+window.location.replace(safeNext);
       }, 1200);
 
     } catch (error) {

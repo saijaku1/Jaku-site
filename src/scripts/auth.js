@@ -104,10 +104,22 @@ googleButton?.addEventListener("click", async () => {
   showAuthLoading("Googleアカウントを確認しています...");
 
   try {
+    // ログイン前の移動先を取得
+    const next = new URLSearchParams(window.location.search).get("next");
+
+    // 認証コールバックURLを作成
+    const callbackUrl = new URL("/auth/callback", window.location.origin);
+
+    // 安全な移動先だけを引き継ぐ
+    if (next && next.startsWith("/") && !next.startsWith("//")) {
+      callbackUrl.searchParams.set("next", next);
+    }
+
+    // Google OAuthを開始
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "https://jaku.runs-at.dev/auth/callback",
+        redirectTo: callbackUrl.toString(),
       },
     });
 
