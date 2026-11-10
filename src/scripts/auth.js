@@ -25,6 +25,29 @@ const userEmail = document.querySelector("#user-email");
 const logoutButton = document.querySelector("#logout-button");
 
 // ========================================
+// ローディング処理
+// ========================================
+
+const authLoading = document.querySelector("#auth-loading");
+const authLoadingMessage = document.querySelector("#auth-loading-message");
+
+function showAuthLoading(message = "処理しています...") {
+  if (!authLoading) return;
+
+  if (authLoadingMessage) {
+    authLoadingMessage.textContent = message;
+  }
+
+  authLoading.hidden = false;
+}
+
+function hideAuthLoading() {
+  if (!authLoading) return;
+
+  authLoading.hidden = true;
+}
+
+// ========================================
 // 共通UI処理
 // ========================================
 
@@ -53,6 +76,7 @@ function setFormMode(mode) {
 
   loginForm.hidden = mode !== "login";
   signupForm.hidden = mode !== "signup";
+
   setStatus("");
 }
 
@@ -74,7 +98,10 @@ showLoginButton?.addEventListener("click", () => {
 
 googleButton?.addEventListener("click", async () => {
   googleButton.disabled = true;
+
   setStatus("Googleログインへ移動しています...");
+
+  showAuthLoading("Googleアカウントを確認しています...");
 
   try {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -85,10 +112,16 @@ googleButton?.addEventListener("click", async () => {
     });
 
     if (error) throw error;
+
+    // 成功時はGoogle認証画面へ移動するため、
+    // ローディングを維持する。
   } catch (error) {
+    hideAuthLoading();
+
     logAuthError("Google Login", error);
 
     setStatus("Googleログインを開始できませんでした。");
+
     googleButton.disabled = false;
   }
 });
@@ -106,7 +139,10 @@ loginForm?.addEventListener("submit", async (event) => {
   const submitButton = loginForm.querySelector('button[type="submit"]');
 
   submitButton.disabled = true;
+
   setStatus("ログインしています...");
+
+  showAuthLoading("ログインしています...");
 
   try {
     const { error } = await supabase.auth.signInWithPassword({
@@ -125,6 +161,8 @@ loginForm?.addEventListener("submit", async (event) => {
     );
   } finally {
     submitButton.disabled = false;
+
+    hideAuthLoading();
   }
 });
 
@@ -152,7 +190,10 @@ signupForm?.addEventListener("submit", async (event) => {
   const submitButton = signupForm.querySelector('button[type="submit"]');
 
   submitButton.disabled = true;
+
   setStatus("アカウントを登録しています...");
+
+  showAuthLoading("アカウントを作成しています...");
 
   try {
     const { data, error } = await supabase.auth.signUp({
@@ -180,6 +221,8 @@ signupForm?.addEventListener("submit", async (event) => {
     );
   } finally {
     submitButton.disabled = false;
+
+    hideAuthLoading();
   }
 });
 
@@ -197,7 +240,10 @@ forgotPasswordButton?.addEventListener("click", async () => {
   }
 
   forgotPasswordButton.disabled = true;
+
   setStatus("再設定メールを送信しています...");
+
+  showAuthLoading("再設定メールを送信しています...");
 
   try {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -213,6 +259,8 @@ forgotPasswordButton?.addEventListener("click", async () => {
     setStatus("メールを送信できませんでした。入力内容を確認してください。");
   } finally {
     forgotPasswordButton.disabled = false;
+
+    hideAuthLoading();
   }
 });
 
@@ -222,7 +270,10 @@ forgotPasswordButton?.addEventListener("click", async () => {
 
 logoutButton?.addEventListener("click", async () => {
   logoutButton.disabled = true;
+
   setStatus("ログアウトしています...");
+
+  showAuthLoading("ログアウトしています...");
 
   try {
     const { error } = await supabase.auth.signOut();
@@ -230,6 +281,7 @@ logoutButton?.addEventListener("click", async () => {
     if (error) throw error;
 
     showLoggedOut();
+
     setStatus("ログアウトしました。");
   } catch (error) {
     logAuthError("Logout", error);
@@ -237,6 +289,8 @@ logoutButton?.addEventListener("click", async () => {
     setStatus("ログアウトに失敗しました。");
   } finally {
     logoutButton.disabled = false;
+
+    hideAuthLoading();
   }
 });
 
@@ -254,6 +308,7 @@ async function checkLogin() {
       showLoggedIn(data.session.user);
     } else {
       showLoggedOut();
+
       setStatus("ログインしていません。");
     }
   } catch (error) {
@@ -295,59 +350,70 @@ const AUTH_ERRORS = {
     title: "ログインに失敗しました",
     reason: "メールアドレスまたはパスワードが正しくありません。",
   },
+
   email_not_confirmed: {
     code: "AUTH-002",
     title: "メールアドレスが未確認です",
     reason: "確認メール内のリンクからメールアドレスの認証を完了してください。",
   },
+
   user_already_exists: {
     code: "AUTH-003",
     title: "アカウントを登録できません",
     reason:
       "このメールアドレスでは登録を完了できません。ログインやパスワード再設定もお試しください。",
   },
+
   email_exists: {
     code: "AUTH-003",
     title: "アカウントを登録できません",
     reason:
       "このメールアドレスでは登録を完了できません。ログインやパスワード再設定もお試しください。",
   },
+
   weak_password: {
     code: "AUTH-004",
     title: "パスワードが弱すぎます",
     reason: "別のパスワードを設定してください。",
   },
+
   over_email_send_rate_limit: {
     code: "AUTH-005",
     title: "メール送信回数の上限です",
     reason:
       "短時間にメールを送りすぎています。時間をおいてから再度お試しください。",
   },
+
   email_address_invalid: {
     code: "AUTH-006",
     title: "メールアドレスが正しくありません",
     reason: "有効なメールアドレスを入力してください。",
   },
+
   signup_disabled: {
     code: "AUTH-007",
     title: "新規登録を利用できません",
     reason: "現在、新規アカウント登録が無効になっています。",
   },
+
   otp_expired: {
     code: "AUTH-008",
     title: "認証リンクの有効期限が切れています",
     reason: "新しい確認メールを送信して、もう一度お試しください。",
   },
+
   session_not_found: {
     code: "AUTH-009",
     title: "ログイン状態を確認できません",
     reason: "もう一度ログインしてください。",
   },
+
   refresh_token_not_found: {
     code: "AUTH-010",
     title: "ログイン情報を更新できません",
     reason: "もう一度ログインしてください。",
   },
+
   provider_disabled: {
     code: "AUTH-011",
     title: "Googleログインを利用できません",
@@ -355,9 +421,13 @@ const AUTH_ERRORS = {
   },
 };
 
-// エラーIDを生成
+// ========================================
+// エラーID生成
+// ========================================
+
 function createAuthErrorId() {
   const bytes = new Uint8Array(4);
+
   crypto.getRandomValues(bytes);
 
   const id = Array.from(bytes)
@@ -368,14 +438,20 @@ function createAuthErrorId() {
   return `ERR-${id}`;
 }
 
+// ========================================
 // エラー表示を消す
+// ========================================
+
 function clearAuthError() {
   if (authErrorElement) {
     authErrorElement.hidden = true;
   }
 }
 
+// ========================================
 // エラーを画面とコンソールに出力
+// ========================================
+
 function logAuthError(context, error) {
   const supabaseCode = error?.code;
   const errorMessage = error?.message ?? String(error);

@@ -1,43 +1,121 @@
+/* ========================================
+   JAKU AUTH - Glassmorphism Design
+======================================== */
+
 .login-page {
+  position: relative;
+  isolation: isolate;
   display: grid;
-  min-height: 65vh;
+  min-height: 75vh;
   place-items: center;
-  padding: 48px 20px;
+  box-sizing: border-box;
+  padding: 64px 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 15% 20%, rgb(76 110 245 / 13%), transparent 45%),
+    radial-gradient(ellipse at 85% 75%, rgb(139 92 246 / 14%), transparent 45%);
 }
+
+/* 背景の光 */
+
+.login-page::before,
+.login-page::after {
+  position: absolute;
+  z-index: -1;
+  width: 280px;
+  height: 280px;
+  content: "";
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.login-page::before {
+  top: 5%;
+  left: 5%;
+  background: #477bff;
+}
+
+.login-page::after {
+  right: 5%;
+  bottom: 5%;
+  background: #9461ff;
+}
+
+/* ========================================
+   Login Card
+======================================== */
 
 .login-card {
+  position: relative;
   width: min(100%, 440px);
-  padding: 40px;
+  box-sizing: border-box;
+  padding: 42px;
   text-align: center;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  box-shadow: 0 16px 50px rgb(0 0 0 / 6%);
+
+  background: color-mix(in srgb, var(--bg) 76%, transparent);
+
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 24px 80px rgb(0 0 0 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  animation: auth-appear 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+@keyframes auth-appear {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================
+   Heading
+======================================== */
+
 .eyebrow {
-  margin-bottom: 12px;
+  margin: 0 0 12px;
   color: var(--accent);
   font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font-weight: 800;
+  letter-spacing: 0.2em;
 }
 
 .login-card h1 {
   margin: 0;
   font-size: clamp(2rem, 6vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
 }
 
 .description {
-  margin: 16px 0 28px;
-  line-height: 1.8;
-  opacity: 0.75;
+  margin: 16px 0 32px;
+  font-size: 14px;
+  line-height: 1.9;
+  opacity: 0.7;
 }
+
+/* ========================================
+   Forms
+======================================== */
 
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   text-align: left;
 }
 
@@ -48,81 +126,144 @@
 .auth-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .auth-field label {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .auth-field input {
   box-sizing: border-box;
   width: 100%;
-  min-height: 48px;
-  padding: 12px 14px;
+  min-height: 52px;
+  padding: 13px 16px;
+
   color: var(--text);
   font: inherit;
-  background: var(--bg);
+  font-size: 14px;
+
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 13px;
   outline: none;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.auth-field input::placeholder {
+  color: var(--text);
+  opacity: 0.35;
+}
+
+.auth-field input:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
 }
 
 .auth-field input:focus {
   border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
+
+/* ========================================
+   Primary Button
+======================================== */
 
 .primary-button {
   display: inline-flex;
   width: 100%;
-  min-height: 48px;
+  min-height: 52px;
   align-items: center;
   justify-content: center;
-  padding: 12px 18px;
-  color: white;
+  box-sizing: border-box;
+  padding: 13px 20px;
+
+  color: #fff;
   font: inherit;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   text-decoration: none;
-  background: var(--accent);
+
+  background: linear-gradient(115deg, #477bff, #7658ed);
+
   border: 0;
-  border-radius: 12px;
+  border-radius: 13px;
   cursor: pointer;
+
+  box-shadow: 0 8px 24px rgb(76 110 245 / 24%);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+
+  box-shadow: 0 12px 30px rgb(76 110 245 / 35%);
+}
+
+.primary-button:active {
+  transform: translateY(0) scale(0.99);
 }
 
 .primary-button:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: wait;
+  transform: none;
+  box-shadow: none;
 }
+
+/* ========================================
+   Text Buttons
+======================================== */
 
 .text-button {
   padding: 0;
   color: var(--accent);
   font: inherit;
   font-size: 13px;
+  font-weight: 600;
   background: transparent;
   border: 0;
   cursor: pointer;
+  transition: opacity 180ms ease;
 }
 
 .text-button:hover {
+  opacity: 0.7;
   text-decoration: underline;
 }
 
 .switch-text {
   margin: 0;
   font-size: 13px;
+  line-height: 1.8;
   text-align: center;
   opacity: 0.8;
 }
+
+/* ========================================
+   Separator
+======================================== */
 
 .separator {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 24px 0;
+  margin: 26px 0;
   font-size: 12px;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 .separator::before,
@@ -133,6 +274,10 @@
   background: var(--border);
 }
 
+/* ========================================
+   Google Login
+======================================== */
+
 .google-button {
   display: flex;
   width: 100%;
@@ -141,57 +286,170 @@
   justify-content: center;
   gap: 12px;
   padding: 12px 18px;
+
   color: var(--text);
   font: inherit;
-  font-weight: 600;
-  background: var(--bg);
+  font-size: 14px;
+  font-weight: 700;
+
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 13px;
   cursor: pointer;
+
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .google-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, var(--bg));
+}
+
+.google-button:active {
+  transform: scale(0.99);
 }
 
 .google-button:disabled {
+  opacity: 0.55;
   cursor: wait;
-  opacity: 0.6;
 }
 
 .google-mark {
-  color: #4285f4;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   font-weight: 800;
+  color: #4285f4;
 }
 
-.login-status {
-  min-height: 1.5em;
-  margin: 18px 0;
-  font-size: 0.9rem;
-  line-height: 1.7;
+/* ========================================
+   Help Link
+======================================== */
+
+.help-link {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
 }
 
-.back-link {
-  display: inline-block;
-  margin-top: 24px;
+.help-link p {
+  margin: 0 0 8px;
   color: var(--text);
-  opacity: 0.7;
-  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.5;
 }
 
-.back-link:hover {
-  opacity: 1;
+.help-link a {
+  color: var(--accent);
+  font-size: 13px;
+  text-decoration: none;
+  transition: opacity 180ms ease;
+}
+
+.help-link a:hover {
+  opacity: 0.65;
   text-decoration: underline;
 }
 
+/* ========================================
+   Status
+======================================== */
+
+.login-status {
+  min-height: 1.5em;
+  margin: 20px 0;
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   Authentication Error
+======================================== */
+
+.auth-error {
+  margin-top: 18px;
+  padding: 20px;
+  text-align: left;
+
+  background: rgb(220 38 38 / 7%);
+  border: 1px solid rgb(220 38 38 / 25%);
+  border-radius: 15px;
+
+  animation: error-appear 250ms ease both;
+}
+
+.auth-error[hidden] {
+  display: none;
+}
+
+@keyframes error-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-error-heading {
+  color: #ef6464;
+  font-size: 14px;
+}
+
+.auth-error > p {
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.auth-error-meta {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgb(127 127 127 / 8%);
+  border-radius: 10px;
+}
+
+.auth-error-meta p {
+  margin: 7px 0;
+  font-size: 11px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.auth-error-meta code {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.auth-error-help {
+  font-size: 12px !important;
+}
+
+.auth-error-help a {
+  color: var(--accent);
+}
+
+/* ========================================
+   Account Info
+======================================== */
+
 #account-info {
   margin-top: 24px;
-  padding: 20px;
+  padding: 22px;
+  text-align: center;
+
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+
   border: 1px solid var(--border);
   border-radius: 16px;
 }
@@ -203,56 +461,164 @@
 
 #user-email {
   overflow-wrap: anywhere;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 #logout-button {
   display: block;
   margin: 16px auto 0;
-  padding: 10px 18px;
+  padding: 11px 20px;
+
   color: var(--text);
+  font: inherit;
+  font-size: 13px;
+
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 999px;
   cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+#logout-button:hover {
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  border-color: var(--accent);
 }
 
 #logout-button:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: wait;
 }
 
-/* ヘルプリンク */
-.help-link {
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
-  text-align: center;
-}
+/* ========================================
+   Back Link
+======================================== */
 
-.help-link p {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
+.back-link {
+  display: inline-block;
+  margin-top: 26px;
   color: var(--text);
-  opacity: 0.6;
-}
-
-.help-link a {
   font-size: 13px;
-  color: var(--accent);
+  opacity: 0.6;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: opacity 180ms ease;
 }
 
-.help-link a:hover {
-  opacity: 0.7;
+.back-link:hover {
+  opacity: 1;
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
+/* ========================================
+   Keyboard Accessibility
+======================================== */
+
+.login-card button:focus-visible,
+.login-card a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+/* 認証ローディング */
+.auth-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(8, 12, 24, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.auth-loading[hidden] {
+  display: none;
+}
+
+.auth-loading-card {
+  width: min(320px, 100%);
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.auth-spinner {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 20px;
+  border: 4px solid rgba(255, 255, 255, 0.18);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: auth-spin 0.8s linear infinite;
+}
+
+.auth-loading-card p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.auth-loading-card span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+@keyframes auth-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-spinner {
+    animation-duration: 2s;
+  }
+}
+/* ========================================
+   Responsive
+======================================== */
+
+@media (max-width: 600px) {
+  .login-page {
+    min-height: 70vh;
+    padding: 36px 16px;
+  }
+
   .login-card {
-    padding: 28px 22px;
+    padding: 30px 22px;
+    border-radius: 21px;
+  }
+
+  .description {
+    margin-bottom: 26px;
+    font-size: 13px;
+  }
+
+  .auth-form {
+    gap: 18px;
+  }
+}
+
+/* ========================================
+   Reduced Motion
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
