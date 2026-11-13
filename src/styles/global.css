@@ -1,4 +1,4 @@
-```css :root {
+:root {
   --bg: #ffffff;
   --text: #111111;
   --accent: #0071e3;
@@ -1570,5 +1570,29 @@ article li {
   .button:hover,
   .footer-social-link:hover {
     transform: none;
+  }
+}
+
+/* アカウントメニュー：スマートフォン表示の修正 */
+@media (max-width: 600px) {
+  .header-account-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .header-account-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+
+    /* 左側ではなく右側に展開する */
+    left: 0;
+    right: auto;
+
+    width: min(240px, calc(100vw - 28px));
+    max-width: calc(100vw - 28px);
+    box-sizing: border-box;
+
+    margin-top: 0;
+    z-index: 10000;
   }
 }

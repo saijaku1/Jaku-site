@@ -11,12 +11,19 @@ if (form && input && status && resultsContainer) {
 
   let pagefind = null;
   let pagefindPromise = null;
+
   async function loadPagefind() {
     if (pagefind) return pagefind;
 
     if (!pagefindPromise) {
       pagefindPromise = (async () => {
         const engine = await import("/pagefind/pagefind.js");
+
+        // Web Workerを使わずに検索する
+        await engine.options({
+          noWorker: true,
+        });
+
         await engine.init();
 
         pagefind = engine;
@@ -31,6 +38,7 @@ if (form && input && status && resultsContainer) {
       throw error;
     }
   }
+
   function escapeHtml(value) {
     return value.replace(/[&<>"']/g, (character) => {
       const entities = {
@@ -90,9 +98,7 @@ if (form && input && status && resultsContainer) {
       }
     } catch (error) {
       console.error("検索エラー:", error);
-
-      status.textContent =
-        "検索機能を読み込めませんでした。Consoleのエラーを確認してください。";
+      status.textContent = `検索エラー: ${error instanceof Error ? error.message : String(error)}`;
     }
   }
 
